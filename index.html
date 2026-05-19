@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amber Star Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+#map {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* PREMIUM POPUP STYLE */
+.leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  padding: 6px;
+}
+
+.popup-card {
+  min-width: 220px;
+}
+
+.popup-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.popup-rating {
+  color: #d4af37;
+  font-weight: bold;
+}
+
+.popup-desc {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+// =====================
+// 1. KARTE
+// =====================
+const map = L.map('map').setView([56.95, 24.10], 7);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+
+// =====================
+// 2. PREMIUM ICON
+// =====================
+const icon = L.divIcon({
+  className: "",
+  html: `<div style="
+    width:12px;
+    height:12px;
+    background:#d4af37;
+    border-radius:50%;
+    box-shadow:0 0 10px rgba(212,175,55,0.8);
+    border:2px solid white;"></div>`,
+  iconSize: [20,20],
+  iconAnchor: [10,10]
+});
+
+
+// =====================
+// 3. DATUBĀZE
+// =====================
+const locations = [
+  {
+    name: "Amber Star Hotel Riga",
+    coords: [56.9496, 24.1052],
+    rating: 148,
+    desc: "Flagship luxury property"
+  },
+  {
+    name: "Gauja Retreat",
+    coords: [57.1775, 25.2412],
+    rating: 139,
+    desc: "Nature boutique escape"
+  }
+];
+
+
+// =====================
+// 4. RENDER + PREMIUM POPUP
+// =====================
+locations.forEach(p => {
+
+  L.marker(p.coords, { icon })
+    .addTo(map)
+    .bindPopup(`
+      <div class="popup-card">
+        <div class="popup-title">${p.name}</div>
+
+        <div class="popup-rating">
+          ⭐ ${p.rating} / 150 Amber Index
+        </div>
+
+        <div class="popup-desc">
+          ${p.desc}
+        </div>
+      </div>
+    `);
+
+});
+
+</script>
+
+</body>
+</html>
