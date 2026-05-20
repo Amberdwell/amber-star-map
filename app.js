@@ -215,7 +215,6 @@ function setupEventListeners() {
             renderMapPoints();
         });
     }
-}
     
     // Pārējie filtri (ja tev tie ir)
     const resetBtn = document.getElementById('resetFilters');
