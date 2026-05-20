@@ -1,4 +1,3 @@
-// ŠEIT IEKOPĒ SAVU SAITI
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
 const map = L.map('map', {
@@ -10,7 +9,6 @@ const map = L.map('map', {
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
-
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
@@ -31,9 +29,7 @@ map.addLayer(markersClusterGroup);
 
 let hotelData = [];
 let activeCategory = 'all';
-let activeCountry = 'all';
 let minScoreFilter = 0;
-let searchQuery = '';
 
 function parseTabularCSV(text) {
     const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -45,7 +41,6 @@ function parseTabularCSV(text) {
 
     const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/[^a-z0-9]/g, ''));
     
-    const idxId = headers.findIndex(h => h.includes('accreditation'));
     const idxName = headers.findIndex(h => h.includes('title') || h.includes('property') || h.includes('name'));
     const idxLocation = headers.findIndex(h => h.includes('city') || h.includes('location'));
     const idxScore = headers.findIndex(h => h.includes('audit'));
@@ -55,129 +50,53 @@ function parseTabularCSV(text) {
     const idxLat = headers.findIndex(h => h.includes('lat'));
     const idxLng = headers.findIndex(h => h.includes('long') || h === 'lng');
     const idxDesc = headers.findIndex(h => h.includes('desc'));
-    const idxImage = headers.findIndex(h => h.includes('image')); // Šeit atrodam image kolonnu
+    const idxImage = headers.findIndex(h => h.includes('image'));
 
     return lines.slice(1).map(line => {
         const row = line.split(sep).map(item => item.trim().replace(/^"|"$/g, ''));
         if (row.length < 3) return null;
 
-        let latStr = idxLat !== -1 ? (row[idxLat] || '').replace(',', '.') : '0';
-        let lngStr = idxLng !== -1 ? (row[idxLng] || '').replace(',', '.') : '0';
-
         return {
             name: idxName !== -1 ? row[idxName] : 'Unnamed Property',
-            description: idxDesc !== -1 ? (row[idxDesc] || 'Amber Star approved luxury property.') : 'Amber Star approved luxury property.',
+            description: idxDesc !== -1 ? row[idxDesc] : 'Amber Star approved luxury property.',
             score: parseInt((idxScore !== -1 ? (row[idxScore] || '0').split('/')[0].trim() : '0'), 10) || 0,
-            guestRating: idxRating !== -1 ? (row[idxRating] || 'N/A') : 'N/A',
-            country: 'Latvia',
+            guestRating: idxRating !== -1 ? row[idxRating] : 'N/A',
             city: idxLocation !== -1 ? row[idxLocation] : '',
             category: idxCategory !== -1 ? (row[idxCategory] || 'HOTEL').toUpperCase() : 'HOTEL',
-            website: idxPlatform !== -1 ? (row[idxPlatform] || '#') : '#',
-            id_code: idxId !== -1 ? row[idxId] : 'AS-PENDING',
-            lat: parseFloat(latStr),
-            lng: parseFloat(lngStr),
-            // Šeit tagad kods ņem bildi no tabulas, ja tā nav tukša
-            image: (idxImage !== -1 && row[idxImage] && row[idxImage].trim() !== '') ? row[idxImage] : "https://images.unsplash.com/photo-1566073771259-6a8506099945"
+            website: idxPlatform !== -1 ? row[idxPlatform] : '#',
+            lat: parseFloat((idxLat !== -1 ? row[idxLat] : '0').replace(',', '.')),
+            lng: parseFloat((idxLng !== -1 ? row[idxLng] : '0').replace(',', '.')),
+            image: (idxImage !== -1 && row[idxImage]) ? row[idxImage] : "https://images.unsplash.com/photo-1566073771259-6a8506099945"
         };
     }).filter(h => h !== null && !isNaN(h.lat) && !isNaN(h.lng));
 }
 
-async function startApp() {
-    try {
-        const response = await fetch(CSV_URL);
-        if (!response.ok) throw new Error("Nevar ielādēt datus");
-        const csvText = await response.text();
-        hotelData = parseTabularCSV(csvText);
-        buildCategoriesUI();
-        renderMapPoints();
-        setupEventListeners();
-    } catch (err) { console.error('Kļūda:', err); }
-}
-
 function renderMapPoints() {
     markersClusterGroup.clearLayers();
-    
-    // Iegūstam vērtības no HTML laukiem
-    const searchInput = document.getElementById('mapSearch');
-    const countryFilter = document.getElementById('countryFilter');
-    const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
-    const countryVal = countryFilter ? countryFilter.value : 'all';
-
-    const filtered = hotelData.filter(h => {
-        const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
-        const matchesScore = (h.score >= minScoreFilter);
-        // Filtrēšana pēc valsts/pilsētas un meklēšanas lauka
-        const matchesCountry = (countryVal === 'all' || h.city.toLowerCase().includes(countryVal.toLowerCase()));
-        const matchesSearch = (h.name.toLowerCase().includes(searchVal) || h.city.toLowerCase().includes(searchVal));
-        
-        return matchesCategory && matchesScore && matchesCountry && matchesSearch;
-    });
+    const filtered = hotelData.filter(h => 
+        (activeCategory === 'all' || h.category === activeCategory) && 
+        (h.score >= minScoreFilter)
+    );
 
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
-    // Šeit sākas markeru zīmēšana (tas, kas tev bija iepriekš)
     filtered.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
-        
-        const popupContent = `
-            <div class="luxury-popup-card" style="width: 320px;">
-                <div class="popup-img-container" style="height: 150px; overflow: hidden;">
-                    <img src="${loc.image}" alt="${loc.name}" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div class="popup-content-body" style="padding: 12px;">
-                    <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px;">${loc.name}</h2>
-                    <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px;">${loc.description}</p>
-                    <div class="popup-details-grid" style="display: grid; gap: 5px; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>Audit Score:</span>
-                            <span class="detail-val font-semibold">${loc.score} / 150</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>Guest Rating:</span>
-                            <span class="detail-val font-semibold">${loc.guestRating}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>Location:</span>
-                            <span class="detail-val">📍 ${loc.city}</span>
-                        </div>
-                    </div>
-                    <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn" style="display: block; margin-top: 12px; text-align: center; background: #333; color: white; padding: 8px; text-decoration: none; font-size: 12px;">Official Website</a>
-                    <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
-                        ${loc.id_code}
-                    </div>
-                </div>
-            </div>`;
-            
-        marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
+        const popupContent = `<div class="luxury-popup-card" style="width: 320px;">
+            <img src="${loc.image}" style="width: 100%; height: 150px; object-fit: cover;">
+            <div style="padding: 12px;">
+                <h2 style="font-size: 16px;">${loc.name}</h2>
+                <p style="font-size: 13px;">${loc.description}</p>
+                <p><b>Audit Score:</b> ${loc.score}/150</p>
+                <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" style="display: block; background: #333; color: white; padding: 8px; text-align: center; text-decoration: none;">Website</a>
+            </div>
+        </div>`;
+        marker.bindPopup(popupContent, { maxWidth: 320 });
         markersClusterGroup.addLayer(marker);
     });
 }
 
-// Atlikušās funkcijas paliek tādas pašas kā tev
-function buildCategoriesUI() {
-    const container = document.getElementById('categoryContainer');
-    if (!container) return;
-
-    container.innerHTML = `
-        <button data-category="all" class="category-btn active flex items-center justify-between w-full text-left px-3 py-2 text-xs tracking-wide transition-all">
-            <span>ALL PROPERTIES</span>
-        </button>
-    `;
-
-    const categories = [...new Set(hotelData.map(h => h.category))].sort();
-    
-    categories.forEach(cat => {
-        if(!cat || cat === 'all') return;
-        const btn = document.createElement('button');
-        btn.setAttribute('data-category', cat);
-        btn.className = "category-btn flex items-center justify-between w-full text-left px-3 py-2.5 text-xs tracking-wider transition-all";
-        btn.innerHTML = `<span>${cat}</span>`;
-        container.appendChild(btn);
-    });
-}
-
 function setupEventListeners() {
-    // 1. Kategoriju klikšķi
     const catContainer = document.getElementById('categoryContainer');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -190,8 +109,7 @@ function setupEventListeners() {
         });
     }
 
-    // 2. Līmeņu/Zvaigžņu filtru klikšķi (Amber Star Level)
-    const scoreContainer = document.getElementById('scoreFilterGroup'); // Pārliecinies, ka šis ID ir tavā HTML
+    const scoreContainer = document.getElementById('scoreFilterGroup');
     if (scoreContainer) {
         scoreContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('.score-btn');
@@ -203,27 +121,26 @@ function setupEventListeners() {
         });
     }
 
-    // 3. Reset poga
     const resetBtn = document.getElementById('resetFilters');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             activeCategory = 'all';
             minScoreFilter = 0;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="all"]').classList.add('active');
-            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.category-btn, .score-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-category="all"]')?.classList.add('active');
             renderMapPoints();
         });
     }
-    
-    // Pārējie filtri (ja tev tie ir)
-    const resetBtn = document.getElementById('resetFilters');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            activeCategory = 'all';
-            renderMapPoints();
-        });
-    }
+}
+
+async function startApp() {
+    try {
+        const response = await fetch(CSV_URL);
+        const csvText = await response.text();
+        hotelData = parseTabularCSV(csvText);
+        renderMapPoints();
+        setupEventListeners();
+    } catch (err) { console.error('Kļūda:', err); }
 }
 
 startApp();
