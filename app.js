@@ -12,7 +12,7 @@ const map = L.map('map', {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Atgriezta gaiši pelēkā karte pēc pieprasījuma
+// Premium gaišā karte
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
@@ -53,13 +53,18 @@ let activeCountry = 'all';
 let minScoreFilter = 0;
 let searchQuery = '';
 
-// Universāls parsētājs, kas saprot gan komatus, gan reģionālos semikolus (;) no Google Sheets
+// Gudrais parsētājs, kas detektē jebkuru atdalītāju (, ; vai Tab)
 function parseCSV(text) {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     if (lines.length === 0) return [];
     
-    const separator = lines[0].includes(';') ? ';' : ',';
-    const headers = lines[0].split(separator).map(h => h.trim().replace(/^"|"$/g, ''));
+    // Detektējam separatoru pirmajā rindā
+    const firstLine = lines[0];
+    let separator = ',';
+    if (firstLine.includes(';')) separator = ';';
+    else if (firstLine.includes('\t')) separator = '\t';
+    
+    const headers = firstLine.split(separator).map(h => h.trim().replace(/^"|"$/g, ''));
     
     return lines.slice(1).map(line => {
         const row = [];
@@ -94,7 +99,16 @@ async function startApp() {
         const parsed = parseCSV(csvText);
         
         hotelData = parsed.map(h => {
-            const rawScore = h['Audit Score'] || '0';
+            // Izvelkam tikai skaitli no "130 / 150" formāta vai parasta skaitļa
+            let rawScore = h['Audit Score'] || '0';
+            if (rawScore.includes('/')) {
+                rawScore = rawScore.split('/')[0].trim();
+            }
+            
+            // Pārliecināmies, ka koordinātās komati tiek aizvietoti ar punktiem
+            let latVal = (h['Latitude'] || '').toString().replace(',', '.');
+            let lngVal = (h['Longitude'] || '').toString().replace(',', '.');
+
             return {
                 name: h['Title'] || 'Unnamed Property',
                 description: h['Description'] || '',
@@ -105,8 +119,8 @@ async function startApp() {
                 category: (h['Category'] || 'HOTEL').trim().toUpperCase(),
                 website: h['Website'] || '#',
                 id_code: h['Accreditation'] || 'AS-PENDING',
-                lat: parseFloat(h['Latitude']),
-                lng: parseFloat(h['Longitude']),
+                lat: parseFloat(latVal),
+                lng: parseFloat(lngVal),
                 image: h['Image'] || "https://images.unsplash.com/photo-1566073771259-6a8506099945"
             };
         }).filter(h => !isNaN(h.lat) && !isNaN(h.lng));
@@ -122,10 +136,18 @@ async function startApp() {
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
+    
+    // Attīrām iepriekšējo saturu, atstājot tikai "ALL PROPERTIES" pamatpogu
+    container.innerHTML = `
+        <button data-category="all" class="category-btn active flex items-center justify-between w-full text-left px-3 py-2 text-xs tracking-wide transition-all">
+            <span>ALL PROPERTIES</span>
+        </button>
+    `;
+    
     const categories = [...new Set(hotelData.map(h => h.category))].sort();
     
     categories.forEach(cat => {
-        if(!cat) return;
+        if(!cat || cat === 'all') return;
         const btn = document.createElement('button');
         btn.setAttribute('data-category', cat);
         btn.className = "category-btn flex items-center justify-between w-full text-left px-3 py-2.5 text-xs tracking-wider transition-all";
@@ -148,7 +170,6 @@ function renderMapPoints() {
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
     filtered.forEach(loc => {
-        // Perfekti apaļi, minimālistiski zelta punkti uz kartes
         const markerIcon = L.divIcon({
             html: `<div class="premium-dot-marker"></div>`,
             className: 'custom-dot-wrapper',
@@ -157,7 +178,12 @@ function renderMapPoints() {
 
         const marker = L.marker([loc.lat, loc.lng], { icon: markerIcon });
 
-        // Kartītes uzbūve un secība pēc pieprasījuma
+        // Formatējam saiti drošībai (ja trūkst http)
+        let webUrl = loc.website;
+        if (webUrl !== '#' && !webUrl.startsWith('http://') && !webUrl.startsWith('https://')) {
+            webUrl = 'https://' + webUrl;
+        }
+
         const popupContent = `
             <div class="luxury-popup-card">
                 <div class="popup-img-container">
@@ -186,7 +212,7 @@ function renderMapPoints() {
                         </div>
                     </div>
                     
-                    <a href="${loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
+                    <a href="${webUrl}" target="_blank" class="popup-action-btn">Official Website</a>
                     
                     <div class="popup-footer-id">
                         <span>Accreditation No:</span> <strong>${loc.id_code}</strong>
