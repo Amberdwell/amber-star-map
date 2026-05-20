@@ -1,130 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Amber Star Map</title>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-#map {
-  width: 100vw;
-  height: 100vh;
-}
-
-/* PREMIUM POPUP STYLE */
-.leaflet-popup-content-wrapper {
-  border-radius: 16px;
-  padding: 6px;
-}
-
-.popup-card {
-  min-width: 220px;
-}
-
-.popup-title {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.popup-rating {
-  color: #d4af37;
-  font-weight: bold;
-}
-
-.popup-desc {
-  font-size: 12px;
-  opacity: 0.8;
-  margin-top: 4px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Amber Star Selection | The Baltics</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
+<body class="bg-[#0B0C10] text-[#E5E2DC] font-['Inter'] antialiased h-screen flex flex-col md:flex-row overflow-hidden">
 
-<body>
-
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-
-// =====================
-// 1. KARTE
-// =====================
-const map = L.map('map').setView([56.95, 24.10], 7);
-
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap'
-}).addTo(map);
-
-
-// =====================
-// 2. PREMIUM ICON
-// =====================
-const icon = L.divIcon({
-  className: "",
-  html: `<div style="
-    width:12px;
-    height:12px;
-    background:#d4af37;
-    border-radius:50%;
-    box-shadow:0 0 10px rgba(212,175,55,0.8);
-    border:2px solid white;"></div>`,
-  iconSize: [20,20],
-  iconAnchor: [10,10]
-});
-
-
-// =====================
-// 3. DATUBĀZE
-// =====================
-const locations = [
-  {
-    name: "Amber Star Hotel Riga",
-    coords: [56.9496, 24.1052],
-    rating: 148,
-    desc: "Flagship luxury property"
-  },
-  {
-    name: "Gauja Retreat",
-    coords: [57.1775, 25.2412],
-    rating: 139,
-    desc: "Nature boutique escape"
-  }
-];
-
-
-// =====================
-// 4. RENDER + PREMIUM POPUP
-// =====================
-locations.forEach(p => {
-
-  L.marker(p.coords, { icon })
-    .addTo(map)
-    .bindPopup(`
-      <div class="popup-card">
-        <div class="popup-title">${p.name}</div>
-
-        <div class="popup-rating">
-          ⭐ ${p.rating} / 150 Amber Index
+    <aside class="w-full md:w-[380px] bg-[#0F1115] border-b md:border-b-0 md:border-r border-[#1F232B] p-6 flex flex-col z-20 shadow-2xl overflow-y-auto shrink-0">
+        
+        <div class="mb-6 text-center md:text-left">
+            <div class="flex items-center justify-center md:justify-start gap-2 text-[#D4AF37]">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l2.4 7.4h7.8l-6.3 4.6 2.4 7.4-6.3-4.6-6.3 4.6 2.4-7.4-6.3-4.6h7.8z"/>
+                </svg>
+                <div class="tracking-[0.25em] uppercase font-light text-lg">
+                    <span class="block text-white font-medium tracking-[0.15em]">Amber Star</span>
+                    <span class="text-[10px] text-[#A39F99] block -mt-1">Selection</span>
+                </div>
+            </div>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-[#8C8275] mt-4 border-t border-[#1F232B] pt-3 font-medium">
+                Exceptional Stays (Top 3%)
+            </p>
         </div>
 
-        <div class="popup-desc">
-          ${p.desc}
+        <div class="relative mb-6">
+            <input type="text" id="mapSearch" placeholder="Search hotels, regions..." 
+                   class="w-full bg-[#161920] border border-[#2A303C] text-sm text-white px-4 py-3 rounded-none focus:outline-none focus:border-[#D4AF37] placeholder-[#6E7582] transition-colors">
         </div>
-      </div>
-    `);
 
-});
+        <div class="mb-6 flex-1">
+            <label class="block text-[11px] uppercase tracking-widest text-[#8C8275] font-semibold mb-3">Filter by Category</label>
+            <div id="categoryContainer" class="flex flex-col gap-1">
+                <button data-category="all" class="category-btn active flex items-center justify-between w-full text-left px-3 py-2.5 text-xs tracking-wide transition-all">
+                    <span class="flex items-center gap-2">✨ All Properties</span>
+                    <span id="totalCountBadge" class="bg-[#161920] text-[#A39F99] px-2 py-0.5 text-[10px] font-mono border border-[#2A303C]">0</span>
+                </button>
+            </div>
+        </div>
 
-</script>
+        <div class="mb-6 border-t border-[#1F232B] pt-4">
+            <label class="block text-[11px] uppercase tracking-widest text-[#8C8275] font-semibold mb-3">Amber Star Level</label>
+            <div class="flex flex-col gap-2" id="scoreFilterGroup">
+                <button data-min-score="140" class="score-btn flex items-center justify-between text-xs text-[#A39F99] hover:text-white py-1 transition-colors">
+                    <span class="text-[#D4AF37]">⭐⭐⭐⭐⭐ <span class="text-white ml-1">Elite (140+)</span></span>
+                </button>
+                <button data-min-score="130" class="score-btn flex items-center justify-between text-xs text-[#A39F99] hover:text-white py-1 transition-colors">
+                    <span class="text-[#D4AF37]">⭐⭐⭐⭐☆ <span class="text-white ml-1">Excellent (130+)</span></span>
+                </button>
+            </div>
+        </div>
 
+        <button id="resetFilters" class="w-full border border-[#2A303C] text-[#E5E2DC] text-xs uppercase tracking-widest py-3 hover:bg-white hover:text-black transition-all cursor-pointer font-medium mt-auto">
+            Reset Filters
+        </button>
+    </aside>
+
+    <main id="map" class="w-full h-[60vh] md:h-full z-10 bg-[#242426]"></main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
