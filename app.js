@@ -3,10 +3,10 @@ const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99O
 
 const map = L.map('map', {
     center: [55.50, 17.00],
-    zoom: 5,
+    zoom: 5.5,
     zoomControl: false,
     minZoom: 2,
-    maxZoom: 20
+    maxZoom: 21
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
