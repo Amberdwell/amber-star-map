@@ -23,7 +23,7 @@ function renderMapPoints() {
         let webUrl = loc.website;
         if (webUrl !== '#' && !webUrl.startsWith('http')) { webUrl = 'https://' + webUrl; }
 
-        // ŠEIT IR TAVS ORIĢINĀLAIS, SKAISTAIS DIZAINS
+        // Šeit ir viss saturs, kas tev pazuda
         const popupContent = `
             <div class="luxury-popup-card" style="width: 320px;">
                 <div class="popup-img-container" style="height: 150px; overflow: hidden;">
@@ -35,11 +35,11 @@ function renderMapPoints() {
                     <div class="popup-details-grid" style="display: grid; gap: 5px; margin-bottom: 10px;">
                         <div style="display: flex; justify-content: space-between;">
                             <span>Guest Rating:</span>
-                            <span class="detail-val font-semibold">${loc.guestRating}</span>
+                            <span class="detail-val font-semibold">${loc.guestRating || 'N/A'}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
                             <span>Location:</span>
-                            <span class="detail-val">📍 ${loc.city}</span>
+                            <span class="detail-val">📍 ${loc.city || 'Latvia'}</span>
                         </div>
                     </div>
                     <a href="${webUrl}" target="_blank" class="popup-action-btn" style="display: block; margin-top: 12px; text-align: center; background: #333; color: white; padding: 8px; text-decoration: none; font-size: 12px;">Official Website</a>
