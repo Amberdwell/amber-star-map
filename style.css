@@ -3,7 +3,7 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Augšējais zīmola paraksts - Playfair Display, centrēts, specifiskas krāsas */
+/* Augšējais zīmola paraksts - Playfair Display, centrēts un ar tavām krāsām */
 .brand-title-box {
     display: flex;
     flex-direction: column;
@@ -11,11 +11,12 @@ body {
     justify-content: center;
     gap: 4px;
     width: 100%;
+    text-align: center;
 }
 
 .brand-top-text {
     font-family: 'Playfair Display', serif;
-    font-size: 14px; /* Mazāki burti */
+    font-size: 13px;
     font-weight: 400;
     letter-spacing: 0.25em;
     color: #D4AF37; /* Zelta krāsa */
@@ -24,10 +25,10 @@ body {
 
 .brand-bottom-text {
     font-family: 'Playfair Display', serif;
-    font-size: 24px; /* Lielāki burti */
+    font-size: 26px;
     font-weight: 700;
     letter-spacing: 0.15em;
-    color: #fffff0; /* Ivora/Ziloņkaula baltā krāsa */
+    color: #fffff0; /* Tava norādītā krāsa SELECTION tekstam */
     text-transform: uppercase;
 }
 
@@ -59,7 +60,7 @@ body {
     width: 14px;
     height: 14px;
     background: #D4AF37;
-    border: 2px solid #0F1115;
+    border: 2px solid #ffffff;
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     transition: transform 0.2s ease, background-color 0.2s;
@@ -91,7 +92,7 @@ body {
     background: rgba(15, 17, 21, 0.98) !important;
     backdrop-filter: blur(10px);
     color: #E5E2DC !important;
-    border: 1px solid #D4AF37 !important; /* Plānā zelta maliņa */
+    border: 1px solid #D4AF37 !important;
     border-radius: 0px !important;
     padding: 0 !important;
     overflow: hidden;
