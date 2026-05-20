@@ -1,15 +1,38 @@
-/* Globālie fonti un uzstādījumi */
+/* Globālie iestatījumi */
 body {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Kategoriju pogu dizains - bez ikonām, lasāmā fontā */
+/* Augšējais zīmola paraksts */
+.brand-title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brand-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #D4AF37;
+}
+
+.brand-sub {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    color: #A39F99;
+}
+
+/* Kategoriju izskats - tīrs Montserrat bez ikonām */
 .category-btn {
     color: #A39F99;
     font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.05em;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     border-left: 2px solid transparent;
 }
 
@@ -20,60 +43,59 @@ body {
     padding-left: 16px;
 }
 
-/* Score pogas aktīvais stāvoklis */
 .score-btn.active {
     border-color: #D4AF37 !important;
-    background: rgba(212, 175, 55, 0.05) !important;
+    background: rgba(212, 175, 55, 0.04) !important;
     color: #fff !important;
 }
 
-/* Klasteru stils uz kartes */
+/* Minimālistisks apaļš marķieris uz kartes */
+.premium-dot-marker {
+    width: 14px;
+    height: 14px;
+    background: #D4AF37;
+    border: 2px solid #0F1115;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, background-color 0.2s;
+}
+
+.premium-dot-marker:hover {
+    transform: scale(1.3);
+    background: #ffffff;
+    border-color: #D4AF37;
+}
+
+/* Klasteru dizains gaišajai kartei */
 .custom-cluster {
     background: #0F1115;
     border: 1px solid #D4AF37;
     color: #D4AF37;
     border-radius: 50%;
     text-align: center;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 2px 10px rgba(212, 175, 55, 0.15);
 }
 
-/* Zelta marķiera rāmītis kartē */
-.map-gold-star {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0F1115;
-    border: 1px solid #D4AF37;
-    padding: 6px;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: transform 0.2s ease;
-}
-
-.map-gold-star:hover {
-    transform: scale(1.2);
-    border-color: #ffffff;
-}
-
-/* POPUP KARTĪTES PRESTIDŽA STILIZĀCIJA (Bez fona, plāns zelta rāmis) */
+/* UZNIRSTOŠĀS KARTĪTES DIZAINS (Smalks zelta rāmis, gaišs saturs) */
 .leaflet-popup-content-wrapper {
-    background: rgba(15, 17, 21, 0.95) !important;
-    backdrop-filter: blur(8px);
+    background: rgba(15, 17, 21, 0.98) !important;
+    backdrop-filter: blur(10px);
     color: #E5E2DC !important;
-    border: 1px solid #D4AF37 !important; /* Smalka zelta maliņa */
+    border: 1px solid #D4AF37 !important; /* Plānā zelta maliņa */
     border-radius: 0px !important;
     padding: 0 !important;
     overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important;
 }
 
 .leaflet-popup-content {
     margin: 0 !important;
-    width: 340px !important;
+    width: 320px !important;
 }
 
 .leaflet-popup-tip {
@@ -81,151 +103,118 @@ body {
     border: 1px solid #D4AF37;
 }
 
-/* Kartītes iekšējā struktūra */
-.premium-card {
-    width: 100%;
-    display: flex;
-    flex-col: column;
+.leaflet-container a.leaflet-popup-close-button {
+    color: #ffffff !important;
+    padding: 10px !important;
 }
 
-.card-image-box {
-    height: 180px;
+/* Kartītes struktūra un sakārtojums */
+.luxury-popup-card {
     width: 100%;
-    position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-img-container {
+    height: 150px;
+    width: 100%;
     background: #161920;
 }
 
-.card-image-box img {
+.popup-img-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* Īsts, elegants zelta Ribbon stūrī */
-.luxury-ribbon {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: linear-gradient(135deg, #D4AF37, #AA7C11);
-    color: #0F1115;
-    padding: 6px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.1;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
-
-.ribbon-brand {
-    font-size: 8px;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-}
-
-.ribbon-star {
-    font-size: 9px;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-/* Kartītes teksta bloks */
-.card-body {
+.popup-content-body {
     padding: 20px;
 }
 
-.card-accreditation {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 9px;
-    font-weight: 500;
-    color: #D4AF37;
-    letter-spacing: 0.15em;
-    margin-bottom: 4px;
-}
-
-.card-title {
+/* 1. Nosaukums augšā, lielāks un Boldā */
+.popup-main-title {
     font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
     color: #ffffff;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
 }
 
-.card-location {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    color: #A39F99;
-    margin-bottom: 16px;
-}
-
-/* Metriku rinda */
-.card-metrics {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid #2A303C;
-    border-bottom: 1px solid #2A303C;
-    padding: 10px 0;
-    margin-bottom: 16px;
-}
-
-.metric-score {
-    display: flex;
-    flex-direction: column;
-}
-
-.stars-gold {
-    font-size: 10px;
-    margin-bottom: 2px;
-}
-
-.score-value {
+/* 2. Apraksts uzreiz zem nosaukuma */
+.popup-description {
     font-size: 12px;
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.metric-guest {
-    font-size: 11px;
-    color: #A39F99;
-}
-
-.guest-value {
-    color: #ffffff;
-    font-weight: 600;
-}
-
-/* Apraksts un poga */
-.card-desc {
-    font-size: 12px;
-    color: #A39F99;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    color: #C4C1BC;
+    line-height: 1.5;
+    margin-bottom: 16px;
     font-weight: 300;
 }
 
-.card-btn {
+/* Datu saraksts */
+.popup-details-grid {
+    border-top: 1px solid #2A303C;
+    padding-top: 12px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.detail-lbl {
+    color: #A39F99;
+}
+
+.detail-val {
+    color: #ffffff;
+}
+
+.stars-row {
+    font-size: 10px;
+}
+
+/* 3. Smuka Oficiālās mājaslapas poga ar plānu līniju */
+.popup-action-btn {
     display: block;
     text-align: center;
-    background: #D4AF37;
-    color: #0F1115;
+    background: transparent;
+    color: #D4AF37;
+    border: 1px solid #D4AF37;
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 12px;
-    font-weight: 500;
-    transition: background 0.2s;
+    key-spacing: 0.12em;
+    padding: 11px;
+    font-weight: 600;
+    transition: all 0.2s;
     text-decoration: none;
+    margin-bottom: 12px;
 }
 
-.card-btn:hover {
-    background: #ffffff;
+.popup-action-btn:hover {
+    background: #D4AF37;
+    color: #0F1115;
 }
 
-/* Pārlūka ritjoslas paslēpšana modernam skatam */
+/* 4. Akreditācijas numurs pašā apakšā */
+.popup-footer-id {
+    font-size: 9px;
+    color: #62605C;
+    text-align: center;
+    border-top: 1px solid #2A303C;
+    padding-top: 8px;
+    letter-spacing: 0.05em;
+}
+
+.popup-footer-id strong {
+    color: #A39F99;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
 }
