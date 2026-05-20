@@ -1,7 +1,8 @@
+// ŠEIT IEKOPĒ SAVU JAUNO .CSV SAITI NO AMBER STAR HOTELS TABULAS
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
 const map = L.map('map', {
-    center: [57.0000, 24.5000],
+    center: [56.9462, 24.1059], // Centrs ap Rīgu/Latviju
     zoom: 7,
     zoomControl: false,
     minZoom: 6,
@@ -10,26 +11,10 @@ const map = L.map('map', {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Gaišā premium karte
+// Premium gaišā karte
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
-
-// Valstu robežu līnija
-fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
-    .then(res => res.json())
-    .then(geoData => {
-        const baltics = geoData.features.filter(f => ['LVA', 'LTU', 'EST'].includes(f.properties.ISO_A3));
-        L.geoJSON(baltics, {
-            style: { 
-                color: '#B38F2D', 
-                weight: 1.5, 
-                fillColor: '#000000', 
-                fillOpacity: 0.01, 
-                dashArray: '3, 4' 
-            }
-        }).addTo(map);
-    });
 
 const markersClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
@@ -51,35 +36,59 @@ let activeCountry = 'all';
 let minScoreFilter = 0;
 let searchQuery = '';
 
-// Universāls parsētājs, kas izloba datus pat ja Google Sheets tos atdod dīvainā formātā
-function parseFlexibleCSV(text) {
-    const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+// Universāls parsētājs, kas sadala rindas neatkarīgi no tā, vai tur ir komats vai Tab atstarpe
+function parseTabularCSV(text) {
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
     if (lines.length <= 1) return [];
-    
-    // Automātiska separatora noteikšana (Komats, Semikols vai Tabulācija)
+
+    // Nosakām, kurš atdalītājs tiek izmantots visvairāk pirmajā rindā
     let sep = ',';
-    if (lines[0].includes(';')) sep = ';';
-    else if (lines[0].includes('\t')) sep = '\t';
+    if (lines[0].split('\t').length > lines[0].split(',').length) sep = '\t';
+    else if (lines[0].split(';').length > lines[0].split(',').length) sep = ';';
+
+    const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/[^a-z0-9]/g, ''));
     
+    // Dinamiski atrodam kolonnu vietas pēc nosaukumiem
+    const idxId = headers.findIndex(h => h.includes('accreditation'));
+    const idxName = headers.findIndex(h => h.includes('title') || h.includes('property') || h.includes('name'));
+    const idxLocation = headers.findIndex(h => h.includes('city') || h.includes('location'));
+    const idxScore = headers.findIndex(h => h.includes('audit'));
+    const idxRating = headers.findIndex(h => h.includes('guest'));
+    const idxPlatform = headers.findIndex(h => h.includes('website') || h.includes('platform'));
+    const idxCategory = headers.findIndex(h => h.includes('category'));
+    const idxLat = headers.findIndex(h => h.includes('lat'));
+    const idxLng = headers.findIndex(h => h.includes('long') || h === 'lng');
+    const idxDesc = headers.findIndex(h => h.includes('desc'));
+
     return lines.slice(1).map(line => {
-        const row = [];
-        let insideQuote = false;
-        let currentField = '';
+        const row = line.split(sep).map(item => item.trim().replace(/^"|"$/g, ''));
+        if (row.length < 3) return null;
+
+        let latStr = idxLat !== -1 ? (row[idxLat] || '') : '';
+        let lngStr = idxLng !== -1 ? (row[idxLng] || '') : '';
         
-        for (let i = 0; i < line.length; i++) {
-            let char = line[i];
-            if (char === '"') {
-                insideQuote = !insideQuote;
-            } else if (char === sep && !insideQuote) {
-                row.push(currentField.trim().replace(/^"|"$/g, ''));
-                currentField = '';
-            } else {
-                currentField += char;
-            }
-        }
-        row.push(currentField.trim().replace(/^"|"$/g, ''));
-        return row;
-    });
+        // Pārvēršam komatus punktos, ja tādi gadījušies koordinātās
+        latStr = latStr.replace(',', '.');
+        lngStr = lngStr.replace(',', '.');
+
+        let scoreRaw = idxScore !== -1 ? (row[idxScore] || '0').split('/')[0].trim() : '0';
+        let scoreNum = parseInt(scoreRaw, 10) || 0;
+
+        return {
+            name: idxName !== -1 ? row[idxName] : 'Unnamed Property',
+            description: idxDesc !== -1 ? (row[idxDesc] || 'Amber Star approved luxury property.') : 'Amber Star approved luxury property.',
+            score: scoreNum,
+            guestRating: idxRating !== -1 ? (row[idxRating] || 'N/A') : 'N/A',
+            country: 'Latvia',
+            city: idxLocation !== -1 ? row[idxLocation] : '',
+            category: idxCategory !== -1 ? (row[idxCategory] || 'HOTEL').toUpperCase() : 'HOTEL',
+            website: idxPlatform !== -1 ? (row[idxPlatform] || '#') : '#',
+            id_code: idxId !== -1 ? row[idxId] : 'AS-PENDING',
+            lat: parseFloat(latStr),
+            lng: parseFloat(lngStr),
+            image: "https://images.unsplash.com/photo-1566073771259-6a8506099945"
+        };
+    }).filter(h => h !== null && !isNaN(h.lat) && !isNaN(h.lng));
 }
 
 async function startApp() {
@@ -88,41 +97,14 @@ async function startApp() {
         if (!response.ok) throw new Error("Nevar ielādēt datus");
         
         const csvText = await response.text();
-        const rawRows = parseFlexibleCSV(csvText);
-
-        hotelData = rawRows.map(row => {
-            if (row.length < 11) return null;
-
-            // Izvelkam Audit Score skaitli (piem. no "130 / 150" dabūjam 130)
-            let scoreRaw = (row[2] || '0').split('/')[0].trim();
-            let scoreNum = parseInt(scoreRaw, 10) || 0;
-
-            // Sakārtojam koordinātas drošam formātam
-            let latStr = (row[10] || '').toString().replace(',', '.').trim();
-            let lngStr = (row[11] || '').toString().replace(',', '.').trim();
-
-            return {
-                name: row[0] || 'Unnamed Property',
-                description: row[1] || '',
-                score: scoreNum,
-                guestRating: row[3] || 'N/A',
-                country: (row[4] || 'LATVIA').trim(),
-                city: row[5] || '',
-                category: (row[6] || 'HOTEL').trim().toUpperCase(),
-                website: row[7] || '#',
-                id_code: row[8] || 'AS-PENDING',
-                lat: parseFloat(latStr),
-                lng: parseFloat(lngStr),
-                image: row[9] || "https://images.unsplash.com/photo-1566073771259-6a8506099945"
-            };
-        }).filter(h => h !== null && !isNaN(h.lat) && !isNaN(h.lng));
+        hotelData = parseTabularCSV(csvText);
 
         buildCategoriesUI();
         renderMapPoints();
         setupEventListeners();
 
     } catch (err) {
-        console.error('Kļūda ielādējot datus:', err);
+        console.error('Kļūda aplikācijas darbībā:', err);
     }
 }
 
@@ -190,7 +172,7 @@ function renderMapPoints() {
                         </div>
                         <div class="detail-row">
                             <span class="detail-lbl">Location:</span>
-                            <span class="detail-val">📍 ${loc.city}, ${loc.country.toUpperCase()}</span>
+                            <span class="detail-val">📍 ${loc.city}</span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-lbl">Category:</span>
@@ -248,7 +230,7 @@ function setupEventListeners() {
         document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
         document.querySelector('[data-min-score="0"]').classList.add('active');
         renderMapPoints();
-        map.setView([57.0000, 24.5000], 7);
+        map.setView([56.9462, 24.1059], 7);
     });
 }
 
