@@ -168,6 +168,7 @@ function buildCategoriesUI() {
 }
 
 function setupEventListeners() {
+    // 1. Kategoriju klikšķi
     const catContainer = document.getElementById('categoryContainer');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -179,6 +180,33 @@ function setupEventListeners() {
             renderMapPoints();
         });
     }
+
+    // 2. Līmeņu/Zvaigžņu filtru klikšķi (Amber Star Level)
+    const scoreContainer = document.getElementById('scoreFilterGroup'); // Pārliecinies, ka šis ID ir tavā HTML
+    if (scoreContainer) {
+        scoreContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.score-btn');
+            if (!btn) return;
+            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            minScoreFilter = parseInt(btn.getAttribute('data-min-score'), 10) || 0;
+            renderMapPoints();
+        });
+    }
+
+    // 3. Reset poga
+    const resetBtn = document.getElementById('resetFilters');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            activeCategory = 'all';
+            minScoreFilter = 0;
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-category="all"]').classList.add('active');
+            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+            renderMapPoints();
+        });
+    }
+}
     
     // Pārējie filtri (ja tev tie ir)
     const resetBtn = document.getElementById('resetFilters');
