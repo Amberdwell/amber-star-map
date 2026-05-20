@@ -1,6 +1,6 @@
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
-// Inicializējam karti Baltijas reģionam
+// Inicializējam karti ar gaiši pelēko slāni (Atgriezts atpakaļ pēc pieprasījuma)
 const map = L.map('map', {
     center: [57.0000, 24.5000],
     zoom: 7,
@@ -13,23 +13,23 @@ const map = L.map('map', {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Premium tumšais kartes slānis
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+// Gaiši pelēkais premium pamatslānis
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
 
-// Izteiktas ZELTA robežas valstīm (Salabots)
+// Izteiktas un skaidri redzamas tumša zelta robežas valstīm
 fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
     .then(res => res.json())
     .then(geoData => {
         const baltics = geoData.features.filter(f => ['LVA', 'LTU', 'EST'].includes(f.properties.ISO_A3));
         L.geoJSON(baltics, {
             style: { 
-                color: '#D4AF37', 
+                color: '#B38F2D', 
                 weight: 2, 
-                fillColor: '#161920', 
-                fillOpacity: 0.08, 
-                dashArray: '4, 4' 
+                fillColor: '#000000', 
+                fillOpacity: 0.02, 
+                dashArray: '3, 4' 
             }
         }).addTo(map);
     });
@@ -43,25 +43,22 @@ const markersClusterGroup = L.markerClusterGroup({
         return L.divIcon({
             html: `<span>${cluster.getChildCount()}</span>`,
             className: 'custom-cluster',
-            iconSize: L.point(40, 40)
+            iconSize: L.point(36, 36)
         });
     }
 });
 map.addLayer(markersClusterGroup);
 
-// Globālie filtru mainīgie
 let hotelData = [];
 let activeCategory = 'all';
 let activeCountry = 'all';
 let minScoreFilter = 0;
 let searchQuery = '';
 
-// GUDRAIS CSV PARSĒTĀJS - precīzi sadala kolonnas, ignorējot pēdiņas tekstā
+// GUDRAIS CSV PARSĒTĀJS
 function parseCSV(text) {
     const lines = text.split('\n');
     if (lines.length === 0) return [];
-    
-    // Notīrām kolonnu galvenes no neredzamiem simboliem
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
     
     return lines.slice(1).filter(line => line.trim()).map(line => {
@@ -82,7 +79,6 @@ function parseCSV(text) {
         }
         row.push(currentField.trim().replace(/^"|"$/g, ''));
         
-        // Izveidojam objektu katrai rindai
         return headers.reduce((obj, header, index) => {
             obj[header] = row[index] || '';
             return obj;
@@ -93,22 +89,20 @@ function parseCSV(text) {
 async function startApp() {
     try {
         const response = await fetch(CSV_URL);
-        if (!response.ok) throw new Error("Neizdevās lejupielādēt CSV");
+        if (!response.ok) throw new Error();
         const csvText = await response.text();
-        
         const parsed = parseCSV(csvText);
         
-        // Kartējam datus tieši pēc taviem nosaukumiem tabulā
         hotelData = parsed.map(h => {
             const rawScore = h['Audit Score'] || h['Score'] || '0';
             return {
-                name: h['Title'] || h['Hotel Name'] || h['Name'] || 'No Name',
+                name: h['Title'] || h['Hotel Name'] || h['Name'] || 'Unnamed Property',
                 description: h['Description'] || '',
                 score: parseInt(rawScore, 10) || 0,
                 guestRating: h['Guest Rating'] || h['Rating'] || 'N/A',
                 country: h['Country'] || 'Latvia',
                 city: h['City'] || '',
-                category: h['Category'] || 'General',
+                category: h['Category'] || 'HOTEL',
                 website: h['Website'] || '#',
                 id_code: h['Accreditation'] || h['ID'] || 'AS-PENDING',
                 lat: parseFloat(h['Latitude']),
@@ -122,19 +116,19 @@ async function startApp() {
         setupEventListeners();
 
     } catch (err) {
-        console.error('Kļūda datu ielādē:', err);
+        console.error('Data sync failed:', err);
     }
 }
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
-    const categories = [...new Set(hotelData.map(h => h.category))].sort();
+    const categories = [...new Set(hotelData.map(h => h.category.toUpperCase()))].sort();
     
     categories.forEach(cat => {
         if(!cat) return;
         const btn = document.createElement('button');
         btn.setAttribute('data-category', cat);
-        btn.className = "category-btn flex items-center justify-between w-full text-left px-3 py-2 text-xs tracking-wide transition-all";
+        btn.className = "category-btn flex items-center justify-between w-full text-left px-3 py-2.5 text-xs tracking-wider transition-all";
         btn.innerHTML = `<span>${cat}</span>`;
         container.appendChild(btn);
     });
@@ -144,70 +138,69 @@ function renderMapPoints() {
     markersClusterGroup.clearLayers();
 
     const filtered = hotelData.filter(h => {
-        const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
+        const matchesCategory = (activeCategory === 'all' || h.category.toUpperCase() === activeCategory.toUpperCase());
         const matchesCountry = (activeCountry === 'all' || h.country.toLowerCase() === activeCountry.toLowerCase());
         const matchesScore = (h.score >= minScoreFilter);
         const matchesSearch = h.name.toLowerCase().includes(searchQuery) || h.city.toLowerCase().includes(searchQuery);
         return matchesCategory && matchesCountry && matchesScore && matchesSearch;
     });
 
-    // Atjaunojam kopējo skaitu apakšā ar tavu tekstu
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
     filtered.forEach(loc => {
-        // LIELĀKA ZELTA IKONA UZ KARTES (Tavs ieteikums)
+        // APAĻAS PREMIUM ZELTA IKONAS (Minimālistiski apļi bez zvaigznēm)
         const markerIcon = L.divIcon({
-            html: `
-                <div class="map-gold-star">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#D4AF37">
-                        <path d="M12 2l2.4 7.4h7.8l-6.3 4.6 2.4 7.4-6.3-4.6-6.3 4.6 2.4-7.4-6.3-4.6h7.8z"/>
-                    </svg>
-                </div>
-            `,
-            className: 'custom-marker-wrapper',
-            iconSize: [26, 26]
+            html: `<div class="premium-dot-marker"></div>`,
+            className: 'custom-dot-wrapper',
+            iconSize: [16, 16]
         });
 
         const marker = L.marker([loc.lat, loc.lng], { icon: markerIcon });
 
-        // LUKSUSA KARTĪTE: Bez fona, plāna zelta maliņa, īsts zelta Ribbon stūrī
+        // PRECIZĒTĀ KARTĪTE: Secība pēc pieprasījuma, bez smagiem foniem
         const popupContent = `
-            <div class="premium-card">
-                <div class="card-image-box">
+            <div class="luxury-popup-card">
+                <div class="popup-img-container">
                     <img src="${loc.image}" alt="${loc.name}">
-                    <div class="luxury-ribbon">
-                        <span class="ribbon-brand">Amber</span>
-                        <span class="ribbon-star">Star</span>
-                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="card-accreditation">${loc.id_code}</div>
-                    <h3 class="card-title">${loc.name}</h3>
-                    <div class="card-location">📍 ${loc.city}, ${loc.country.toUpperCase()}</div>
+                <div class="popup-content-body">
+                    <h2 class="popup-main-title">${loc.name}</h2>
+                    <p class="popup-description">${loc.description}</p>
                     
-                    <div class="card-metrics">
-                        <div class="metric-score">
-                            <span class="stars-gold">⭐⭐⭐⭐⭐</span>
-                            <span class="score-value">${loc.score} / 150</span>
+                    <div class="popup-details-grid">
+                        <div class="detail-row">
+                            <span class="stars-row">⭐⭐⭐⭐⭐</span>
+                            <span class="detail-val font-semibold">${loc.score} / 150</span>
                         </div>
-                        <div class="metric-guest">
-                            Guest Rating: <span class="guest-value">${loc.guestRating}</span>
+                        <div class="detail-row">
+                            <span class="detail-lbl">Guest Rating:</span>
+                            <span class="detail-val font-semibold">${loc.guestRating}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-lbl">Location:</span>
+                            <span class="detail-val">📍 ${loc.city}, ${loc.country.toUpperCase()}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-lbl">Category:</span>
+                            <span class="detail-val uppercase tracking-wider text-[10px] text-[#D4AF37] font-semibold">${loc.category}</span>
                         </div>
                     </div>
                     
-                    <p class="card-desc">${loc.description}</p>
-                    <a href="${loc.website}" target="_blank" class="card-btn">View Property Website ↗</a>
+                    <a href="${loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
+                    
+                    <div class="popup-footer-id">
+                        <span>Accreditation No:</span> <strong>${loc.id_code}</strong>
+                    </div>
                 </div>
             </div>
         `;
 
-        marker.bindPopup(popupContent, { maxWidth: 340, minWidth: 340 });
+        marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
         markersClusterGroup.addLayer(marker);
     });
 }
 
 function setupEventListeners() {
-    // Sānu joslas kategorijas
     document.getElementById('categoryContainer').addEventListener('click', (e) => {
         const btn = e.target.closest('.category-btn');
         if (!btn) return;
@@ -217,13 +210,11 @@ function setupEventListeners() {
         renderMapPoints();
     });
 
-    // Valstu filtrs (All Countries)
     document.getElementById('countryFilter').addEventListener('change', (e) => {
         activeCountry = e.target.value;
         renderMapPoints();
     });
 
-    // Vērtējuma līmeņu filtri (130+, 140+)
     document.getElementById('scoreFilterGroup').addEventListener('click', (e) => {
         const btn = e.target.closest('.score-btn');
         if (!btn) return;
@@ -233,13 +224,11 @@ function setupEventListeners() {
         renderMapPoints();
     });
 
-    // Meklētājs
     document.getElementById('mapSearch').addEventListener('input', (e) => {
         searchQuery = e.target.value.toLowerCase();
         renderMapPoints();
     });
 
-    // Filtru atiestatīšana
     document.getElementById('resetFilters').addEventListener('click', () => {
         activeCategory = 'all'; activeCountry = 'all'; minScoreFilter = 0; searchQuery = '';
         document.getElementById('mapSearch').value = '';
