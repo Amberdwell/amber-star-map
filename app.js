@@ -2,8 +2,8 @@
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
 const map = L.map('map', {
-    center: [57.00, 24.00], // Centrs ap Rīgu/Latviju
-    zoom: 6,
+    center: [56.50, 18.00], // Centrs ap Rīgu/Latviju
+    zoom: 5,
     zoomControl: false,
     minZoom: 2,
     maxZoom: 20
