@@ -15,12 +15,43 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        .brand-title-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 100%; text-align: center; }
+        .brand-top-text { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 400; letter-spacing: 0.25em; color: #D4AF37; text-transform: uppercase; }
+        .brand-bottom-text { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 0.15em; color: #fffff0; text-transform: uppercase; }
+        .category-btn { color: #A39F99; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; border-left: 2px solid transparent; }
+        .category-btn:hover, .category-btn.active { color: #D4AF37; background: rgba(212, 175, 55, 0.03); border-left-color: #D4AF37; padding-left: 16px; }
+        .score-btn.active { border-color: #D4AF37 !important; background: rgba(212, 175, 55, 0.04) !important; color: #fff !important; }
+        .premium-dot-marker { width: 14px; height: 14px; background: #D4AF37; border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: transform 0.2s ease; }
+        .premium-dot-marker:hover { transform: scale(1.3); background: #ffffff; border-color: #D4AF37; }
+        .custom-cluster { background: #0F1115; border: 1px solid #D4AF37; color: #D4AF37; border-radius: 50%; text-align: center; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(212, 175, 55, 0.15); }
+        .leaflet-popup-content-wrapper { background: rgba(15, 17, 21, 0.98) !important; backdrop-filter: blur(10px); color: #E5E2DC !important; border: 1px solid #D4AF37 !important; border-radius: 0px !important; padding: 0 !important; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important; }
+        .leaflet-popup-content { margin: 0 !important; width: 320px !important; }
+        .leaflet-popup-tip { background: #0F1115 !important; border: 1px solid #D4AF37; }
+        .leaflet-container a.leaflet-popup-close-button { color: #ffffff !important; padding: 10px !important; }
+        .luxury-popup-card { width: 100%; display: flex; flex-direction: column; }
+        .popup-img-container { height: 150px; width: 100%; background: #161920; }
+        .popup-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .popup-content-body { padding: 20px; }
+        .popup-main-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #ffffff; line-height: 1.2; margin-bottom: 10px; }
+        .popup-description { font-size: 12px; color: #C4C1BC; line-height: 1.5; margin-bottom: 16px; font-weight: 300; }
+        .popup-details-grid { border-top: 1px solid #2A303C; padding-top: 12px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 6px; }
+        .detail-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .detail-lbl { color: #A39F99; }
+        .detail-val { color: #ffffff; }
+        .stars-row { font-size: 10px; }
+        .popup-action-btn { display: block; text-align: center; background: transparent; color: #D4AF37; border: 1px solid #D4AF37; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; padding: 11px; font-weight: 600; transition: all 0.2s; text-decoration: none; margin-bottom: 12px; }
+        .popup-action-btn:hover { background: #D4AF37; color: #0F1115; }
+        .popup-footer-id { font-size: 9px; color: #62605C; text-align: center; border-top: 1px solid #2A303C; padding-top: 8px; letter-spacing: 0.05em; }
+        .popup-footer-id strong { color: #A39F99; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #2A303C; }
+    </style>
 </head>
 <body class="h-full flex flex-col md:flex-row m-0 overflow-hidden text-[#E5E2DC] antialiased font-['Montserrat']">
 
     <aside class="w-full md:w-80 bg-[#0F1115] border-b md:border-b-0 md:border-r border-[#2A303C] flex flex-col z-[1000] shrink-0 h-[45vh] md:h-full shadow-2xl relative">
-        
         <div class="p-6 border-b border-[#2A303C] bg-[#161920] flex flex-col items-center text-center select-none">
             <div class="brand-title-box">
                 <span class="brand-top-text">THE AMBER STAR</span>
