@@ -5,19 +5,17 @@ const map = L.map('map', {
     zoom: 7,
     zoomControl: false,
     minZoom: 6,
-    maxZoom: 14,
-    touchZoom: 'center',
-    doubleClickZoom: true
+    maxZoom: 14
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Premium gaišā karte
+// Gaišā premium karte
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
 
-// Valstu robežas
+// Valstu robežu līnija
 fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
     .then(res => res.json())
     .then(geoData => {
@@ -25,9 +23,9 @@ fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/coun
         L.geoJSON(baltics, {
             style: { 
                 color: '#B38F2D', 
-                weight: 2, 
+                weight: 1.5, 
                 fillColor: '#000000', 
-                fillOpacity: 0.02, 
+                fillOpacity: 0.01, 
                 dashArray: '3, 4' 
             }
         }).addTo(map);
@@ -35,7 +33,7 @@ fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/coun
 
 const markersClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
-    maxClusterRadius: 40,
+    maxClusterRadius: 35,
     showCoverageOnHover: false,
     iconCreateFunction: function (cluster) {
         return L.divIcon({
@@ -53,18 +51,15 @@ let activeCountry = 'all';
 let minScoreFilter = 0;
 let searchQuery = '';
 
-// Gudrais parsētājs, kas detektē jebkuru atdalītāju (, ; vai Tab)
-function parseCSV(text) {
+// Universāls parsētājs, kas izloba datus pat ja Google Sheets tos atdod dīvainā formātā
+function parseFlexibleCSV(text) {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-    if (lines.length === 0) return [];
+    if (lines.length <= 1) return [];
     
-    // Detektējam separatoru pirmajā rindā
-    const firstLine = lines[0];
-    let separator = ',';
-    if (firstLine.includes(';')) separator = ';';
-    else if (firstLine.includes('\t')) separator = '\t';
-    
-    const headers = firstLine.split(separator).map(h => h.trim().replace(/^"|"$/g, ''));
+    // Automātiska separatora noteikšana (Komats, Semikols vai Tabulācija)
+    let sep = ',';
+    if (lines[0].includes(';')) sep = ';';
+    else if (lines[0].includes('\t')) sep = '\t';
     
     return lines.slice(1).map(line => {
         const row = [];
@@ -75,7 +70,7 @@ function parseCSV(text) {
             let char = line[i];
             if (char === '"') {
                 insideQuote = !insideQuote;
-            } else if (char === separator && !insideQuote) {
+            } else if (char === sep && !insideQuote) {
                 row.push(currentField.trim().replace(/^"|"$/g, ''));
                 currentField = '';
             } else {
@@ -83,69 +78,62 @@ function parseCSV(text) {
             }
         }
         row.push(currentField.trim().replace(/^"|"$/g, ''));
-        
-        return headers.reduce((obj, header, index) => {
-            obj[header] = row[index] || '';
-            return obj;
-        }, {});
+        return row;
     });
 }
 
 async function startApp() {
     try {
         const response = await fetch(CSV_URL);
-        if (!response.ok) throw new Error();
-        const csvText = await response.text();
-        const parsed = parseCSV(csvText);
+        if (!response.ok) throw new Error("Nevar ielādēt datus");
         
-        hotelData = parsed.map(h => {
-            // Izvelkam tikai skaitli no "130 / 150" formāta vai parasta skaitļa
-            let rawScore = h['Audit Score'] || '0';
-            if (rawScore.includes('/')) {
-                rawScore = rawScore.split('/')[0].trim();
-            }
-            
-            // Pārliecināmies, ka koordinātās komati tiek aizvietoti ar punktiem
-            let latVal = (h['Latitude'] || '').toString().replace(',', '.');
-            let lngVal = (h['Longitude'] || '').toString().replace(',', '.');
+        const csvText = await response.text();
+        const rawRows = parseFlexibleCSV(csvText);
+
+        hotelData = rawRows.map(row => {
+            if (row.length < 11) return null;
+
+            // Izvelkam Audit Score skaitli (piem. no "130 / 150" dabūjam 130)
+            let scoreRaw = (row[2] || '0').split('/')[0].trim();
+            let scoreNum = parseInt(scoreRaw, 10) || 0;
+
+            // Sakārtojam koordinātas drošam formātam
+            let latStr = (row[10] || '').toString().replace(',', '.').trim();
+            let lngStr = (row[11] || '').toString().replace(',', '.').trim();
 
             return {
-                name: h['Title'] || 'Unnamed Property',
-                description: h['Description'] || '',
-                score: parseInt(rawScore, 10) || 0,
-                guestRating: h['Guest Rating'] || 'N/A',
-                country: h['Country'] || 'Latvia',
-                city: h['City'] || '',
-                category: (h['Category'] || 'HOTEL').trim().toUpperCase(),
-                website: h['Website'] || '#',
-                id_code: h['Accreditation'] || 'AS-PENDING',
-                lat: parseFloat(latVal),
-                lng: parseFloat(lngVal),
-                image: h['Image'] || "https://images.unsplash.com/photo-1566073771259-6a8506099945"
+                name: row[0] || 'Unnamed Property',
+                description: row[1] || '',
+                score: scoreNum,
+                guestRating: row[3] || 'N/A',
+                country: (row[4] || 'LATVIA').trim(),
+                city: row[5] || '',
+                category: (row[6] || 'HOTEL').trim().toUpperCase(),
+                website: row[7] || '#',
+                id_code: row[8] || 'AS-PENDING',
+                lat: parseFloat(latStr),
+                lng: parseFloat(lngStr),
+                image: row[9] || "https://images.unsplash.com/photo-1566073771259-6a8506099945"
             };
-        }).filter(h => !isNaN(h.lat) && !isNaN(h.lng));
+        }).filter(h => h !== null && !isNaN(h.lat) && !isNaN(h.lng));
 
         buildCategoriesUI();
         renderMapPoints();
         setupEventListeners();
 
     } catch (err) {
-        console.error('Data sync failed:', err);
+        console.error('Kļūda ielādējot datus:', err);
     }
 }
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
-    
-    // Attīrām iepriekšējo saturu, atstājot tikai "ALL PROPERTIES" pamatpogu
     container.innerHTML = `
         <button data-category="all" class="category-btn active flex items-center justify-between w-full text-left px-3 py-2 text-xs tracking-wide transition-all">
             <span>ALL PROPERTIES</span>
         </button>
     `;
-    
     const categories = [...new Set(hotelData.map(h => h.category))].sort();
-    
     categories.forEach(cat => {
         if(!cat || cat === 'all') return;
         const btn = document.createElement('button');
@@ -178,7 +166,6 @@ function renderMapPoints() {
 
         const marker = L.marker([loc.lat, loc.lng], { icon: markerIcon });
 
-        // Formatējam saiti drošībai (ja trūkst http)
         let webUrl = loc.website;
         if (webUrl !== '#' && !webUrl.startsWith('http://') && !webUrl.startsWith('https://')) {
             webUrl = 'https://' + webUrl;
@@ -192,7 +179,6 @@ function renderMapPoints() {
                 <div class="popup-content-body">
                     <h2 class="popup-main-title">${loc.name}</h2>
                     <p class="popup-description">${loc.description}</p>
-                    
                     <div class="popup-details-grid">
                         <div class="detail-row">
                             <span class="stars-row">⭐⭐⭐⭐⭐</span>
@@ -211,9 +197,7 @@ function renderMapPoints() {
                             <span class="detail-val uppercase tracking-wider text-[10px] text-[#D4AF37] font-semibold">${loc.category}</span>
                         </div>
                     </div>
-                    
                     <a href="${webUrl}" target="_blank" class="popup-action-btn">Official Website</a>
-                    
                     <div class="popup-footer-id">
                         <span>Accreditation No:</span> <strong>${loc.id_code}</strong>
                     </div>
