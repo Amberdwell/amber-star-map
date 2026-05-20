@@ -3,27 +3,32 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Augšējais zīmola paraksts */
+/* Augšējais zīmola paraksts - Playfair Display, centrēts, specifiskas krāsas */
 .brand-title-box {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
 }
 
-.brand-main {
+.brand-top-text {
     font-family: 'Playfair Display', serif;
-    font-size: 21px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    color: #D4AF37;
+    font-size: 14px; /* Mazāki burti */
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: #D4AF37; /* Zelta krāsa */
+    text-transform: uppercase;
 }
 
-.brand-sub {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.35em;
-    color: #A39F99;
+.brand-bottom-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; /* Lielāki burti */
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #fffff0; /* Ivora/Ziloņkaula baltā krāsa */
+    text-transform: uppercase;
 }
 
 /* Kategoriju izskats - tīrs Montserrat bez ikonām */
@@ -131,7 +136,7 @@ body {
     padding: 20px;
 }
 
-/* 1. Nosaukums augšā, lielāks un Boldā */
+/* Nosaukums augšā, lielāks un Boldā */
 .popup-main-title {
     font-family: 'Playfair Display', serif;
     font-size: 22px;
@@ -141,7 +146,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* 2. Apraksts uzreiz zem nosaukuma */
+/* Apraksts uzreiz zem nosaukuma */
 .popup-description {
     font-size: 12px;
     color: #C4C1BC;
@@ -179,7 +184,7 @@ body {
     font-size: 10px;
 }
 
-/* 3. Smuka Oficiālās mājaslapas poga ar plānu līniju */
+/* Oficiālās mājaslapas poga ar plānu līniju */
 .popup-action-btn {
     display: block;
     text-align: center;
@@ -188,7 +193,7 @@ body {
     border: 1px solid #D4AF37;
     font-size: 10px;
     text-transform: uppercase;
-    key-spacing: 0.12em;
+    letter-spacing: 0.12em;
     padding: 11px;
     font-weight: 600;
     transition: all 0.2s;
@@ -201,7 +206,7 @@ body {
     color: #0F1115;
 }
 
-/* 4. Akreditācijas numurs pašā apakšā */
+/* Akreditācijas numurs pašā apakšā */
 .popup-footer-id {
     font-size: 9px;
     color: #62605C;
