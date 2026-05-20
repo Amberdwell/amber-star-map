@@ -171,53 +171,93 @@ function buildCategoriesUI() {
 }
 
 function setupEventListeners() {
+
+    // CATEGORY FILTER
     const catContainer = document.getElementById('categoryContainer');
+
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
+
             const btn = e.target.closest('.category-btn');
             if (!btn) return;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+
+            document.querySelectorAll('.category-btn')
+                .forEach(b => b.classList.remove('active'));
+
             btn.classList.add('active');
+
             activeCategory = btn.getAttribute('data-category');
+
             renderMapPoints();
-            // Meklētāja notikums
+        });
+    }
+
+    // SCORE FILTER
+    const scoreContainer = document.getElementById('scoreFilterGroup');
+
+    if (scoreContainer) {
+        scoreContainer.addEventListener('click', (e) => {
+
+            const btn = e.target.closest('.score-btn');
+            if (!btn) return;
+
+            document.querySelectorAll('.score-btn')
+                .forEach(b => b.classList.remove('active'));
+
+            btn.classList.add('active');
+
+            minScoreFilter =
+                parseInt(btn.getAttribute('data-min-score'), 10) || 0;
+
+            renderMapPoints();
+        });
+    }
+
+    // SEARCH
     const mapSearch = document.getElementById('mapSearch');
+
     if (mapSearch) {
         mapSearch.addEventListener('input', () => {
             renderMapPoints();
         });
     }
 
-    // Valstu filtra notikums
+    // COUNTRY FILTER
     const countryFilter = document.getElementById('countryFilter');
+
     if (countryFilter) {
         countryFilter.addEventListener('change', () => {
             renderMapPoints();
         });
     }
-        });
-    }
 
-    const scoreContainer = document.getElementById('scoreFilterGroup');
-    if (scoreContainer) {
-        scoreContainer.addEventListener('click', (e) => {
-            const btn = e.target.closest('.score-btn');
-            if (!btn) return;
-            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            minScoreFilter = parseInt(btn.getAttribute('data-min-score'), 10) || 0;
-            renderMapPoints();
-        });
-    }
-
+    // RESET
     const resetBtn = document.getElementById('resetFilters');
+
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
+
             activeCategory = 'all';
             minScoreFilter = 0;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="all"]').classList.add('active');
-            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+
+            const search = document.getElementById('mapSearch');
+            if (search) search.value = '';
+
+            const country = document.getElementById('countryFilter');
+            if (country) country.value = 'all';
+
+            document.querySelectorAll('.category-btn')
+                .forEach(b => b.classList.remove('active'));
+
+            const allBtn = document.querySelector('[data-category="all"]');
+
+            if (allBtn) {
+                allBtn.classList.add('active');
+            }
+
+            document.querySelectorAll('.score-btn')
+                .forEach(b => b.classList.remove('active'));
+
             renderMapPoints();
         });
     }
