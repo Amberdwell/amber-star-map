@@ -180,6 +180,21 @@ function setupEventListeners() {
             btn.classList.add('active');
             activeCategory = btn.getAttribute('data-category');
             renderMapPoints();
+            // Meklētāja notikums
+    const mapSearch = document.getElementById('mapSearch');
+    if (mapSearch) {
+        mapSearch.addEventListener('input', () => {
+            renderMapPoints();
+        });
+    }
+
+    // Valstu filtra notikums
+    const countryFilter = document.getElementById('countryFilter');
+    if (countryFilter) {
+        countryFilter.addEventListener('change', () => {
+            renderMapPoints();
+        });
+    }
         });
     }
 
