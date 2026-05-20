@@ -1,74 +1,74 @@
-/* Globalie un fontu uzstadijumi */
+/* Globālie fonti un uzstādījumi */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* Sanu joslas kategoriju pogu stilizacija */
+/* Kategoriju pogu dizains - bez ikonām, lasāmā fontā */
 .category-btn {
     color: #A39F99;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
     border-left: 2px solid transparent;
 }
 
-.category-btn:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.02);
-}
-
-.category-btn.active {
+.category-btn:hover, .category-btn.active {
     color: #D4AF37;
-    background: rgba(212, 175, 55, 0.05);
+    background: rgba(212, 175, 55, 0.03);
     border-left-color: #D4AF37;
-    font-weight: 500;
+    padding-left: 16px;
 }
 
-/* Kartes fona un Leaflet elementu pielagosana */
-.leaflet-container {
-    background: #242426 !important;
+/* Score pogas aktīvais stāvoklis */
+.score-btn.active {
+    border-color: #D4AF37 !important;
+    background: rgba(212, 175, 55, 0.05) !important;
+    color: #fff !important;
 }
 
-/* Klasteru stils */
+/* Klasteru stils uz kartes */
 .custom-cluster {
-    background: rgba(15, 17, 21, 0.95);
-    backdrop-filter: blur(4px);
-    border: 2px solid #D4AF37;
+    background: #0F1115;
+    border: 1px solid #D4AF37;
     color: #D4AF37;
     border-radius: 50%;
     text-align: center;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
 }
 
-/* Individualie zelta markieri */
-.custom-marker {
+/* Zelta marķiera rāmītis kartē */
+.map-gold-star {
     display: flex;
     align-items: center;
     justify-content: center;
     background: #0F1115;
-    border: 2px solid #D4AF37;
+    border: 1px solid #D4AF37;
+    padding: 6px;
     border-radius: 50%;
-    color: #D4AF37;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: transform 0.2s ease;
 }
 
-.custom-marker:hover {
-    transform: scale(1.18);
-    box-shadow: 0 0 15px #D4AF37;
+.map-gold-star:hover {
+    transform: scale(1.2);
+    border-color: #ffffff;
 }
 
-/* Premium dizains popup kartitei */
+/* POPUP KARTĪTES PRESTIDŽA STILIZĀCIJA (Bez fona, plāns zelta rāmis) */
 .leaflet-popup-content-wrapper {
-    background: #0F1115 !important;
+    background: rgba(15, 17, 21, 0.95) !important;
+    backdrop-filter: blur(8px);
     color: #E5E2DC !important;
-    border: 1px solid #2A303C !important;
+    border: 1px solid #D4AF37 !important; /* Smalka zelta maliņa */
     border-radius: 0px !important;
     padding: 0 !important;
     overflow: hidden;
-    box-shadow: 0 30px 60px -15px rgba(0,0,0,0.8) !important;
 }
 
 .leaflet-popup-content {
@@ -76,24 +76,159 @@ body {
     width: 340px !important;
 }
 
-/* Kartites apaksejais sturitisl */
 .leaflet-popup-tip {
     background: #0F1115 !important;
-    border: 1px solid #2A303C;
+    border: 1px solid #D4AF37;
 }
 
-/* Aizversanas poga kartitei */
-.leaflet-container a.leaflet-popup-close-button {
-    color: #ffffff !important;
-    padding: 12px !important;
-    font-size: 16px !important;
+/* Kartītes iekšējā struktūra */
+.premium-card {
+    width: 100%;
+    display: flex;
+    flex-col: column;
+}
+
+.card-image-box {
+    height: 180px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #161920;
+}
+
+.card-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Īsts, elegants zelta Ribbon stūrī */
+.luxury-ribbon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #D4AF37, #AA7C11);
+    color: #0F1115;
+    padding: 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.ribbon-brand {
+    font-size: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.ribbon-star {
+    font-size: 9px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* Kartītes teksta bloks */
+.card-body {
+    padding: 20px;
+}
+
+.card-accreditation {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    color: #D4AF37;
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.card-location {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: #A39F99;
+    margin-bottom: 16px;
+}
+
+/* Metriku rinda */
+.card-metrics {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #2A303C;
+    border-bottom: 1px solid #2A303C;
+    padding: 10px 0;
+    margin-bottom: 16px;
+}
+
+.metric-score {
+    display: flex;
+    flex-direction: column;
+}
+
+.stars-gold {
+    font-size: 10px;
+    margin-bottom: 2px;
+}
+
+.score-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.metric-guest {
+    font-size: 11px;
+    color: #A39F99;
+}
+
+.guest-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Apraksts un poga */
+.card-desc {
+    font-size: 12px;
+    color: #A39F99;
+    line-height: 1.6;
+    margin-bottom: 20px;
     font-weight: 300;
 }
 
-/* Apraksta teksta saisinasana */
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
+.card-btn {
+    display: block;
+    text-align: center;
+    background: #D4AF37;
+    color: #0F1115;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px;
+    font-weight: 500;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+
+.card-btn:hover {
+    background: #ffffff;
+}
+
+/* Pārlūka ritjoslas paslēpšana modernam skatam */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #2A303C;
 }
