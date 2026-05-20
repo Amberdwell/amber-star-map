@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="lv" class="h-full bg-[#0F1115]">
+<html lang="en" class="h-full bg-[#0F1115]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Amber Star Directory</title>
+    <title>Amber Star Selection</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -21,18 +21,15 @@
 
     <aside class="w-full md:w-80 bg-[#0F1115] border-b md:border-b-0 md:border-r border-[#2A303C] flex flex-col z-[1000] shrink-0 h-[45vh] md:h-full shadow-2xl relative">
         
-        <div class="p-6 border-b border-[#2A303C] bg-[#161920] flex flex-col items-center text-center">
-            <div class="brand-logo mb-3">
-                <img src="logo.svg" alt="Amber Star Logo" class="h-12 error-fallback" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block';">
-                <div id="altLogo" class="hidden font-['Playfair_Display'] text-xl tracking-[0.2em] text-[#D4AF37] font-semibold uppercase">
-                    Amber Star
-                </div>
+        <div class="p-6 border-b border-[#2A303C] bg-[#161920] flex flex-col items-center text-center select-none">
+            <div class="brand-title-box">
+                <span class="brand-main">AMBER STAR</span>
+                <span class="brand-sub">SELECTION</span>
             </div>
-            <div class="text-[9px] tracking-[0.3em] uppercase text-[#A39F99] font-medium font-['Montserrat']">Luxury Property Audit</div>
         </div>
 
         <div class="p-4 border-b border-[#2A303C] bg-[#13161C]">
-            <label class="block text-[10px] uppercase tracking-widest text-[#62605C] font-semibold mb-2 font-['Montserrat']">Select Country</label>
+            <label class="block text-[9px] uppercase tracking-[0.2em] text-[#62605C] font-bold mb-2">Select Country</label>
             <select id="countryFilter" class="w-full bg-[#161920] border border-[#2A303C] text-xs text-white px-3 py-2.5 focus:outline-none focus:border-[#D4AF37] transition-colors font-['Montserrat']">
                 <option value="all">All Countries</option>
                 <option value="Latvia">Latvia</option>
@@ -43,7 +40,7 @@
 
         <div class="p-4 border-b border-[#2A303C] bg-[#0F1115]">
             <div class="relative">
-                <input type="text" id="mapSearch" placeholder="Meklēt īpašumu vai pilsētu..." 
+                <input type="text" id="mapSearch" placeholder="Search property or city..." 
                        class="w-full bg-[#161920] border border-[#2A303C] text-xs text-white pl-8 pr-3 py-3 focus:outline-none focus:border-[#D4AF37] transition-colors placeholder-[#62605C] font-['Montserrat']">
                 <span class="absolute left-3 top-3.5 text-xs text-[#62605C]">🔍</span>
             </div>
@@ -51,16 +48,16 @@
 
         <div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
             <div>
-                <h3 class="text-[10px] uppercase tracking-widest text-[#62605C] font-semibold mb-3 font-['Montserrat']">Categories</h3>
+                <h3 class="text-[9px] uppercase tracking-[0.2em] text-[#62605C] font-bold mb-3">Categories</h3>
                 <div id="categoryContainer" class="space-y-1 font-['Montserrat']">
                     <button data-category="all" class="category-btn active flex items-center justify-between w-full text-left px-3 py-2 text-xs tracking-wide transition-all">
-                        <span>All Properties</span>
+                        <span>ALL PROPERTIES</span>
                     </button>
                 </div>
             </div>
 
             <div>
-                <h3 class="text-[10px] uppercase tracking-widest text-[#62605C] font-semibold mb-3 font-['Montserrat']">Amber Star Level</h3>
+                <h3 class="text-[9px] uppercase tracking-[0.2em] text-[#62605C] font-bold mb-3">Amber Star Level</h3>
                 <div id="scoreFilterGroup" class="flex flex-col gap-1">
                     <button data-min-score="0" class="score-btn active text-left px-3 py-2.5 text-xs text-white border border-[#2A303C] hover:border-[#D4AF37] transition-all flex justify-between items-center bg-[#161920]">
                         <span>Show All Levels</span>
@@ -75,14 +72,14 @@
             </div>
         </div>
 
-        <div class="p-4 border-t border-[#2A303C] bg-[#161920] flex flex-col gap-2">
-            <div class="flex items-center justify-between text-xs tracking-wide">
-                <span id="totalPropertiesText" class="font-['Playfair_Display'] italic text-white font-semibold text-sm">0 Exceptional Properties</span>
+        <div class="p-5 border-t border-[#2A303C] bg-[#161920] flex flex-col gap-1">
+            <div id="totalPropertiesText" class="font-['Montserrat'] text-white font-semibold text-sm tracking-wide">
+                0 Exceptional Properties
             </div>
-            <div class="flex items-center gap-1.5 text-[10px] text-[#D4AF37] uppercase tracking-widest font-medium">
-                <span>💎</span> Hands-Picked for You
+            <div class="text-[9px] text-[#D4AF37] uppercase tracking-[0.12em] font-medium font-['Montserrat']">
+                💎 top 3% of the finest accommodations
             </div>
-            <button id="resetFilters" class="mt-2 w-full bg-transparent border border-[#2A303C] hover:border-[#D4AF37] hover:text-[#D4AF37] text-[#A39F99] text-[9px] uppercase tracking-widest py-2.5 font-medium transition-all">
+            <button id="resetFilters" class="mt-3 w-full bg-transparent border border-[#2A303C] hover:border-[#D4AF37] hover:text-[#D4AF37] text-[#A39F99] text-[9px] uppercase tracking-widest py-2.5 font-medium transition-all">
                 Reset Filters
             </button>
         </div>
