@@ -154,38 +154,31 @@ function renderMapPoints() {
         }
 
         const popupContent = `
-            <div class="luxury-popup-card">
-                <div class="popup-img-container">
-                    <img src="${loc.image}" alt="${loc.name}">
-                </div>
-                <div class="popup-content-body">
-                    <h2 class="popup-main-title">${loc.name}</h2>
-                    <p class="popup-description">${loc.description}</p>
-                    <div class="popup-details-grid">
-                        <div class="detail-row">
-                            <span class="stars-row">⭐⭐⭐⭐⭐</span>
-                            <span class="detail-val font-semibold">${loc.score} / 150</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-lbl">Guest Rating:</span>
-                            <span class="detail-val font-semibold">${loc.guestRating}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-lbl">Location:</span>
-                            <span class="detail-val">📍 ${loc.city}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-lbl">Category:</span>
-                            <span class="detail-val uppercase tracking-wider text-[10px] text-[#D4AF37] font-semibold">${loc.category}</span>
-                        </div>
-                    </div>
-                    <a href="${webUrl}" target="_blank" class="popup-action-btn">Official Website</a>
-                    <div class="popup-footer-id">
-                        <span>Accreditation No:</span> <strong>${loc.id_code}</strong>
-                    </div>
-                </div>
-            </div>
-        `;
+            <div class="luxury-popup-card" style="width: 320px;">
+                <div class="popup-img-container" style="height: 150px; overflow: hidden;">
+                    <img src="${loc.image}" alt="${loc.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="popup-content-body" style="padding: 12px;">
+                    <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px;">${loc.name}</h2>
+                    <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px;">${loc.description}</p>
+                    <div class="popup-details-grid" style="display: grid; gap: 5px;">
+                        <div class="detail-row" style="display: flex; justify-content: space-between;">
+                            <span class="stars-row" style="letter-spacing: 2px;">⭐⭐⭐⭐⭐</span>
+                            <span class="detail-val font-semibold">${loc.score} / 150</span>
+                        </div>
+                        <div class="detail-row" style="display: flex; justify-content: space-between;">
+                            <span>Guest Rating:</span>
+                            <span class="detail-val font-semibold">${loc.guestRating}</span>
+                        </div>
+                        <div class="detail-row" style="display: flex; justify-content: space-between;">
+                            <span>Location:</span>
+                            <span class="detail-val">📍 ${loc.city}</span>
+                        </div>
+                    </div>
+                    <a href="${webUrl}" target="_blank" class="popup-action-btn" style="display: block; margin-top: 12px; text-align: center;">Official Website</a>
+                </div>
+            </div>
+        `;
 
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
         markersClusterGroup.addLayer(marker);
