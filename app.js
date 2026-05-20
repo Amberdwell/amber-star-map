@@ -5,8 +5,8 @@ const map = L.map('map', {
     center: [56.9462, 24.1059], // Centrs ap Rīgu/Latviju
     zoom: 7,
     zoomControl: false,
-    minZoom: 6,
-    maxZoom: 14
+    minZoom: 3,
+    maxZoom: 18
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
