@@ -1,6 +1,5 @@
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
-// Inicializējam karti ar gaiši pelēko slāni (Atgriezts atpakaļ pēc pieprasījuma)
 const map = L.map('map', {
     center: [57.0000, 24.5000],
     zoom: 7,
@@ -13,12 +12,12 @@ const map = L.map('map', {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Gaiši pelēkais premium pamatslānis
+// Atgriezta gaiši pelēkā karte pēc pieprasījuma
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
 
-// Izteiktas un skaidri redzamas tumša zelta robežas valstīm
+// Valstu robežas
 fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
     .then(res => res.json())
     .then(geoData => {
@@ -34,7 +33,6 @@ fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/coun
         }).addTo(map);
     });
 
-// Klasterēšana
 const markersClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
     maxClusterRadius: 40,
@@ -55,13 +53,15 @@ let activeCountry = 'all';
 let minScoreFilter = 0;
 let searchQuery = '';
 
-// GUDRAIS CSV PARSĒTĀJS
+// Universāls parsētājs, kas saprot gan komatus, gan reģionālos semikolus (;) no Google Sheets
 function parseCSV(text) {
-    const lines = text.split('\n');
+    const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     if (lines.length === 0) return [];
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
     
-    return lines.slice(1).filter(line => line.trim()).map(line => {
+    const separator = lines[0].includes(';') ? ';' : ',';
+    const headers = lines[0].split(separator).map(h => h.trim().replace(/^"|"$/g, ''));
+    
+    return lines.slice(1).map(line => {
         const row = [];
         let insideQuote = false;
         let currentField = '';
@@ -70,7 +70,7 @@ function parseCSV(text) {
             let char = line[i];
             if (char === '"') {
                 insideQuote = !insideQuote;
-            } else if (char === ',' && !insideQuote) {
+            } else if (char === separator && !insideQuote) {
                 row.push(currentField.trim().replace(/^"|"$/g, ''));
                 currentField = '';
             } else {
@@ -94,17 +94,17 @@ async function startApp() {
         const parsed = parseCSV(csvText);
         
         hotelData = parsed.map(h => {
-            const rawScore = h['Audit Score'] || h['Score'] || '0';
+            const rawScore = h['Audit Score'] || '0';
             return {
-                name: h['Title'] || h['Hotel Name'] || h['Name'] || 'Unnamed Property',
+                name: h['Title'] || 'Unnamed Property',
                 description: h['Description'] || '',
                 score: parseInt(rawScore, 10) || 0,
-                guestRating: h['Guest Rating'] || h['Rating'] || 'N/A',
+                guestRating: h['Guest Rating'] || 'N/A',
                 country: h['Country'] || 'Latvia',
                 city: h['City'] || '',
-                category: h['Category'] || 'HOTEL',
+                category: (h['Category'] || 'HOTEL').trim().toUpperCase(),
                 website: h['Website'] || '#',
-                id_code: h['Accreditation'] || h['ID'] || 'AS-PENDING',
+                id_code: h['Accreditation'] || 'AS-PENDING',
                 lat: parseFloat(h['Latitude']),
                 lng: parseFloat(h['Longitude']),
                 image: h['Image'] || "https://images.unsplash.com/photo-1566073771259-6a8506099945"
@@ -122,7 +122,7 @@ async function startApp() {
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
-    const categories = [...new Set(hotelData.map(h => h.category.toUpperCase()))].sort();
+    const categories = [...new Set(hotelData.map(h => h.category))].sort();
     
     categories.forEach(cat => {
         if(!cat) return;
@@ -138,7 +138,7 @@ function renderMapPoints() {
     markersClusterGroup.clearLayers();
 
     const filtered = hotelData.filter(h => {
-        const matchesCategory = (activeCategory === 'all' || h.category.toUpperCase() === activeCategory.toUpperCase());
+        const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
         const matchesCountry = (activeCountry === 'all' || h.country.toLowerCase() === activeCountry.toLowerCase());
         const matchesScore = (h.score >= minScoreFilter);
         const matchesSearch = h.name.toLowerCase().includes(searchQuery) || h.city.toLowerCase().includes(searchQuery);
@@ -148,7 +148,7 @@ function renderMapPoints() {
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
     filtered.forEach(loc => {
-        // APAĻAS PREMIUM ZELTA IKONAS (Minimālistiski apļi bez zvaigznēm)
+        // Perfekti apaļi, minimālistiski zelta punkti uz kartes
         const markerIcon = L.divIcon({
             html: `<div class="premium-dot-marker"></div>`,
             className: 'custom-dot-wrapper',
@@ -157,7 +157,7 @@ function renderMapPoints() {
 
         const marker = L.marker([loc.lat, loc.lng], { icon: markerIcon });
 
-        // PRECIZĒTĀ KARTĪTE: Secība pēc pieprasījuma, bez smagiem foniem
+        // Kartītes uzbūve un secība pēc pieprasījuma
         const popupContent = `
             <div class="luxury-popup-card">
                 <div class="popup-img-container">
