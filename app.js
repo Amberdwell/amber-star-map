@@ -96,14 +96,26 @@ async function startApp() {
 
 function renderMapPoints() {
     markersClusterGroup.clearLayers();
+    
+    // Iegūstam vērtības no HTML laukiem
+    const searchInput = document.getElementById('mapSearch');
+    const countryFilter = document.getElementById('countryFilter');
+    const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
+    const countryVal = countryFilter ? countryFilter.value : 'all';
+
     const filtered = hotelData.filter(h => {
         const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
         const matchesScore = (h.score >= minScoreFilter);
-        return matchesCategory && matchesScore;
+        // Filtrēšana pēc valsts/pilsētas un meklēšanas lauka
+        const matchesCountry = (countryVal === 'all' || h.city.toLowerCase().includes(countryVal.toLowerCase()));
+        const matchesSearch = (h.name.toLowerCase().includes(searchVal) || h.city.toLowerCase().includes(searchVal));
+        
+        return matchesCategory && matchesScore && matchesCountry && matchesSearch;
     });
 
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
+    // Šeit sākas markeru zīmēšana (tas, kas tev bija iepriekš)
     filtered.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
         
@@ -115,7 +127,6 @@ function renderMapPoints() {
                 <div class="popup-content-body" style="padding: 12px;">
                     <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px;">${loc.name}</h2>
                     <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px;">${loc.description}</p>
-                    
                     <div class="popup-details-grid" style="display: grid; gap: 5px; margin-bottom: 10px;">
                         <div style="display: flex; justify-content: space-between;">
                             <span>Audit Score:</span>
@@ -130,9 +141,7 @@ function renderMapPoints() {
                             <span class="detail-val">📍 ${loc.city}</span>
                         </div>
                     </div>
-
                     <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn" style="display: block; margin-top: 12px; text-align: center; background: #333; color: white; padding: 8px; text-decoration: none; font-size: 12px;">Official Website</a>
-                    
                     <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
                         ${loc.id_code}
                     </div>
