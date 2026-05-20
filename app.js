@@ -145,7 +145,49 @@ function renderMapPoints() {
 }
 
 // Atlikušās funkcijas paliek tādas pašas kā tev
-function buildCategoriesUI() { /* ... */ }
-function setupEventListeners() { /* ... */ }
+function buildCategoriesUI() {
+    const container = document.getElementById('categoryContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+        <button data-category="all" class="category-btn active flex items-center justify-between w-full text-left px-3 py-2 text-xs tracking-wide transition-all">
+            <span>ALL PROPERTIES</span>
+        </button>
+    `;
+
+    const categories = [...new Set(hotelData.map(h => h.category))].sort();
+    
+    categories.forEach(cat => {
+        if(!cat || cat === 'all') return;
+        const btn = document.createElement('button');
+        btn.setAttribute('data-category', cat);
+        btn.className = "category-btn flex items-center justify-between w-full text-left px-3 py-2.5 text-xs tracking-wider transition-all";
+        btn.innerHTML = `<span>${cat}</span>`;
+        container.appendChild(btn);
+    });
+}
+
+function setupEventListeners() {
+    const catContainer = document.getElementById('categoryContainer');
+    if (catContainer) {
+        catContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.category-btn');
+            if (!btn) return;
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCategory = btn.getAttribute('data-category');
+            renderMapPoints();
+        });
+    }
+    
+    // Pārējie filtri (ja tev tie ir)
+    const resetBtn = document.getElementById('resetFilters');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            activeCategory = 'all';
+            renderMapPoints();
+        });
+    }
+}
 
 startApp();
