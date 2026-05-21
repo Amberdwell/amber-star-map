@@ -222,3 +222,7 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #2A303C;
 }
+
+aside {
+    overflow-y: auto;
+}
