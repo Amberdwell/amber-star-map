@@ -222,11 +222,3 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #2A303C;
 }
-
-/* Pievieno šo savam style.css */
-#drawer {
-    transition: transform 0.3s ease-in-out;
-}
-.drawer-open {
-    transform: translateY(0) !important;
-}
