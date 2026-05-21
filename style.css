@@ -226,3 +226,23 @@ body {
 aside {
     overflow-y: auto;
 }
+
+@media (min-width: 768px) {
+    body {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    aside {
+        width: 320px;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    #map-wrap {
+        flex: 1;
+        height: 100vh;
+    }
+}
