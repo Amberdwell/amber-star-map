@@ -140,7 +140,7 @@ const popupContent = `
                 </div>
             </div>
 
-            <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn" style="display: block; margin-top: 12px; text-align: center; background: #333; color: white; padding: 8px; text-decoration: none; font-size: 12px;">Official Website</a>
+<a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
             
             <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
                 ${loc.id_code}
