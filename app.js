@@ -149,9 +149,16 @@ const popupContent = `
     </div>`;
             
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
+        marker.on('popupopen', () => {
+            const btn = document.querySelector('.popup-action-btn');
+            if (btn) {
+                btn.onmouseover = () => { btn.style.background = '#D4AF37'; btn.style.color = '#0F1115'; };
+                btn.onmouseout = () => { btn.style.background = '#333'; btn.style.color = 'white'; };
+            }
+        });
+
         markersClusterGroup.addLayer(marker);
     });
-}
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
