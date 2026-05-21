@@ -66,13 +66,13 @@ function parseTabularCSV(text) {
         let lngStr = idxLng !== -1 ? (row[idxLng] || '').replace(',', '.') : '0';
 
 return {
-    name: idxName !== -1 ? row[idxName] : 'Unnamed Property',
-    description: idxDesc !== -1 ? (row[idxDesc] || 'Amber Star approved luxury property.') : 'Amber Star approved luxury property.',
-    score: parseInt((idxScore !== -1 ? (row[idxScore] || '0').split('/')[0].trim() : '0'), 10) || 0,
-    guestRating: idxRating !== -1 ? (row[idxRating] || 'N/A') : 'N/A',
-    country: idxCountry !== -1 ? (row[idxCountry] || 'Other') : 'Other',
-    city: idxLocation !== -1 ? row[idxLocation] : '',
-    category: idxCategory !== -1 ? (row[idxCategory] || 'HOTEL').toUpperCase() : 'HOTEL',() : 'HOTEL',
+            name: idxName !== -1 ? row[idxName] : 'Unnamed Property',
+            description: idxDesc !== -1 ? (row[idxDesc] || 'Amber Star approved luxury property.') : 'Amber Star approved luxury property.',
+            score: parseInt((idxScore !== -1 ? (row[idxScore] || '0').split('/')[0].trim() : '0'), 10) || 0,
+            guestRating: idxRating !== -1 ? (row[idxRating] || 'N/A') : 'N/A',
+            country: idxCountry !== -1 ? (row[idxCountry] || 'Other') : 'Other',
+            city: idxLocation !== -1 ? row[idxLocation] : '',
+            category: idxCategory !== -1 ? (row[idxCategory] || 'HOTEL').toUpperCase() : 'HOTEL',
             website: idxPlatform !== -1 ? (row[idxPlatform] || '#') : '#',
             id_code: idxId !== -1 ? row[idxId] : 'AS-PENDING',
             lat: parseFloat(latStr),
