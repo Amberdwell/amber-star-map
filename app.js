@@ -176,6 +176,7 @@ function buildCategoriesUI() {
 }
 
 function setupEventListeners() {
+    // 1. Kategoriju filtrs
     const catContainer = document.getElementById('categoryContainer');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -185,7 +186,10 @@ function setupEventListeners() {
             btn.classList.add('active');
             activeCategory = btn.getAttribute('data-category');
             renderMapPoints();
-            // Meklētāja notikums
+        });
+    }
+
+    // 2. Meklētājs (IZNESTS ĀRĀ)
     const mapSearch = document.getElementById('mapSearch');
     if (mapSearch) {
         mapSearch.addEventListener('input', () => {
@@ -193,16 +197,15 @@ function setupEventListeners() {
         });
     }
 
-    // Valstu filtra notikums
+    // 3. Valstu filtrs (IZNESTS ĀRĀ)
     const countryFilter = document.getElementById('countryFilter');
     if (countryFilter) {
         countryFilter.addEventListener('change', () => {
             renderMapPoints();
         });
     }
-        });
-    }
 
+    // 4. Punktu (Score) filtrs
     const scoreContainer = document.getElementById('scoreFilterGroup');
     if (scoreContainer) {
         scoreContainer.addEventListener('click', (e) => {
@@ -215,14 +218,16 @@ function setupEventListeners() {
         });
     }
 
+    // 5. Reset poga
     const resetBtn = document.getElementById('resetFilters');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             activeCategory = 'all';
             minScoreFilter = 0;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="all"]').classList.add('active');
-            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('mapSearch').value = '';
+            document.getElementById('countryFilter').value = 'all';
+            document.querySelectorAll('.category-btn, .score-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-category="all"]')?.classList.add('active');
             renderMapPoints();
         });
     }
