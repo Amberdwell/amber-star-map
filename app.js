@@ -56,6 +56,7 @@ function parseTabularCSV(text) {
     const idxLng = headers.findIndex(h => h.includes('long') || h === 'lng');
     const idxDesc = headers.findIndex(h => h.includes('desc'));
     const idxImage = headers.findIndex(h => h.includes('image'));
+    const idxCountry = headers.findIndex(h => h.includes('country'));
 
     return lines.slice(1).map(line => {
         const row = line.split(sep).map(item => item.trim().replace(/^"|"$/g, ''));
