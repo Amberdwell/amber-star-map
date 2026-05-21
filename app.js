@@ -105,7 +105,7 @@ function renderMapPoints() {
     const filtered = hotelData.filter(h => {
         const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
         const matchesScore = (h.score >= minScoreFilter);
-        const matchesCountry = (countryVal === 'all' || h.city.toLowerCase().includes(countryVal.toLowerCase()));
+        const matchesCountry =(countryVal === 'all' || h.country.toLowerCase() === countryVal.toLowerCase());
         const matchesSearch = (h.name.toLowerCase().includes(searchVal) || h.city.toLowerCase().includes(searchVal));
         
         return matchesCategory && matchesScore && matchesCountry && matchesSearch;
