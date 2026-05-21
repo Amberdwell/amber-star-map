@@ -36,50 +36,79 @@ let minScoreFilter = 0;
 let searchQuery = '';
 
 function parseTabularCSV(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-    if (lines.length <= 1) return [];
 
-    let sep = ',';
-    if (lines[0].split('\t').length > lines[0].split(',').length) sep = '\t';
-    else if (lines[0].split(';').length > lines[0].split(',').length) sep = ';';
+    const parsed = Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true
+    });
 
-    const headers = lines[0].split(sep).map(h => h.trim().toLowerCase().replace(/[^a-z0-9]/g, ''));
-    
-    const idxId = headers.findIndex(h => h.includes('accreditation'));
-    const idxName = headers.findIndex(h => h.includes('title') || h.includes('property') || h.includes('name'));
-    const idxLocation = headers.findIndex(h => h.includes('city') || h.includes('location'));
-    const idxScore = headers.findIndex(h => h.includes('audit'));
-    const idxRating = headers.findIndex(h => h.includes('guest'));
-    const idxPlatform = headers.findIndex(h => h.includes('website') || h.includes('platform'));
-    const idxCategory = headers.findIndex(h => h.includes('category'));
-    const idxLat = headers.findIndex(h => h.includes('lat'));
-    const idxLng = headers.findIndex(h => h.includes('long') || h === 'lng');
-    const idxDesc = headers.findIndex(h => h.includes('desc'));
-    const idxImage = headers.findIndex(h => h.includes('image'));
-    const idxCountry = headers.findIndex(h => h.includes('country'));
+    return parsed.data.map(row => {
 
-    return lines.slice(1).map(line => {
-        const row = line.split(sep).map(item => item.trim().replace(/^"|"$/g, ''));
-        if (row.length < 3) return null;
+        const lat = parseFloat(
+            (row.Latitude || row.latitude || '0')
+            .toString()
+            .replace(',', '.')
+        );
 
-        let latStr = idxLat !== -1 ? (row[idxLat] || '').replace(',', '.') : '0';
-        let lngStr = idxLng !== -1 ? (row[idxLng] || '').replace(',', '.') : '0';
+        const lng = parseFloat(
+            (row.Longitude || row.longitude || row.lng || '0')
+            .toString()
+            .replace(',', '.')
+        );
 
         return {
-            name: idxName !== -1 ? row[idxName] : 'Unnamed Property',
-            description: idxDesc !== -1 ? (row[idxDesc] || 'Amber Star approved luxury property.') : 'Amber Star approved luxury property.',
-            score: parseInt((idxScore !== -1 ? (row[idxScore] || '0').split('/')[0].trim() : '0'), 10) || 0,
-            guestRating: idxRating !== -1 ? (row[idxRating] || 'N/A') : 'N/A',
-            country: idxCountry !== -1 ? (row[idxCountry] || 'LATVIA') : 'LATVIA',
-            city: idxLocation !== -1 ? row[idxLocation] : '',
-            category: idxCategory !== -1 ? (row[idxCategory] || 'HOTEL').toUpperCase() : 'HOTEL',
-            website: idxPlatform !== -1 ? (row[idxPlatform] || '#') : '#',
-            id_code: idxId !== -1 ? row[idxId] : 'AS-PENDING',
-            lat: parseFloat(latStr),
-            lng: parseFloat(lngStr),
-            image: (idxImage !== -1 && row[idxImage] && row[idxImage].trim() !== '') ? row[idxImage] : "https://images.unsplash.com/photo-1566073771259-6a8506099945"
+
+            name:
+                row.Title ||
+                row.Property ||
+                row.Name ||
+                'Unnamed Property',
+
+            description:
+                row.Description ||
+                'Amber Star approved luxury property.',
+
+            score:
+                parseInt(
+                    (row.AuditScore || '0')
+                    .toString()
+                    .split('/')[0]
+                ) || 0,
+
+            guestRating:
+                row.GuestRating || 'N/A',
+
+            country:
+                row.Country || 'LATVIA',
+
+            city:
+                row.City || '',
+
+            category:
+                (
+                    row.Category ||
+                    'HOTEL'
+                ).toUpperCase(),
+
+            website:
+                row.Website || '#',
+
+            id_code:
+                row.Accreditation_No ||
+                'AS-PENDING',
+
+            lat,
+            lng,
+
+            image:
+                row.Image ||
+                'https://images.unsplash.com/photo-1566073771259-6a8506099945'
         };
-    }).filter(h => h !== null && !isNaN(h.lat) && !isNaN(h.lng));
+
+    }).filter(h =>
+        !isNaN(h.lat) &&
+        !isNaN(h.lng)
+    );
 }
 
 function buildCountryFilter() {
