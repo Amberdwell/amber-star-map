@@ -2,7 +2,7 @@
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
 const map = L.map('map', {
-    center: [56.50, 18.00],
+    center: [56, 18.00],
     zoom: 5.5,
     zoomControl: false,
     minZoom: 2,
@@ -149,16 +149,9 @@ const popupContent = `
     </div>`;
             
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
-        marker.on('popupopen', () => {
-            const btn = document.querySelector('.popup-action-btn');
-            if (btn) {
-                btn.onmouseover = () => { btn.style.background = '#D4AF37'; btn.style.color = '#0F1115'; };
-                btn.onmouseout = () => { btn.style.background = '#333'; btn.style.color = 'white'; };
-            }
-        });
-
         markersClusterGroup.addLayer(marker);
     });
+}
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
