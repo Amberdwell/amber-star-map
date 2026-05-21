@@ -222,3 +222,14 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #2A303C;
 }
+
+/* MOBILE LAYOUT FIX */
+@media (max-width: 768px) {
+    aside {
+        height: 30vh;
+    }
+
+    #map-wrap {
+        height: 70vh;
+    }
+}
