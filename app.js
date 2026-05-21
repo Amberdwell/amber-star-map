@@ -82,6 +82,22 @@ function parseTabularCSV(text) {
     }).filter(h => h !== null && !isNaN(h.lat) && !isNaN(h.lng));
 }
 
+function buildCountryFilter() {
+    const select = document.getElementById('countryFilter');
+    if (!select) return;
+
+    const countries = [...new Set(hotelData.map(h => h.country).filter(Boolean))].sort();
+
+    select.innerHTML = '<option value="all">All Countries</option>';
+
+    countries.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country;
+        option.textContent = country;
+        select.appendChild(option);
+    });
+}
+
 async function startApp() {
     try {
         const response = await fetch(CSV_URL);
@@ -89,6 +105,7 @@ async function startApp() {
         const csvText = await response.text();
         hotelData = parseTabularCSV(csvText);
         buildCategoriesUI();
+        buildCountryFilter();
         renderMapPoints();
         setupEventListeners();
     } catch (err) { console.error('Kļūda:', err); }
