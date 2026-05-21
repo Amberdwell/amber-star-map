@@ -65,12 +65,12 @@ function parseTabularCSV(text) {
         let latStr = idxLat !== -1 ? (row[idxLat] || '').replace(',', '.') : '0';
         let lngStr = idxLng !== -1 ? (row[idxLng] || '').replace(',', '.') : '0';
 
-return {
+        return {
             name: idxName !== -1 ? row[idxName] : 'Unnamed Property',
             description: idxDesc !== -1 ? (row[idxDesc] || 'Amber Star approved luxury property.') : 'Amber Star approved luxury property.',
             score: parseInt((idxScore !== -1 ? (row[idxScore] || '0').split('/')[0].trim() : '0'), 10) || 0,
             guestRating: idxRating !== -1 ? (row[idxRating] || 'N/A') : 'N/A',
-            country: idxCountry !== -1 ? (row[idxCountry] || 'Other') : 'Other',
+            country: idxCountry !== -1 ? (row[idxCountry] || 'LATVIA') : 'LATVIA',
             city: idxLocation !== -1 ? row[idxLocation] : '',
             category: idxCategory !== -1 ? (row[idxCategory] || 'HOTEL').toUpperCase() : 'HOTEL',
             website: idxPlatform !== -1 ? (row[idxPlatform] || '#') : '#',
