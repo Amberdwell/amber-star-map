@@ -243,6 +243,15 @@ function setupEventListeners() {
             renderMapPoints();
         });
     }
+    async function startApp() {
+    try {
+        const res = await fetch(CSV_URL);
+        hotelData = parseTabularCSV(await res.text());
+        buildCategoriesUI();
+        buildCountryFilter();
+        renderMapPoints();
+        setupEventListeners();
+    } catch (err) { console.error('Kļūda:', err); }
 }
 
 startApp();
