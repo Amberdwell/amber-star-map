@@ -175,6 +175,18 @@ function buildCategoriesUI() {
     });
 }
 
+function buildCountryFilter() {
+    const select = document.getElementById('countryFilter');
+    if (!select) return;
+
+    // Paņemam visas unikālās valstis, izmetam tukšās un sakārtojam
+    const countries = [...new Set(hotelData.map(h => h.country))].filter(c => c && c !== 'undefined').sort();
+    
+    // Uzbūvējam HTML opcijas
+    select.innerHTML = '<option value="all">ALL COUNTRIES</option>' + 
+        countries.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
 function setupEventListeners() {
     // 1. Kategoriju filtrs
     const catContainer = document.getElementById('categoryContainer');
