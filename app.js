@@ -288,3 +288,16 @@ window.addEventListener('resize', function() {
         map.invalidateSize();
     }
 });
+
+
+const drawerHandle =
+document.getElementById('drawerHandle');
+
+const sidebar =
+document.querySelector('aside');
+
+drawerHandle?.addEventListener('click',()=>{
+
+    sidebar.classList.toggle('open');
+
+});
