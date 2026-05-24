@@ -2,7 +2,10 @@
 // ŠEIT IEKOPĒ SAVU SAITI
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
-const map = L.map('map', {
+// Ieliec šo pirms jebkura cita koda app.js failā
+const mapContainer = window.innerWidth < 768 ? 'map-mobile' : 'map';
+
+const map = L.map(mapContainer, {
     center: [56.5, 18.00],
     zoom: 5.5,
     zoomControl: false,
@@ -280,5 +283,10 @@ function setupEventListeners() {
         });
     }
 }
+
+window.addEventListener('resize', () => {
+    // Pārlādējam lapu, ja mainās orientācija, lai pareizi pārslēgtu kartes konteineru
+    location.reload(); 
+});
 
 startApp();
