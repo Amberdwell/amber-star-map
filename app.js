@@ -1,30 +1,10 @@
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
-const map = L.map('map', {
-    center: [56.5, 18.00],
-    zoom: 5.5,
-    zoomControl: false,
-    minZoom: 2,
-    maxZoom: 21
-});
-
+const map = L.map('map', { center: [56.5, 18.00], zoom: 5.5, zoomControl: false, minZoom: 2, maxZoom: 21 });
 L.control.zoom({ position: 'bottomright' }).addTo(map);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO'
-}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap © CARTO' }).addTo(map);
 
-const markersClusterGroup = L.markerClusterGroup({
-    chunkedLoading: true,
-    maxClusterRadius: 35,
-    showCoverageOnHover: false,
-    iconCreateFunction: function (cluster) {
-        return L.divIcon({
-            html: `<span>${cluster.getChildCount()}</span>`,
-            className: 'custom-cluster',
-            iconSize: L.point(36, 36)
-        });
-    }
-});
+const markersClusterGroup = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 35 });
 map.addLayer(markersClusterGroup);
 
 let hotelData = [];
@@ -33,44 +13,26 @@ let minScoreFilter = 0;
 
 function parseTabularCSV(text) {
     const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-    return parsed.data.map(row => {
-        const lat = parseFloat((row.Latitude || row.latitude || '0').toString().replace(',', '.'));
-        const lng = parseFloat((row.Longitude || row.longitude || row.lng || '0').toString().replace(',', '.'));
-        return {
-            name: row.Title || row.Property || row.Name || 'Unnamed Property',
-            description: row.Description || 'Amber Star approved luxury property.',
-            score: parseInt((row.AuditScore || '0').toString().split('/')[0]) || 0,
-            guestRating: row.GuestRating || 'N/A',
-            country: row.Country || 'LATVIA',
-            city: row.City || '',
-            category: (row.Category || 'HOTEL').toUpperCase(),
-            website: row.Website || '#',
-            id_code: row.Accreditation_No || 'AS-PENDING',
-            lat, lng,
-            image: row.Image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945'
-        };
-    }).filter(h => !isNaN(h.lat) && !isNaN(h.lng));
-}
-
-function buildCountryFilter() {
-    const select = document.getElementById('countryFilter');
-    if (!select) return;
-    const countries = [...new Set(hotelData.map(h => h.country).filter(Boolean))].sort();
-    select.innerHTML = '<option value="all">All Countries</option>';
-    countries.forEach(country => {
-        const option = document.createElement('option');
-        option.value = country;
-        option.textContent = country;
-        select.appendChild(option);
-    });
+    return parsed.data.map(row => ({
+        name: row.Title || row.Property || row.Name || 'Unnamed Property',
+        description: row.Description || 'Amber Star approved luxury property.',
+        score: parseInt((row.AuditScore || '0').toString().split('/')[0]) || 0,
+        guestRating: row.GuestRating || 'N/A',
+        country: row.Country || 'LATVIA',
+        city: row.City || '',
+        category: (row.Category || 'HOTEL').toUpperCase(),
+        website: row.Website || '#',
+        id_code: row.Accreditation_No || 'AS-PENDING',
+        lat: parseFloat((row.Latitude || row.latitude || '0').toString().replace(',', '.')),
+        lng: parseFloat((row.Longitude || row.longitude || row.lng || '0').toString().replace(',', '.')),
+        image: row.Image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945'
+    })).filter(h => !isNaN(h.lat) && !isNaN(h.lng));
 }
 
 function renderMapPoints() {
     markersClusterGroup.clearLayers();
-    const searchInput = document.getElementById('mapSearch');
-    const countryFilter = document.getElementById('countryFilter');
-    const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
-    const countryVal = countryFilter ? countryFilter.value : 'all';
+    const searchVal = document.getElementById('mapSearch')?.value.toLowerCase() || '';
+    const countryVal = document.getElementById('countryFilter')?.value || 'all';
 
     const filtered = hotelData.filter(h => {
         const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
@@ -83,28 +45,17 @@ function renderMapPoints() {
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
     filtered.forEach(loc => {
-        const marker = L.marker([loc.lat, loc.lng], { 
-            icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) 
-        });
-
-        marker.on('click', function(e) { L.DomEvent.stopPropagation(e); });
-
-        const popupContent = `
+        const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
+        marker.on('click', (e) => L.DomEvent.stopPropagation(e));
+        marker.bindPopup(`
             <div class="luxury-popup-card">
                 <div class="popup-img-container"><img src="${loc.image}" alt="${loc.name}"></div>
                 <div class="popup-content-body">
                     <h2 class="popup-main-title">${loc.name}</h2>
                     <p class="popup-description">${loc.description}</p>
-                    <div class="popup-details-grid">
-                        <div class="detail-row"><span class="detail-lbl">Audit Score:</span><span class="detail-val">${loc.score} / 150</span></div>
-                        <div class="detail-row"><span class="detail-lbl">Guest Rating:</span><span class="detail-val">${loc.guestRating}</span></div>
-                        <div class="detail-row"><span class="detail-lbl">Location:</span><span class="detail-val">${loc.city}</span></div>
-                    </div>
                     <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
-                    <div class="popup-footer-id"><strong>ID:</strong> ${loc.id_code}</div>
                 </div>
-            </div>`;
-        marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
+            </div>`, { maxWidth: 320 });
         markersClusterGroup.addLayer(marker);
     });
 }
@@ -113,8 +64,7 @@ function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
     if (!container) return;
     container.innerHTML = `<button data-category="all" class="category-btn active">ALL PROPERTIES</button>`;
-    const categories = [...new Set(hotelData.map(h => h.category))].sort();
-    categories.forEach(cat => {
+    [...new Set(hotelData.map(h => h.category))].sort().forEach(cat => {
         if(!cat || cat === 'all') return;
         const btn = document.createElement('button');
         btn.setAttribute('data-category', cat);
@@ -124,55 +74,53 @@ function buildCategoriesUI() {
     });
 }
 
+function buildCountryFilter() {
+    const select = document.getElementById('countryFilter');
+    if (!select) return;
+    const countries = [...new Set(hotelData.map(h => h.country).filter(Boolean))].sort();
+    select.innerHTML = '<option value="all">All Countries</option>';
+    countries.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; select.appendChild(o); });
+}
+
 function setupEventListeners() {
-    // 1. Kategoriju filtrs
-    const catContainer = document.getElementById('categoryContainer');
-    if (catContainer) {
-        catContainer.addEventListener('click', (e) => {
-            const btn = e.target.closest('.category-btn');
-            if (!btn) return;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeCategory = btn.getAttribute('data-category');
-            renderMapPoints();
-        });
-    }
+    document.getElementById('categoryContainer')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.category-btn');
+        if (!btn) return;
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-category');
+        renderMapPoints();
+    });
 
-    // 2. Punktu (Score) filtrs - ŠIS TEV TRŪKA
-    const scoreContainer = document.getElementById('scoreFilterGroup');
-    if (scoreContainer) {
-        scoreContainer.addEventListener('click', (e) => {
-            const btn = e.target.closest('.score-btn');
-            if (!btn) return;
-            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            minScoreFilter = parseInt(btn.getAttribute('data-min-score'), 10) || 0;
-            renderMapPoints();
-        });
-    }
+    document.getElementById('scoreFilterGroup')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.score-btn');
+        if (!btn) return;
+        document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        minScoreFilter = parseInt(btn.getAttribute('data-min-score'), 10) || 0;
+        renderMapPoints();
+    });
 
-    // 3. Reset poga - ŠIS TEV TRŪKA
-    const resetBtn = document.getElementById('resetFilters');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            activeCategory = 'all';
-            minScoreFilter = 0;
-            const searchInput = document.getElementById('mapSearch');
-            if (searchInput) searchInput.value = '';
-            const countryFilter = document.getElementById('countryFilter');
-            if (countryFilter) countryFilter.value = 'all';
-            
-            document.querySelectorAll('.category-btn, .score-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="all"]')?.classList.add('active');
-            
-            renderMapPoints();
-        });
-    }
+    document.getElementById('resetFilters')?.addEventListener('click', () => {
+        activeCategory = 'all'; minScoreFilter = 0;
+        document.getElementById('mapSearch').value = '';
+        document.getElementById('countryFilter').value = 'all';
+        renderMapPoints();
+    });
 
-    // 4. Meklētājs un citi
-    document.getElementById('mapSearch')?.addEventListener('input', () => renderMapPoints());
-    document.getElementById('countryFilter')?.addEventListener('change', () => renderMapPoints());
-    window.addEventListener('resize', () => location.reload());
+    document.getElementById('mapSearch')?.addEventListener('input', renderMapPoints);
+    document.getElementById('countryFilter')?.addEventListener('change', renderMapPoints);
+}
+
+async function startApp() {
+    try {
+        const response = await fetch(CSV_URL);
+        hotelData = parseTabularCSV(await response.text());
+        buildCategoriesUI();
+        buildCountryFilter();
+        renderMapPoints();
+        setupEventListeners();
+    } catch (err) { console.error('Kļūda:', err); }
 }
 
 startApp();
