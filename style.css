@@ -273,13 +273,12 @@ body {
 
     /* 👇 ŠEIT IELIEC */
 aside {
-    position: relative !important;
-    transform: none !important;
+    position: fixed;
+    transform: translateY(calc(100% - 74px));
 }
 
 #map-wrap {
-    height: 100vh !important;
-    background: red !important;
+    height: 58dvh;
 }
 
     .popup-main-title{
