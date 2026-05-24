@@ -89,14 +89,16 @@
             }
         }
 
-        /* MAP */
+/* MAP */
 
-        #map-wrap{
-            position:relative;
-            flex:1;
-            height:58dvh;
-            background:#161920;
-        }
+#map-wrap{
+    position:fixed; /* <--- PADARA KARTI PAR FONU */
+    inset:0;        /* <--- IZPLEŠ TO PA VISU EKRĀNU */
+    width:100%;
+    height:100%;    /* <--- Ignorējam dvh, jo fixed to kontrolē inset */
+    background:#161920;
+    z-index:1;      /* Karte ir fonā */
+}
 
         @media(min-width:768px){
             #map-wrap{
