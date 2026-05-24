@@ -238,8 +238,6 @@ body {
 
 @media(max-width:767px){
 
-    #map-wrap {
-        height: 100dvh;
     }
 
     aside{
@@ -286,7 +284,6 @@ body {
     .score-btn{
         min-height:46px;
     }
-}
 
 
 #map-wrap {
@@ -310,5 +307,4 @@ body {
     .score-btn{
         min-height:46px;
     }
-
 }
