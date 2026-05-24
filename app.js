@@ -5,7 +5,8 @@ const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99O
 // Ieliec šo pirms jebkura cita koda app.js failā
 const mapContainer = window.innerWidth < 768 ? 'map-mobile' : 'map';
 
-const map = L.map(mapContainer, {
+// Tavs app.js
+const map = L.map('map', {
     center: [56.5, 18.00],
     zoom: 5.5,
     zoomControl: false,
