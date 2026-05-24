@@ -4,8 +4,18 @@ const map = L.map('map', { center: [56.5, 18.00], zoom: 5.5, zoomControl: false,
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap © CARTO' }).addTo(map);
 
-const markersClusterGroup = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 35 });
-map.addLayer(markersClusterGroup);
+const markersClusterGroup = L.markerClusterGroup({
+    chunkedLoading: true,
+    maxClusterRadius: 35,
+    showCoverageOnHover: false, // Tas noņem to zilo iekrāsojumu, kad uzbrauc virsū
+    iconCreateFunction: function (cluster) {
+        return L.divIcon({
+            html: `<span>${cluster.getChildCount()}</span>`,
+            className: 'custom-cluster', // Šī klase tev jābūt style.css
+            iconSize: L.point(36, 36)
+        });
+    }
+});
 
 let hotelData = [];
 let activeCategory = 'all';
