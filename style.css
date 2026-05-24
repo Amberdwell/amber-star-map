@@ -238,9 +238,9 @@ body {
 
 @media(max-width:767px){
 
-    body{
-        overflow:hidden;
-    }
+body {
+    overflow: auto !important;
+}
 
     aside{
 
@@ -272,24 +272,15 @@ body {
     }
 
     /* 👇 ŠEIT IELIEC */
-    aside::before {
-        content: "";
-        width: 44px;
-        height: 5px;
-        background: #2A303C;
-        border-radius: 999px;
+aside {
+    position: relative !important;
+    transform: none !important;
+}
 
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #map-wrap{
-        width:100%;
-        height:100dvh;
-
-    }
+#map-wrap {
+    height: 100vh !important;
+    background: red !important;
+}
 
     .popup-main-title{
         font-size:18px;
