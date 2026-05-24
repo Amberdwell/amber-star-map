@@ -1,3 +1,4 @@
+
 // ŠEIT IEKOPĒ SAVU SAITI
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
@@ -197,15 +198,7 @@ const popupContent = `
             
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
         markersClusterGroup.addLayer(marker);
-marker.on('click',()=>{
-
-    if(window.innerWidth < 768){
-
-        sidebar.classList.remove('open');
-
-    }
-
-});
+    });
 }
 
 function buildCategoriesUI() {
@@ -289,23 +282,3 @@ function setupEventListeners() {
 }
 
 startApp();
-
-// PIEVIENO ŠEIT:
-window.addEventListener('resize', function() {
-    if (typeof map !== 'undefined') {
-        map.invalidateSize();
-    }
-});
-
-
-const drawerHandle =
-document.getElementById('drawerHandle');
-
-const sidebar =
-document.querySelector('aside');
-
-drawerHandle?.addEventListener('click',()=>{
-
-    sidebar.classList.toggle('open');
-
-});
