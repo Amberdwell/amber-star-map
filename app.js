@@ -156,7 +156,7 @@ function renderMapPoints() {
     const filtered = hotelData.filter(h => {
         const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
         const matchesScore = (h.score >= minScoreFilter);
-        const matchesCountry =(countryVal === 'all' || h.country.toLowerCase() === countryVal.toLowerCase());
+        const matchesCountry = (countryVal === 'all' || h.country.toLowerCase() === countryVal.toLowerCase());
         const matchesSearch = (h.name.toLowerCase().includes(searchVal) || h.city.toLowerCase().includes(searchVal));
         
         return matchesCategory && matchesScore && matchesCountry && matchesSearch;
@@ -173,7 +173,6 @@ function renderMapPoints() {
             }) 
         });
 
-        // ŠIS LABOJUMS APTUR NEPAREIZU AIZVĒRŠANOS
         marker.on('click', function(e) {
             L.DomEvent.stopPropagation(e);
         });
@@ -193,19 +192,6 @@ function renderMapPoints() {
                     <div class="popup-footer-id"><strong>ID:</strong> ${loc.id_code}</div>
                 </div>
             </div>`;
-            
-        marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
-        markersClusterGroup.addLayer(marker);
-    });
-}
-
-<a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
-            
-            <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
-                ${loc.id_code}
-            </div>
-        </div>
-    </div>`;
             
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
         markersClusterGroup.addLayer(marker);
@@ -235,7 +221,6 @@ function buildCategoriesUI() {
 }
 
 function setupEventListeners() {
-    // 1. Kategoriju filtrs
     const catContainer = document.getElementById('categoryContainer');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -248,23 +233,16 @@ function setupEventListeners() {
         });
     }
 
-    // 2. Meklētājs (IZNESTS ĀRĀ)
     const mapSearch = document.getElementById('mapSearch');
     if (mapSearch) {
-        mapSearch.addEventListener('input', () => {
-            renderMapPoints();
-        });
+        mapSearch.addEventListener('input', () => renderMapPoints());
     }
 
-    // 3. Valstu filtrs (IZNESTS ĀRĀ)
     const countryFilter = document.getElementById('countryFilter');
     if (countryFilter) {
-        countryFilter.addEventListener('change', () => {
-            renderMapPoints();
-        });
+        countryFilter.addEventListener('change', () => renderMapPoints());
     }
 
-    // 4. Punktu (Score) filtrs
     const scoreContainer = document.getElementById('scoreFilterGroup');
     if (scoreContainer) {
         scoreContainer.addEventListener('click', (e) => {
@@ -277,7 +255,6 @@ function setupEventListeners() {
         });
     }
 
-    // 5. Reset poga
     const resetBtn = document.getElementById('resetFilters');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
@@ -293,7 +270,6 @@ function setupEventListeners() {
 }
 
 window.addEventListener('resize', () => {
-    // Pārlādējam lapu, ja mainās orientācija, lai pareizi pārslēgtu kartes konteineru
     location.reload(); 
 });
 
