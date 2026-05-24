@@ -197,7 +197,15 @@ const popupContent = `
             
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
         markersClusterGroup.addLayer(marker);
-    });
+marker.on('click',()=>{
+
+    if(window.innerWidth < 768){
+
+        sidebar.classList.remove('open');
+
+    }
+
+});
 }
 
 function buildCategoriesUI() {
