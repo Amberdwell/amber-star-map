@@ -165,32 +165,39 @@ function renderMapPoints() {
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Exceptional Properties`;
 
     filtered.forEach(loc => {
-        const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
+        const marker = L.marker([loc.lat, loc.lng], { 
+            icon: L.divIcon({ 
+                html: `<div class="premium-dot-marker"></div>`, 
+                className: 'custom-dot-wrapper', 
+                iconSize: [16, 16] 
+            }) 
+        });
 
+        // ŠIS LABOJUMS APTUR NEPAREIZU AIZVĒRŠANOS
+        marker.on('click', function(e) {
+            L.DomEvent.stopPropagation(e);
+        });
 
-const popupContent = `
-    <div class="luxury-popup-card" style="width: 320px;">
-        <div class="popup-img-container" style="height: 150px; overflow: hidden;">
-            <img src="${loc.image}" alt="${loc.name}" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div class="popup-content-body" style="padding: 12px;">
-            <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px; color: #ffffff;">${loc.name}</h2>
-            <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px; color: #E8E3D9;">${loc.description}</p>
+        const popupContent = `
+            <div class="luxury-popup-card">
+                <div class="popup-img-container"><img src="${loc.image}" alt="${loc.name}"></div>
+                <div class="popup-content-body">
+                    <h2 class="popup-main-title">${loc.name}</h2>
+                    <p class="popup-description">${loc.description}</p>
+                    <div class="popup-details-grid">
+                        <div class="detail-row"><span class="detail-lbl">Audit Score:</span><span class="detail-val">${loc.score} / 150</span></div>
+                        <div class="detail-row"><span class="detail-lbl">Guest Rating:</span><span class="detail-val">${loc.guestRating}</span></div>
+                        <div class="detail-row"><span class="detail-lbl">Location:</span><span class="detail-val">${loc.city}</span></div>
+                    </div>
+                    <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
+                    <div class="popup-footer-id"><strong>ID:</strong> ${loc.id_code}</div>
+                </div>
+            </div>`;
             
-            <div class="popup-details-grid" style="display: grid; gap: 5px; margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
-                    <span>Audit Score:</span>
-                    <span class="detail-val font-semibold" style="color: #ffffff;">${loc.score} / 150</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
-                    <span>Guest Rating:</span>
-                    <span class="detail-val font-semibold" style="color: #ffffff;">${loc.guestRating}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
-                    <span>Location:</span>
-                    <span class="detail-val" style="color: #ffffff;">📍 ${loc.city}</span>
-                </div>
-            </div>
+        marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
+        markersClusterGroup.addLayer(marker);
+    });
+}
 
 <a href="${loc.website.startsWith('http') ? loc.website : 'https://'+loc.website}" target="_blank" class="popup-action-btn">Official Website</a>
             
