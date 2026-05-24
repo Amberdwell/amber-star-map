@@ -281,3 +281,10 @@ function setupEventListeners() {
 }
 
 startApp();
+
+// PIEVIENO ŠEIT:
+window.addEventListener('resize', function() {
+    if (typeof map !== 'undefined') {
+        map.invalidateSize();
+    }
+});
