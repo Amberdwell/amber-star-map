@@ -238,14 +238,13 @@ body {
 
 @media(max-width:767px){
 
-body {
-    overflow: auto !important;
-}
+    #map-wrap {
+        height: 100dvh;
+    }
 
     aside{
 
         position:fixed;
-
         left:0;
         right:0;
         bottom:0;
@@ -271,14 +270,28 @@ body {
         transform:translateY(0);
     }
 
-    /* 👇 ŠEIT IELIEC */
-aside {
-    position: fixed;
-    transform: translateY(calc(100% - 74px));
+    .popup-main-title{
+        font-size:18px;
+    }
+
+    .popup-content-body{
+        padding:16px;
+    }
+
+    .popup-description{
+        font-size:11px;
+    }
+
+    .category-btn,
+    .score-btn{
+        min-height:46px;
+    }
 }
 
+
 #map-wrap {
-    height: 58dvh;
+    flex: 1;
+    height: 100dvh;
 }
 
     .popup-main-title{
