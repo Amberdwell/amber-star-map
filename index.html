@@ -44,25 +44,24 @@
         }
 
         html,
-        body{
-            margin:0;
-            padding:0;
-            height:100%;
-            overflow:hidden;
-            background:var(--bg);
-            color:var(--text);
-            font-family:'Montserrat',sans-serif;
-            -webkit-font-smoothing:antialiased;
+body {
+            margin: 0;
+            padding: 0;
+            height: 100dvh; /* Izmantojam 100dvh, lai tas būtu precīzi mobilā ekrāna augstums */
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            
+            /* Flex iestatījumi */
+            display: flex;
+            flex-direction: column; /* Mobilajam: sidebar augšā, karte apakšā */
         }
 
-        body{
-            display:flex;
-            flex-direction:column;
-        }
-
-        @media(min-width:768px){
-            body{
-                flex-direction:row;
+        @media (min-width: 768px) {
+            body {
+                flex-direction: row; /* Datoram: sidebar pa kreisi, karte pa labi */
             }
         }
 
