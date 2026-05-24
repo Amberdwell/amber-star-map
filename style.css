@@ -224,20 +224,23 @@ body {
 }
 
 /* Sidebar/Aside stils */
+
 aside {
-    width: 100%;
-    height: 40vh; /* Mobilajā 40% augstuma */
-    background: #0F1115;
-    overflow-y: auto;
+    background-color: #0F1115 !important;
     display: flex;
     flex-direction: column;
     z-index: 1000;
 }
 
-@media (min-width: 768px) {
-    aside {
-        width: 320px;
-        height: 100vh; /* Datorā pilns augstums */
-        border-right: 1px solid #2A303C;
-    }
+/* Kategoriju pogu fona labojums */
+.category-btn {
+    background-color: transparent !important;
+    width: 100%;
+}
+
+/* Nodrošinām, ka mobilajā viss ir redzams */
+@media(max-width: 767px) {
+    body { height: 100vh; flex-direction: column; }
+    aside { height: 40vh; flex: 0 0 40vh; }
+    #map-wrap { height: 60vh; flex: 1; }
 }
