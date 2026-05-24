@@ -236,11 +236,18 @@ body {
    MOBILE UX
 ========================= */
 
-@media(max-width:767px){
+@media (max-width: 767px) {
+
+    #map {
+        width: 100%;
+        height: 100%;
+    }
 
     #map-wrap {
         height: 100dvh;
     }
+
+}
 
     aside{
         position:fixed;
