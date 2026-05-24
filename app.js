@@ -166,7 +166,7 @@ function renderMapPoints() {
 
     filtered.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
-// Atrodi šo vietu iekšā renderMapPoints funkcijā:
+
 
 const popupContent = `
     <div class="luxury-popup-card" style="width: 320px;">
