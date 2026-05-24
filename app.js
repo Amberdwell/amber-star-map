@@ -125,6 +125,7 @@ function buildCategoriesUI() {
 }
 
 function setupEventListeners() {
+    // 1. Kategoriju filtrs
     const catContainer = document.getElementById('categoryContainer');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -136,21 +137,42 @@ function setupEventListeners() {
             renderMapPoints();
         });
     }
+
+    // 2. Punktu (Score) filtrs - ŠIS TEV TRŪKA
+    const scoreContainer = document.getElementById('scoreFilterGroup');
+    if (scoreContainer) {
+        scoreContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.score-btn');
+            if (!btn) return;
+            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            minScoreFilter = parseInt(btn.getAttribute('data-min-score'), 10) || 0;
+            renderMapPoints();
+        });
+    }
+
+    // 3. Reset poga - ŠIS TEV TRŪKA
+    const resetBtn = document.getElementById('resetFilters');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            activeCategory = 'all';
+            minScoreFilter = 0;
+            const searchInput = document.getElementById('mapSearch');
+            if (searchInput) searchInput.value = '';
+            const countryFilter = document.getElementById('countryFilter');
+            if (countryFilter) countryFilter.value = 'all';
+            
+            document.querySelectorAll('.category-btn, .score-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-category="all"]')?.classList.add('active');
+            
+            renderMapPoints();
+        });
+    }
+
+    // 4. Meklētājs un citi
     document.getElementById('mapSearch')?.addEventListener('input', () => renderMapPoints());
     document.getElementById('countryFilter')?.addEventListener('change', () => renderMapPoints());
     window.addEventListener('resize', () => location.reload());
-}
-
-async function startApp() {
-    try {
-        const response = await fetch(CSV_URL);
-        const csvText = await response.text();
-        hotelData = parseTabularCSV(csvText);
-        buildCategoriesUI();
-        buildCountryFilter();
-        renderMapPoints();
-        setupEventListeners();
-    } catch (err) { console.error('Kļūda:', err); }
 }
 
 startApp();
