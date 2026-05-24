@@ -264,12 +264,25 @@ body {
 
         transition:transform 0.35s ease;
 
-        box-shadow:
-        0 -10px 40px rgba(0,0,0,0.45);
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.45);
     }
 
     aside.open{
         transform:translateY(0);
+    }
+
+    /* 👇 ŠEIT IELIEC */
+    aside::before {
+        content: "";
+        width: 44px;
+        height: 5px;
+        background: #2A303C;
+        border-radius: 999px;
+
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #map-wrap{
