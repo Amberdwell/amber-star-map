@@ -290,3 +290,30 @@ aside {
 .detail-val { 
     font-weight: 600; 
 }
+
+/* Kategoriju konteineris - nodrošina atstarpes */
+#categoryContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Atstarpe starp pogām */
+    padding: 10px;
+}
+
+/* Kategoriju pogas - padaram tās labāk redzamas */
+.category-btn {
+    background: #161920 !important; /* Tumšs fons pogai */
+    border: 1px solid #2A303C;      /* Rāmītis */
+    color: #A39F99 !important;      /* Teksta krāsa */
+    padding: 12px 16px !important;  /* Lielāks nospiežamais laukums telefonam */
+    border-radius: 4px;
+    font-size: 14px !important;     /* Nedaudz lielāks teksts */
+    text-align: left;
+    transition: all 0.2s;
+}
+
+/* Aktīvā kategorija */
+.category-btn.active {
+    border-color: #D4AF37 !important;
+    color: #ffffff !important;
+    background: #1f232d !important;
+}
