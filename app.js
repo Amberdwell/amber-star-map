@@ -1,11 +1,5 @@
-
-// ŠEIT IEKOPĒ SAVU SAITI
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
-// Ieliec šo pirms jebkura cita koda app.js failā
-const mapContainer = window.innerWidth < 768 ? 'map-mobile' : 'map';
-
-// Tavs app.js
 const map = L.map('map', {
     center: [56.5, 18.00],
     zoom: 5.5,
@@ -15,7 +9,6 @@ const map = L.map('map', {
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
-
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
@@ -36,94 +29,34 @@ map.addLayer(markersClusterGroup);
 
 let hotelData = [];
 let activeCategory = 'all';
-let activeCountry = 'all';
 let minScoreFilter = 0;
-let searchQuery = '';
 
 function parseTabularCSV(text) {
-
-    const parsed = Papa.parse(text, {
-        header: true,
-        skipEmptyLines: true
-    });
-
+    const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
     return parsed.data.map(row => {
-
-        const lat = parseFloat(
-            (row.Latitude || row.latitude || '0')
-            .toString()
-            .replace(',', '.')
-        );
-
-        const lng = parseFloat(
-            (row.Longitude || row.longitude || row.lng || '0')
-            .toString()
-            .replace(',', '.')
-        );
-
+        const lat = parseFloat((row.Latitude || row.latitude || '0').toString().replace(',', '.'));
+        const lng = parseFloat((row.Longitude || row.longitude || row.lng || '0').toString().replace(',', '.'));
         return {
-
-            name:
-                row.Title ||
-                row.Property ||
-                row.Name ||
-                'Unnamed Property',
-
-            description:
-                row.Description ||
-                'Amber Star approved luxury property.',
-
-            score:
-                parseInt(
-                    (row.AuditScore || '0')
-                    .toString()
-                    .split('/')[0]
-                ) || 0,
-
-            guestRating:
-                row.GuestRating || 'N/A',
-
-            country:
-                row.Country || 'LATVIA',
-
-            city:
-                row.City || '',
-
-            category:
-                (
-                    row.Category ||
-                    'HOTEL'
-                ).toUpperCase(),
-
-            website:
-                row.Website || '#',
-
-            id_code:
-                row.Accreditation_No ||
-                'AS-PENDING',
-
-            lat,
-            lng,
-
-            image:
-                row.Image ||
-                'https://images.unsplash.com/photo-1566073771259-6a8506099945'
+            name: row.Title || row.Property || row.Name || 'Unnamed Property',
+            description: row.Description || 'Amber Star approved luxury property.',
+            score: parseInt((row.AuditScore || '0').toString().split('/')[0]) || 0,
+            guestRating: row.GuestRating || 'N/A',
+            country: row.Country || 'LATVIA',
+            city: row.City || '',
+            category: (row.Category || 'HOTEL').toUpperCase(),
+            website: row.Website || '#',
+            id_code: row.Accreditation_No || 'AS-PENDING',
+            lat, lng,
+            image: row.Image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945'
         };
-
-    }).filter(h =>
-        !isNaN(h.lat) &&
-        !isNaN(h.lng)
-    );
+    }).filter(h => !isNaN(h.lat) && !isNaN(h.lng));
 }
 
 function buildCountryFilter() {
     const select = document.getElementById('countryFilter');
     if (!select) return;
-
     const countries = [...new Set(hotelData.map(h => h.country).filter(Boolean))].sort();
-
     select.innerHTML = '<option value="all">All Countries</option>';
-
     countries.forEach(country => {
         const option = document.createElement('option');
         option.value = country;
@@ -132,22 +65,8 @@ function buildCountryFilter() {
     });
 }
 
-async function startApp() {
-    try {
-        const response = await fetch(CSV_URL);
-        if (!response.ok) throw new Error("Nevar ielādēt datus");
-        const csvText = await response.text();
-        hotelData = parseTabularCSV(csvText);
-        buildCategoriesUI();
-        buildCountryFilter();
-        renderMapPoints();
-        setupEventListeners();
-    } catch (err) { console.error('Kļūda:', err); }
-}
-
 function renderMapPoints() {
     markersClusterGroup.clearLayers();
-    
     const searchInput = document.getElementById('mapSearch');
     const countryFilter = document.getElementById('countryFilter');
     const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
@@ -158,7 +77,6 @@ function renderMapPoints() {
         const matchesScore = (h.score >= minScoreFilter);
         const matchesCountry = (countryVal === 'all' || h.country.toLowerCase() === countryVal.toLowerCase());
         const matchesSearch = (h.name.toLowerCase().includes(searchVal) || h.city.toLowerCase().includes(searchVal));
-        
         return matchesCategory && matchesScore && matchesCountry && matchesSearch;
     });
 
@@ -166,16 +84,10 @@ function renderMapPoints() {
 
     filtered.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng], { 
-            icon: L.divIcon({ 
-                html: `<div class="premium-dot-marker"></div>`, 
-                className: 'custom-dot-wrapper', 
-                iconSize: [16, 16] 
-            }) 
+            icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) 
         });
 
-        marker.on('click', function(e) {
-            L.DomEvent.stopPropagation(e);
-        });
+        marker.on('click', function(e) { L.DomEvent.stopPropagation(e); });
 
         const popupContent = `
             <div class="luxury-popup-card">
@@ -192,8 +104,53 @@ function renderMapPoints() {
                     <div class="popup-footer-id"><strong>ID:</strong> ${loc.id_code}</div>
                 </div>
             </div>`;
-            
         marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
         markersClusterGroup.addLayer(marker);
     });
 }
+
+function buildCategoriesUI() {
+    const container = document.getElementById('categoryContainer');
+    if (!container) return;
+    container.innerHTML = `<button data-category="all" class="category-btn active">ALL PROPERTIES</button>`;
+    const categories = [...new Set(hotelData.map(h => h.category))].sort();
+    categories.forEach(cat => {
+        if(!cat || cat === 'all') return;
+        const btn = document.createElement('button');
+        btn.setAttribute('data-category', cat);
+        btn.className = "category-btn";
+        btn.innerHTML = `<span>${cat}</span>`;
+        container.appendChild(btn);
+    });
+}
+
+function setupEventListeners() {
+    const catContainer = document.getElementById('categoryContainer');
+    if (catContainer) {
+        catContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.category-btn');
+            if (!btn) return;
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCategory = btn.getAttribute('data-category');
+            renderMapPoints();
+        });
+    }
+    document.getElementById('mapSearch')?.addEventListener('input', () => renderMapPoints());
+    document.getElementById('countryFilter')?.addEventListener('change', () => renderMapPoints());
+    window.addEventListener('resize', () => location.reload());
+}
+
+async function startApp() {
+    try {
+        const response = await fetch(CSV_URL);
+        const csvText = await response.text();
+        hotelData = parseTabularCSV(csvText);
+        buildCategoriesUI();
+        buildCountryFilter();
+        renderMapPoints();
+        setupEventListeners();
+    } catch (err) { console.error('Kļūda:', err); }
+}
+
+startApp();
