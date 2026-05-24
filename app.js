@@ -128,3 +128,25 @@ async function startApp() {
 }
 
 startApp();
+
+/* --- MOBILAIS OPTIMIZĒJUMS (Pievienot faila beigās) --- */
+
+@media (max-width: 480px) {
+    /* Piespiežam popupu iekļauties ekrānā */
+    .leaflet-popup-content-wrapper, .leaflet-popup-content {
+        width: 260px !important; /* Mazliet šaurāks par 320px, lai derētu mazos ekrānos */
+    }
+    
+    .popup-main-title {
+        font-size: 18px !important; /* Nedaudz mazāks virsraksts mobilajam */
+    }
+    
+    .popup-img-container {
+        height: 120px !important; /* Nedaudz zemāka bilde */
+    }
+}
+
+/* Nodrošinam, ka klasteri neizslīd ārā no ekrāna */
+.leaflet-container {
+    touch-action: pan-x pan-y !important;
+}
