@@ -358,3 +358,16 @@ aside {
         width: 100% !important;
     }
 
+/* Tailwind reset-o Leaflet karti - izslēdzam to */
+.leaflet-container *, 
+.leaflet-container ::before, 
+.leaflet-container ::after {
+    box-sizing: content-box !important;
+}
+
+/* Novēršam caurspīdīgumu, ko Tailwind varbūt uzspiež */
+.leaflet-popup-content-wrapper {
+    background-color: #161920 !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+}
