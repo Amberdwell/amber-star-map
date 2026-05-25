@@ -335,3 +335,39 @@ aside {
     color: #ffffff !important;
     background: #1f232d !important;
 }
+
+/* --- MOBILAIS IEKĀRTOJUMS --- */
+@media (max-width: 600px) {
+    /* Pārliecināmies, ka kategoriju konteineris ir vertikāls un neaizsedz karti */
+    #categoryContainer {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+        margin: 10px 0 !important;
+        width: 100% !important;
+    }
+
+    /* Pogas mobilajām ierīcēm - piešķiram tām vairāk vietas un skaidru izmēru */
+    .category-btn {
+        width: 100% !important;
+        padding: 12px 15px !important;
+        text-align: left !important;
+        display: block !important;
+        background: #161920 !important;
+        border-bottom: 1px solid #2A303C !important;
+    }
+
+    /* "13 Exceptional Properties" sadaļas korekcija */
+    .properties-count-box {
+        margin: 15px 0 !important;
+        padding: 10px !important;
+        text-align: center;
+    }
+
+    /* Kartes konteineris - nodrošinām, ka tas sākās tikai pēc visiem filtriem */
+    #map {
+        height: 40vh !important; /* Uz telefona atvēlam kartes augstumam 40% no ekrāna */
+        width: 100% !important;
+        margin-top: 10px !important;
+    }
+}
