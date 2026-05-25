@@ -347,8 +347,3 @@ aside {
         width: 100% !important;
     }
 
-/* Mobilajā versijā atļaujam kartītei pārklāties pāri visam, ja vajag */
-.leaflet-popup {
-    max-height: 70vh !important;
-    overflow-y: auto !important;
-}
