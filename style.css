@@ -346,17 +346,3 @@ aside {
         margin: 10px 0 !important;
         width: 100% !important;
     }
-
-/* Atgriežam krāsas un noņemam caurspīdīgumu */
-.category-btn, .score-btn, .luxury-popup-card {
-    opacity: 1 !important;
-    filter: none !important;
-    background-color: #161920 !important; /* Uzstādām stingru fonu */
-    color: #ffffff !important;
-}
-
-/* Fiksējam kategoriju pogu izskatu */
-.category-btn {
-    background-color: #161920 !important;
-    border-left: 2px solid #2A303C !important;
-}
