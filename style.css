@@ -3,6 +3,17 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+/* Pārrakstām pilnīgi visu */
+.luxury-popup-card, 
+.category-btn, 
+.score-btn, 
+.popup-content-body {
+    background-color: #161920 !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+    border: 1px solid #D4AF37 !important;
+}
+
 /* Augšējais zīmola virsraksts ar taviem fontiem un krāsām */
 .brand-title-box {
     display: flex;
