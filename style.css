@@ -365,9 +365,10 @@ aside {
     }
 
     /* Kartes konteineris - nodrošinām, ka tas sākās tikai pēc visiem filtriem */
-    #map {
-        height: 40vh !important; /* Uz telefona atvēlam kartes augstumam 40% no ekrāna */
-        width: 100% !important;
-        margin-top: 10px !important;
-    }
+#map {
+    height: 40vh !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+    border: 5px solid red !important; 
+}
 }
