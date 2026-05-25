@@ -347,15 +347,16 @@ aside {
         width: 100% !important;
     }
 
-/* Novēršam kartītes pazušanu */
-.leaflet-popup {
-    pointer-events: auto !important;
-    z-index: 10000 !important;
+/* Atgriežam krāsas un noņemam caurspīdīgumu */
+.category-btn, .score-btn, .luxury-popup-card {
+    opacity: 1 !important;
+    filter: none !important;
+    background-color: #161920 !important; /* Uzstādām stingru fonu */
+    color: #ffffff !important;
 }
 
-/* Nodrošinām, ka popup saturs ir stabils */
-.leaflet-popup-content-wrapper {
-    opacity: 1 !important;
-    background: #0F1115 !important; /* Tavs tumšais fons */
-    pointer-events: all !important;
+/* Fiksējam kategoriju pogu izskatu */
+.category-btn {
+    background-color: #161920 !important;
+    border-left: 2px solid #2A303C !important;
 }
