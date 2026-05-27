@@ -360,26 +360,4 @@ aside {
         width: 100% !important;
     }
 
-/* ===== MOBILE FIX ===== */
 
-@media (max-width: 767px){
-
-    body{
-        height:100dvh;
-        display:flex;
-        flex-direction:column;
-        overflow:hidden;
-    }
-
-    aside{
-        height:auto;
-        max-height:45dvh;
-        overflow-y:auto;
-    }
-
-    #map-wrap{
-        flex:1;
-        min-height:0;
-    }
-
-}
