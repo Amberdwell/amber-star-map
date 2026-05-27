@@ -200,7 +200,7 @@ marker.bindPopup(popupContent, {
     maxWidth: 320, 
     minWidth: 260 
 });
-}
+
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
