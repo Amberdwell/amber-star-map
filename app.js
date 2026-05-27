@@ -162,8 +162,14 @@ function renderMapPoints() {
 
     filtered.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
-// Atrodi šo vietu iekšā renderMapPoints funkcijā:
 
+const website =
+    loc.website && typeof loc.website === 'string' && loc.website.trim() !== ''
+        ? (loc.website.startsWith('http')
+            ? loc.website
+            : 'https://' + loc.website)
+        : null;
+        
 const popupContent = `
     <div class="luxury-popup-card" style="width: 320px;">
         <div class="popup-img-container" style="height: 150px; overflow: hidden;">
@@ -188,7 +194,7 @@ const popupContent = `
                 </div>
             </div>
 
-<a href="${loc.website ? (loc.website.startsWith('http') ? loc.website : 'https://' + loc.website) : '#'}" target="_blank" class="popup-action-btn">Official Website</a>
+<a href="${website || '#'}" target="_blank" class="popup-action-btn">Official Website</a></a>
             
             <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
                 ${loc.id_code}
