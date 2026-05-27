@@ -196,9 +196,10 @@ const popupContent = `
         </div>
     </div>`;
             
-        marker.bindPopup(popupContent, { maxWidth: 320, minWidth: 320 });
-        markersClusterGroup.addLayer(marker);
-    });
+marker.bindPopup(popupContent, { 
+    maxWidth: 320, 
+    minWidth: 260 
+});
 }
 
 function buildCategoriesUI() {
@@ -282,3 +283,15 @@ function setupEventListeners() {
 }
 
 startApp();
+
+window.addEventListener('resize', () => {
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 200);
+});
+
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+});
