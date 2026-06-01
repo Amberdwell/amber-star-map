@@ -173,7 +173,7 @@ const website =
         : null;
         
 const popupContent = `
-    <div class="luxury-popup-card" style="width: 320px;">
+    <div class="luxury-popup-card" style="width:100%;">
         <div class="popup-img-container" style="height: 150px; overflow: hidden;">
             <img src="${loc.image}" alt="${loc.name}" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
