@@ -2,9 +2,11 @@
 // ŠEIT IEKOPĒ SAVU SAITI
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
+const isMobile = window.innerWidth < 768;
+
 const map = L.map('map', {
     center: [56.5, 18.00],
-    zoom: 5.5,
+    zoom: isMobile ? 4.8 : 5.5,
     zoomControl: false,
     minZoom: 2,
     maxZoom: 21
