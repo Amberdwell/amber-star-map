@@ -6,7 +6,7 @@ const isMobile = window.innerWidth < 768;
 
 const map = L.map('map', {
     center: [56.5, 18.00],
-    zoom: isMobile ? 4.8 : 5.5,
+    zoom: isMobile ? 4.2 : 5.5,
     zoomControl: false,
     minZoom: 2,
     maxZoom: 21
