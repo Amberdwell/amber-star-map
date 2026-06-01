@@ -194,7 +194,9 @@ const popupContent = `
                 </div>
             </div>
 
-<a href="${website || '#'}" target="_blank" class="popup-action-btn">Official Website</a></a>
+<a href="${website || '#'}"
+   target="_blank"
+   class="popup-action-btn">Official Website</a>
             
             <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
                 ${loc.id_code}
@@ -206,6 +208,11 @@ marker.bindPopup(popupContent, {
     maxWidth: 320, 
     minWidth: 260 
 });
+        markersClusterGroup.addLayer(marker);
+
+    });
+
+}
 
 
 function buildCategoriesUI() {
