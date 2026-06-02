@@ -258,4 +258,9 @@
         min-height:0;
     }
 
+    .leaflet-popup-content{
+        width:92vw !important;
+        max-width:92vw !important;
+    }
+
 }
