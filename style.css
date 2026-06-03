@@ -243,31 +243,22 @@
 
 
 @media(max-width:767px){
-body{
 
-     display:flex;
-
-        flex-direction:column;
-
+    #filtersPanel{
+        display: none;
     }
 
-  aside{
+    #filtersPanel.open{
+        display: block;
+    }
 
-        height:auto;
+    aside{
+        max-height: 35vh; /* mazs header panelis */
+    }
 
-        max-height:35dvh;
-
-        overflow-y:auto;
-
- }
-
-  #map-wrap{
-
-        flex:1;
-
-        min-height:0;
-
- }
+    #map-wrap{
+        height: 65vh;
+    }
 
   .leaflet-popup-content{
 
