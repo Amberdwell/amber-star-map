@@ -239,6 +239,16 @@ function buildCategoriesUI() {
     });
 }
 
+function closeFilters() {
+    const panel = document.getElementById('filtersPanel');
+    const toggle = document.getElementById('filtersToggle');
+
+    if (window.innerWidth < 768) {
+        panel?.classList.remove('open');
+        if (toggle) toggle.textContent = 'FILTERS ▼';
+    }
+}
+
 function setupEventListeners() {
 
     // ✅ MOBILE FILTER TOGGLE
@@ -256,8 +266,9 @@ function setupEventListeners() {
         });
     }
 
-    // 1. Kategoriju filtrs
+    // 1. KATEGORIJAS
     const catContainer = document.getElementById('categoryContainer');
+
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('.category-btn');
@@ -270,10 +281,19 @@ function setupEventListeners() {
             activeCategory = btn.getAttribute('data-category');
 
             renderMapPoints();
+
+            // ✅ AUTO CLOSE MOBILE FILTER PANEL
+            if (window.innerWidth < 768) {
+                const panel = document.getElementById('filtersPanel');
+                const toggle = document.getElementById('filtersToggle');
+
+                panel?.classList.remove('open');
+                if (toggle) toggle.textContent = 'FILTERS ▼';
+            }
         });
     }
 
-    // 2. Meklētājs (IZNESTS ĀRĀ)
+    // 2. MEKLĒŠANA
     const mapSearch = document.getElementById('mapSearch');
     if (mapSearch) {
         mapSearch.addEventListener('input', () => {
@@ -281,7 +301,7 @@ function setupEventListeners() {
         });
     }
 
-    // 3. Valstu filtrs (IZNESTS ĀRĀ)
+    // 3. VALSTIS
     const countryFilter = document.getElementById('countryFilter');
     if (countryFilter) {
         countryFilter.addEventListener('change', () => {
@@ -289,29 +309,49 @@ function setupEventListeners() {
         });
     }
 
-    // 4. Punktu (Score) filtrs
+    // 4. SCORE FILTRS
     const scoreContainer = document.getElementById('scoreFilterGroup');
+
     if (scoreContainer) {
         scoreContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('.score-btn');
             if (!btn) return;
-            document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+
+            document.querySelectorAll('.score-btn')
+                .forEach(b => b.classList.remove('active'));
+
             btn.classList.add('active');
             minScoreFilter = parseInt(btn.getAttribute('data-min-score'), 10) || 0;
+
             renderMapPoints();
+
+            // ✅ AUTO CLOSE MOBILE FILTER PANEL
+            if (window.innerWidth < 768) {
+                const panel = document.getElementById('filtersPanel');
+                const toggle = document.getElementById('filtersToggle');
+
+                panel?.classList.remove('open');
+                if (toggle) toggle.textContent = 'FILTERS ▼';
+            }
         });
     }
 
-    // 5. Reset poga
+    // 5. RESET
     const resetBtn = document.getElementById('resetFilters');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             activeCategory = 'all';
             minScoreFilter = 0;
+
             document.getElementById('mapSearch').value = '';
             document.getElementById('countryFilter').value = 'all';
-            document.querySelectorAll('.category-btn, .score-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="all"]')?.classList.add('active');
+
+            document.querySelectorAll('.category-btn, .score-btn')
+                .forEach(b => b.classList.remove('active'));
+
+            document.querySelector('[data-category="all"]')
+                ?.classList.add('active');
+
             renderMapPoints();
         });
     }
