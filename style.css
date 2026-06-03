@@ -242,13 +242,6 @@
 
 @media (max-width:767px){
 
-    body{
-        display:flex;
-        flex-direction:column;
-        height:100vh;
-        overflow:hidden;
-    }
-
     #mainSidebar{
         position:absolute;
         top:0;
@@ -257,18 +250,17 @@
         z-index:3000;
         background:#161920;
         transition:transform .3s ease;
+        transform:translateY(0);
     }
 
+    /* collapsed = TIKAI MOBILE */
     #mainSidebar.collapsed{
-        transform:translateY(calc(-100% + 60px));
+        transform:translateY(-100%);
     }
 
     #map-wrap{
-        flex:1;
-        min-height:0;
         height:100vh;
     }
-
 }
 
     /* FILTRU PANELIS (Tavs oriģinālais) */
