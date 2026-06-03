@@ -14,7 +14,7 @@ const map = L.map('map', {
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO © AMBERDWELL'
+    attribution: '© AMBERDWELL © OpenStreetMap © CARTO'
 }).addTo(map);
 
 const markersClusterGroup = L.markerClusterGroup({
