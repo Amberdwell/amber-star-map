@@ -216,12 +216,7 @@ marker.bindPopup(popupContent, {
 markersClusterGroup.addLayer(marker);
 });
 
-// ✅ ŠEIT BEIDZAS filtered.forEach
 
-setTimeout(() => {
-    map.invalidateSize();
-}, 50);
-}
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
     if (!container) return;
