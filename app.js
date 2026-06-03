@@ -392,10 +392,10 @@ if (sidebarToggle && mainSidebar) {
 
         mainSidebar.classList.toggle('collapsed');
 
-        sidebarToggle.textContent =
-            mainSidebar.classList.contains('collapsed')
-                ? '▲'
-                : '▼';
+sidebarToggle.textContent =
+    mainSidebar.classList.contains('collapsed')
+        ? '▼'
+        : '▲';
  
         setTimeout(() => {
             map.invalidateSize();
