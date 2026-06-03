@@ -262,12 +262,14 @@
         display:none;
     }
 
-    #filtersPanel.open{
-        display:block;
-        max-height:45vh;
-        overflow-y:auto;
-        padding-bottom:20px;
-    }
+#filtersPanel.open{
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown{
+    from { opacity:0; transform: translateY(-5px); }
+    to { opacity:1; transform: translateY(0); }
+}
 
     #map-wrap{
         flex:1;
