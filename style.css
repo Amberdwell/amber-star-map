@@ -260,6 +260,19 @@
         min-height: 0;
     }
 
+     #mainSidebar{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        z-index:2000;
+        transition:transform .3s ease;
+    }
+
+#mainSidebar.collapsed{
+    transform:translateY(-90%);
+}
+
     /* FILTRU PANELIS (Tavs oriģinālais) */
     #filtersPanel {
         position: fixed;
