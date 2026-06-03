@@ -208,8 +208,9 @@ const popupContent = `
     </div>`;
             
 marker.bindPopup(popupContent, {
-    maxWidth: window.innerWidth < 768 ? 280 : 320,
-    minWidth: window.innerWidth < 768 ? 240 : 260
+    maxWidth: 280,
+    minWidth: 240,
+    autoPan: false
 });
         markersClusterGroup.addLayer(marker);
 
