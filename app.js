@@ -376,10 +376,28 @@ window.addEventListener('resize', () => {
     }
 });
 
-window.addEventListener('orientationchange', () => {
-    // Kad nomainās orientācija, vienmēr piefiksējam jauno platumu un pārzīmējam
-    lastWidth = window.innerWidth;
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 300);
-});
+const sidebarToggle = document.getElementById('sidebarToggle');
+const mainSidebar = document.getElementById('mainSidebar');
+
+if (sidebarToggle && mainSidebar) {
+
+    if (window.innerWidth < 768) {
+        mainSidebar.classList.add('collapsed');
+    }
+
+    sidebarToggle.addEventListener('click', () => {
+
+        mainSidebar.classList.toggle('collapsed');
+
+        sidebarToggle.textContent =
+            mainSidebar.classList.contains('collapsed')
+                ? '▼'
+                : '▲';
+
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 300);
+
+    });
+
+}
