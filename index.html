@@ -418,16 +418,22 @@ aside{
 
     <!-- SIDEBAR -->
 
-    <aside>
+  <aside id="mainSidebar">
 
         <!-- HEADER -->
 
-        <div class="p-6 border-b border-[#2A303C] bg-[#161920] flex flex-col items-center text-center select-none">
+       <div class="p-6 border-b border-[#2A303C] bg-[#161920] flex flex-col items-center text-center select-none relative">
 
             <div class="brand-title-box">
                 <span class="brand-top-text">THE AMBER STAR</span>
                 <span class="brand-bottom-text">SELECTION</span>
             </div>
+           <button
+    id="sidebarToggle"
+    class="md:hidden absolute right-4 top-1/2 -translate-y-1/2 text-[#D4AF37] text-lg p-2"
+>
+    ▼
+</button>
 
         </div>
 
