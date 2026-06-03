@@ -1,4 +1,3 @@
-
 // ŠEIT IEKOPĒ SAVU SAITI
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99OChWh54PD6a5q5KU8aEscJBvhN8yNRDuxogREkw2kzxi2QlLUOAmDYk1Kgttc0RMN/pub?output=csv';
 
@@ -207,15 +206,10 @@ const popupContent = `
         </div>
     </div>`;
             
-marker.on('click', () => {
-    if (window.innerWidth < 768) {
-        openMobileCard(popupContent);
-    } else {
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-    autoPan: true,
-    autoPanPaddingTopLeft: [50, 120]
+    autoPan: false
 });
         markersClusterGroup.addLayer(marker);
 
