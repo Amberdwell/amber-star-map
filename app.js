@@ -211,12 +211,11 @@ marker.on('click', () => {
     if (window.innerWidth < 768) {
         openMobileCard(popupContent);
     } else {
-        marker.bindPopup(popupContent, {
-            maxWidth: 280,
-            minWidth: 240,
-            autoPan: false
-        }).openPopup();
-    }
+marker.bindPopup(popupContent, {
+    maxWidth: 280,
+    minWidth: 240,
+    autoPan: true,
+    autoPanPaddingTopLeft: [50, 120]
 });
         markersClusterGroup.addLayer(marker);
 
