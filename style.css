@@ -251,42 +251,55 @@
         overflow:hidden;
     }
 
-    /* SIDEBAR kļūst tikai header + toggle */
     aside{
         flex:0 0 auto;
         max-height:none;
         overflow:visible;
     }
 
-    /* MAP aizņem visu atlikušo vietu */
     #map-wrap{
         flex:1;
         min-height:0;
     }
 
-    /* FILTERS = full screen overlay */
+    /* BACKDROP */
     #filtersPanel{
-        display:none;
         position:fixed;
-        inset:0;
+        left:0;
+        right:0;
+        bottom:0;
+
+        height:75vh;              /* bottom sheet augstums */
         background:#0F1115;
         z-index:9999;
+
+        border-top-left-radius:18px;
+        border-top-right-radius:18px;
+
+        transform:translateY(100%);
+        transition:transform 0.25s ease;
 
         overflow-y:auto;
         -webkit-overflow-scrolling: touch;
 
-        padding:20px;
+        padding:18px;
+        box-shadow:0 -20px 60px rgba(0,0,0,0.6);
     }
 
-    /* OPEN STATE + ANIMATION */
+    /* OPEN STATE */
     #filtersPanel.open{
-        display:block;
-        animation: slideUp 0.18s ease-out;
+        transform:translateY(0);
     }
 
-    @keyframes slideUp{
-        from { transform: translateY(12px); opacity:0; }
-        to { transform: translateY(0); opacity:1; }
+    /* HANDLE BAR (vizuāls indikators) */
+    #filtersPanel::before{
+        content:"";
+        display:block;
+        width:42px;
+        height:4px;
+        background:#2A303C;
+        border-radius:99px;
+        margin:8px auto 14px auto;
     }
 
     /* POPUP FIX */
