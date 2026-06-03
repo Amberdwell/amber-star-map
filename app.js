@@ -240,15 +240,35 @@ function buildCategoriesUI() {
 }
 
 function setupEventListeners() {
+
+    // ✅ MOBILE FILTER TOGGLE
+    const filtersToggle = document.getElementById('filtersToggle');
+    const filtersPanel = document.getElementById('filtersPanel');
+
+    if (filtersToggle && filtersPanel) {
+        filtersToggle.addEventListener('click', () => {
+            filtersPanel.classList.toggle('open');
+
+            filtersToggle.textContent =
+                filtersPanel.classList.contains('open')
+                    ? 'FILTERS ▲'
+                    : 'FILTERS ▼';
+        });
+    }
+
     // 1. Kategoriju filtrs
     const catContainer = document.getElementById('categoryContainer');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('.category-btn');
             if (!btn) return;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+
+            document.querySelectorAll('.category-btn')
+                .forEach(b => b.classList.remove('active'));
+
             btn.classList.add('active');
             activeCategory = btn.getAttribute('data-category');
+
             renderMapPoints();
         });
     }
