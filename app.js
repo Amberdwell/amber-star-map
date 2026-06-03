@@ -207,12 +207,11 @@ const popupContent = `
     </div>`;
             
 marker.bindPopup(popupContent, {
-    maxWidth: window.innerWidth < 768 ? 280 : 320,
-    minWidth: window.innerWidth < 768 ? 240 : 260
+    maxWidth: window.innerWidth < 768 ? window.innerWidth * 0.92 : 320,
+    minWidth: window.innerWidth < 768 ? window.innerWidth * 0.85 : 260,
+    autoPan: true,
+    keepInView: true
 });
-        markersClusterGroup.addLayer(marker);
-
-    });
 
 }
 
