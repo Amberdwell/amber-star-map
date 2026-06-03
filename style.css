@@ -237,36 +237,63 @@
 }
 
 
-/* MOBILE FIX */
+/* =========================
+   BASE LAYOUT (DESKTOP)
+========================= */
 
+body{
+    margin:0;
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+}
+
+#mainSidebar{
+    width:320px;
+    height:100vh;
+    overflow-y:auto;
+    background:#161920;
+    border-right:1px solid #2A303C;
+    flex-shrink:0;
+    position:relative;
+}
+
+#map-wrap{
+    flex:1;
+    height:100vh;
+    min-height:0;
+}
+
+/* =========================
+   MOBILE FIX
+========================= */
 
 @media (max-width:767px){
 
-    #mainSidebar{
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        z-index:3000;
-        background:#161920;
-        transition:transform .3s ease;
-        transform:translateY(0);
+    body{
+        flex-direction:column;
     }
 
-    /* collapsed = TIKAI MOBILE */
-    #mainSidebar.collapsed{
-        transform:translateY(-100%);
+    #mainSidebar{
+        width:100%;
+        height:auto;
+        max-height:45vh;
+        overflow-y:auto;
+        position:relative;
+        z-index:3000;
     }
 
     #map-wrap{
-        height:100vh;
+        height:55vh;
+        flex:unset;
     }
-}
 
-    /* FILTRU PANELIS (Tavs oriģinālais) */
+    /* FILTER PANEL */
     #filtersPanel {
         position: fixed;
-        left: 0; right: 0; bottom: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         height: 75vh;
         pointer-events: none;
         background: #0F1115;
@@ -287,20 +314,26 @@
     }
 
     #filtersPanel::before {
-        content: ""; display: block; width: 42px; height: 4px; background: #2A303C; border-radius: 99px; margin: 8px auto 14px auto;
+        content:"";
+        display:block;
+        width:42px;
+        height:4px;
+        background:#2A303C;
+        border-radius:99px;
+        margin:8px auto 14px auto;
     }
 
-    /* ŠIS SAKĀRTO POPUP VIZUĀLO DAĻU TELEFONĀ */
+    /* POPUP MOBILE FIX */
+    .leaflet-popup-content {
+        width: 250px !important;
+        max-width: 250px !important;
+    }
+
     .popup-img-container {
-        height: 110px !important; /* Padarām bildi vēl kompaktāku uz mobilo */
+        height: 110px !important;
     }
 
     .popup-content-body {
-        padding: 12px !important; /* Mazākas iekšējās atkāpes, lai viss sakļaujas */
-    }
-
-    .leaflet-popup-content {
-        width: 250px !important; /* Sašaurinām platumu, lai vieglāk nocentrēt */
-        max-width: 250px !important;
+        padding: 12px !important;
     }
 }
