@@ -330,9 +330,10 @@ body{
         box-shadow:0 10px 30px rgba(0,0,0,0.4);
     }
 
-    #mainSidebar.collapsed{
-        transform:translateY(-100%);
-    }
+#mainSidebar.collapsed{
+    max-height: 60px;
+    overflow: hidden;
+}
 
     /* HEADER obligāti relatīvs (lai poga strādā) */
     #mainSidebar .p-6{
