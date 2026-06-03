@@ -253,23 +253,20 @@
 
     aside{
         flex:0 0 auto;
-        max-height:none;
-        height:auto;
-        overflow:visible;
+        max-height:40vh;
+        overflow:hidden;
     }
 
     #filtersPanel{
         display:none;
+        max-height:25vh;
+        overflow-y:auto;
+        -webkit-overflow-scrolling: touch;
     }
 
-#filtersPanel.open{
-    animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown{
-    from { opacity:0; transform: translateY(-5px); }
-    to { opacity:1; transform: translateY(0); }
-}
+    #filtersPanel.open{
+        display:block;
+    }
 
     #map-wrap{
         flex:1;
