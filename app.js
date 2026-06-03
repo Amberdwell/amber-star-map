@@ -206,15 +206,30 @@ const popupContent = `
         </div>
     </div>`;
         
-const isMobile = window.innerWidth < 768;            
-marker.bindPopup(popupContent, {
-    maxWidth: 280,
-    minWidth: 240,
-autoPan: true,
-autoPanPaddingTopLeft: [40, 120]
-});
-        markersClusterGroup.addLayer(marker);
+const isMobile = window.innerWidth < 768;
 
+const marker = L.marker([loc.lat, loc.lng], {
+    icon: L.divIcon({
+        html: `<div class="premium-dot-marker"></div>`,
+        className: 'custom-dot-wrapper',
+        iconSize: [16, 16]
+    })
+});
+
+marker.on('click', function () {
+
+    const popupOptions = {
+        maxWidth: isMobile ? 320 : 280,
+        minWidth: isMobile ? 280 : 240,
+        autoPan: true,
+        closeButton: true,
+        autoPanPaddingTopLeft: isMobile ? [20, 80] : [40, 120]
+    };
+
+    this.bindPopup(popupContent, popupOptions).openPopup();
+});
+
+markersClusterGroup.addLayer(marker);
     });
 
 }
