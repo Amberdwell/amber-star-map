@@ -247,17 +247,34 @@ function setupEventListeners() {
     const filtersPanel = document.getElementById('filtersPanel');
 
     if (catContainer) {
-        catContainer.addEventListener('click', (e) => {
-            const btn = e.target.closest('.category-btn');
-            if (!btn) return;
+catContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.category-btn');
+    if (!btn) return;
 
-            document.querySelectorAll('.category-btn')
-                .forEach(b => b.classList.remove('active'));
+    const selected = btn.getAttribute('data-category');
 
-            btn.classList.add('active');
-            activeCategory = btn.getAttribute('data-category');
+    // IF same category clicked again → reset
+    if (activeCategory === selected) {
+        activeCategory = 'all';
 
-            renderMapPoints();
+        document.querySelectorAll('.category-btn')
+            .forEach(b => b.classList.remove('active'));
+
+        document.querySelector('[data-category="all"]')?.classList.add('active');
+
+        renderMapPoints();
+        return;
+    }
+
+    // normal select
+    document.querySelectorAll('.category-btn')
+        .forEach(b => b.classList.remove('active'));
+
+    btn.classList.add('active');
+    activeCategory = selected;
+
+    renderMapPoints();
+});
 
             // MOBILE: auto-close filters
             if (window.innerWidth < 768 && filtersPanel) {
