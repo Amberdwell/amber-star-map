@@ -381,11 +381,14 @@ const mainSidebar = document.getElementById('mainSidebar');
 
 if (sidebarToggle && mainSidebar) {
 
-    if (window.innerWidth < 768) {
+    let isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
         mainSidebar.classList.add('collapsed');
     }
 
-    sidebarToggle.addEventListener('click', () => {
+    sidebarToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
 
         mainSidebar.classList.toggle('collapsed');
 
@@ -397,7 +400,6 @@ if (sidebarToggle && mainSidebar) {
         setTimeout(() => {
             map.invalidateSize();
         }, 300);
-
     });
 
 }
