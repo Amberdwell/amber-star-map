@@ -366,40 +366,53 @@ startApp();
 
 let lastWidth = window.innerWidth;
 
+/* =========================
+   RESPONSIVE MAP FIX
+========================= */
 window.addEventListener('resize', () => {
-    // Pārzīmējam karti tikai tad, ja reāli mainījies ekrāna platums
     if (window.innerWidth !== lastWidth) {
         lastWidth = window.innerWidth;
+
         setTimeout(() => {
             map.invalidateSize();
         }, 200);
     }
 });
 
+/* =========================
+   SIDEBAR TOGGLE (MOBILE + DESKTOP SAFE)
+========================= */
 const sidebarToggle = document.getElementById('sidebarToggle');
 const mainSidebar = document.getElementById('mainSidebar');
 
-if (sidebarToggle && mainSidebar) {
-
-    let isMobile = window.innerWidth < 768;
+function setMobileState() {
+    const isMobile = window.innerWidth < 768;
 
     if (isMobile) {
         mainSidebar.classList.add('collapsed');
+        sidebarToggle.textContent = '▼';
+    } else {
+        mainSidebar.classList.remove('collapsed');
         sidebarToggle.textContent = '▲';
     }
+}
+
+/* INIT */
+if (sidebarToggle && mainSidebar) {
+
+    setMobileState();
 
     sidebarToggle.addEventListener('click', () => {
-
         mainSidebar.classList.toggle('collapsed');
 
-sidebarToggle.textContent =
-    mainSidebar.classList.contains('collapsed')
-        ? '▼'
-        : '▲';
- 
+        const isCollapsed = mainSidebar.classList.contains('collapsed');
+        sidebarToggle.textContent = isCollapsed ? '▼' : '▲';
+
         setTimeout(() => {
             map.invalidateSize();
         }, 300);
     });
 
+    /* ja maina orientāciju (mobile rotate utt.) */
+    window.addEventListener('resize', setMobileState);
 }
