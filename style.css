@@ -254,11 +254,14 @@
         flex:0 0 auto;
         max-height:none;
         overflow:visible;
+        z-index:1000;
     }
 
     #map-wrap{
         flex:1;
         min-height:0;
+        position:relative;
+        z-index:1;
     }
 
     /* BACKDROP */
@@ -286,13 +289,11 @@
         box-shadow:0 -20px 60px rgba(0,0,0,0.6);
     }
 
-    /* OPEN STATE */
     #filtersPanel.open{
         transform:translateY(0);
         pointer-events:auto;
     }
 
-    /* HANDLE BAR (vizuāls indikators) */
     #filtersPanel::before{
         content:"";
         display:block;
@@ -303,9 +304,35 @@
         margin:8px auto 14px auto;
     }
 
-    /* POPUP FIX */
-    .leaflet-popup-content{
-        width:92vw !important;
-        max-width:92vw !important;
+    /* =========================
+       🔥 LEAFLET POPUP FIX
+       ========================= */
+
+    /* nodrošina, ka popup ir virs sidebar un filteriem */
+    .leaflet-pane,
+    .leaflet-top,
+    .leaflet-bottom {
+        z-index: 400 !important;
     }
+
+    .leaflet-popup {
+        z-index: 99999 !important;
+    }
+
+    .leaflet-popup-content-wrapper {
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+        border-radius: 0 !important;
+    }
+
+    .leaflet-popup-content {
+        width: 92vw !important;
+        max-width: 92vw !important;
+    }
+
+    /* svarīgi: neļauj popup būt “nogrieztam” */
+    .leaflet-map-pane {
+        z-index: 1 !important;
+    }
+
 }
