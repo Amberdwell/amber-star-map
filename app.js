@@ -32,16 +32,6 @@ const markersClusterGroup = L.markerClusterGroup({
 });
 map.addLayer(markersClusterGroup);
 
-let popupLock = false;
-
-map.on('popupopen', () => {
-    popupLock = true;
-});
-
-map.on('popupclose', () => {
-    popupLock = false;
-});
-
 let hotelData = [];
 let activeCategory = 'all';
 let activeCountry = 'all';
@@ -153,9 +143,7 @@ async function startApp() {
     } catch (err) { console.error('Kļūda:', err); }
 }
 
-function renderMapPoints(skipLock = false) {
-
-    if (popupLock && !skipLock) return;
+function renderMapPoints() {
 
     markersClusterGroup.clearLayers();
     
