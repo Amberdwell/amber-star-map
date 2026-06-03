@@ -252,17 +252,16 @@
 
     aside {
         flex: 0 0 auto;
-        /* Ierobežojam augšējo daļu (zīmols + meklētājs), lai kartei paliek vairāk vietas */
-        max-height: 35vh; 
-        overflow-y: auto;
+        max-height: none; /* Atgriežam tavu oriģinālo izmēru loģiku */
+        overflow: visible;
     }
 
     #map-wrap {
-        flex: 1 1 auto;
+        flex: 1;
         min-height: 0;
     }
 
-    /* SAGLABĀJAM TAVU BACKDROP FUNKCIONALITĀTI */
+    /* TAVS FILTRU PANELIS */
     #filtersPanel {
         position: fixed;
         left: 0;
@@ -282,13 +281,11 @@
         box-shadow: 0 -20px 60px rgba(0,0,0,0.6);
     }
 
-    /* OPEN STATE */
     #filtersPanel.open {
         transform: translateY(0);
         pointer-events: auto;
     }
 
-    /* HANDLE BAR (vizuāls indikators) */
     #filtersPanel::before {
         content: "";
         display: block;
@@ -299,14 +296,13 @@
         margin: 8px auto 14px auto;
     }
 
-    /* JAUNIE POPUP LABOJUMI */
+    /* POPUP OPTIMIZĀCIJA LAI NAV PAR LIELU */
     .popup-img-container {
-        height: 130px !important; /* Mazliet kompaktāka bilde telefonā, lai taupītu vietu */
+        height: 130px !important; 
     }
 
     .leaflet-popup-content {
-        /* Padarām kartīti elastīgu un smuku uz telefona ekrāna platuma */
-        width: min(300px, 88vw) !important;
-        max-width: 300px !important;
+        width: min(290px, 85vw) !important;
+        max-width: 290px !important;
     }
 }
