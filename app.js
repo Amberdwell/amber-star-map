@@ -210,7 +210,8 @@ const popupContent = `
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-    autoPan: false
+    autoPan: true,
+    autoPanPaddingTopLeft: [0, 250]
 });
         markersClusterGroup.addLayer(marker);
 
