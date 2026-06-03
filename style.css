@@ -286,13 +286,11 @@
         box-shadow:0 -20px 60px rgba(0,0,0,0.6);
     }
 
-    /* OPEN STATE */
     #filtersPanel.open{
         transform:translateY(0);
         pointer-events:auto;
     }
 
-    /* HANDLE BAR (vizuāls indikators) */
     #filtersPanel::before{
         content:"";
         display:block;
@@ -307,5 +305,15 @@
     .leaflet-popup-content{
         width:92vw !important;
         max-width:92vw !important;
+    }
+
+    /* ✅ PIEVIENOTAIS FIX */
+    .leaflet-popup{
+        z-index: 999999 !important;
+    }
+
+    .leaflet-popup-content-wrapper{
+        max-height: 70vh;
+        overflow-y: auto;
     }
 }
