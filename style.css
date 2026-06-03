@@ -269,7 +269,8 @@
         right:0;
         bottom:0;
 
-        height:75vh;              /* bottom sheet augstums */
+        height:75vh;
+        pointer-events:none;
         background:#0F1115;
         z-index:9999;
 
@@ -289,6 +290,7 @@
     /* OPEN STATE */
     #filtersPanel.open{
         transform:translateY(0);
+        pointer-events:auto;
     }
 
     /* HANDLE BAR (vizuāls indikators) */
