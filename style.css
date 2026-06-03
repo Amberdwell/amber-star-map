@@ -1,3 +1,22 @@
+#mainSidebar {
+    transition: transform 0.3s ease;
+}
+
+/* MOBILE DEFAULT STATE = HIDDEN */
+@media (max-width: 767px) {
+    #mainSidebar {
+        transform: translateY(-100%);
+    }
+
+    #mainSidebar.collapsed {
+        transform: translateY(-100%);
+    }
+
+    #mainSidebar:not(.collapsed) {
+        transform: translateY(0);
+    }
+}
+
 /* Augšējais zīmola virsraksts ar taviem fontiem un krāsām */
 .brand-title-box {
     display: flex;
