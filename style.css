@@ -244,28 +244,38 @@
 
 @media(max-width:767px){
 
-    #filtersPanel{
-        display: none;
-    }
-
-    #filtersPanel.open{
-        display: block;
+    body{
+        display:flex;
+        flex-direction:column;
+        height:100vh;
+        overflow:hidden;
     }
 
     aside{
-        max-height: 35vh; /* mazs header panelis */
+        flex:0 0 auto;
+        max-height:none;
+        height:auto;
+        overflow:visible;
+    }
+
+    #filtersPanel{
+        display:none;
+    }
+
+    #filtersPanel.open{
+        display:block;
+        max-height:45vh;
+        overflow-y:auto;
+        padding-bottom:20px;
     }
 
     #map-wrap{
-        height: 65vh;
+        flex:1;
+        min-height:0;
     }
 
-  .leaflet-popup-content{
-
+    .leaflet-popup-content{
         width:92vw !important;
-
         max-width:92vw !important;
-
     }
-
 }
