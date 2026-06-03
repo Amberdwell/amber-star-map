@@ -163,13 +163,7 @@ function renderMapPoints() {
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Accredited Properties`;
 
     filtered.forEach(loc => {
-const marker = L.marker([loc.lat, loc.lng], {
-    icon: L.divIcon({
-        html: `<div class="premium-dot-marker"></div>`,
-        className: 'custom-dot-wrapper',
-        iconSize: [16, 16]
-    })
-});
+        const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
 
 const website =
     loc.website && typeof loc.website === 'string' && loc.website.trim() !== ''
@@ -177,57 +171,47 @@ const website =
             ? loc.website
             : 'https://' + loc.website)
         : null;
-
-const isMobile = window.innerWidth < 768;
-
+        
 const popupContent = `
-    <div class="luxury-popup-card">
-        <div class="popup-img-container">
-            <img src="${loc.image}" alt="${loc.name}">
+    <div class="luxury-popup-card" style="width:100%;">
+        <div class="popup-img-container" style="height: 150px; overflow: hidden;">
+            <img src="${loc.image}" alt="${loc.name}" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-
-        <div class="popup-content-body">
-            <h2 class="popup-main-title">${loc.name}</h2>
-            <p class="popup-description">${loc.description}</p>
-
-            <div class="popup-details-grid">
-                <div class="detail-row">
-                    <span class="detail-lbl">Audit Score</span>
-                    <span class="detail-val">${loc.score} / 150</span>
+        <div class="popup-content-body" style="padding: 12px;">
+            <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px; color: #ffffff;">${loc.name}</h2>
+            <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px; color: #E8E3D9;">${loc.description}</p>
+            
+            <div class="popup-details-grid" style="display: grid; gap: 5px; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
+                    <span>Audit Score:</span>
+                    <span class="detail-val font-semibold" style="color: #ffffff;">${loc.score} / 150</span>
                 </div>
-
-                <div class="detail-row">
-                    <span class="detail-lbl">Guest Rating</span>
-                    <span class="detail-val">${loc.guestRating}</span>
+                <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
+                    <span>Guest Rating:</span>
+                    <span class="detail-val font-semibold" style="color: #ffffff;">${loc.guestRating}</span>
                 </div>
-
-                <div class="detail-row">
-                    <span class="detail-lbl">Location</span>
-                    <span class="detail-val">📍 ${loc.city}</span>
+                <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
+                    <span>Location:</span>
+                    <span class="detail-val" style="color: #ffffff;">📍 ${loc.city}</span>
                 </div>
             </div>
 
-            <a href="${website || '#'}" target="_blank" class="popup-action-btn">
-                Official Website
-            </a>
-
-            <div class="popup-footer-id">
+<a href="${website || '#'}"
+   target="_blank"
+   class="popup-action-btn">Official Website</a>
+            
+            <div style="margin-top: 10px; text-align: center; color: #D4AF37; font-size: 10px; letter-spacing: 1px;">
                 ${loc.id_code}
             </div>
         </div>
-    </div>
-`;
-
+    </div>`;
+            
 marker.bindPopup(popupContent, {
-    maxWidth: isMobile ? 320 : 280,
-    minWidth: isMobile ? 280 : 240,
-    autoPan: true,
-    autoPanPaddingTopLeft: isMobile ? [10, 180] : [50, 120],
-    closeButton: true,
-    className: 'lux-popup'
+    maxWidth: 280,
+    minWidth: 240,
+    autoPan: false
 });
-
-markersClusterGroup.addLayer(marker);
+        markersClusterGroup.addLayer(marker);
 
     });
 
