@@ -206,12 +206,14 @@ const popupContent = `
         </div>
     </div>`;
             
-// PILNĪBĀ DROŠS IZDEVUMS BEZ ĀRĒJIEM MAINĪGAJIEM
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
     autoPan: true,
-    autoPanPadding: L.point(15, 15) // Vienkārša, stabila atkāpe no visām malām
+    keepInView: true, // Neļauj kartītei pazust no ekrāna
+    // Ja ekrāns ir mazs, pasakām, ka no augšas vajag milzīgu atkāpi (260px), lai nobīdītu popup uz leju, prom no izvēlnes
+    autoPanPaddingTopLeft: window.innerWidth < 768 ? L.point(10, 260) : L.point(20, 20),
+    autoPanPaddingBottomRight: L.point(10, 20)
 });
 
 markersClusterGroup.addLayer(marker);
@@ -219,7 +221,6 @@ markersClusterGroup.addLayer(marker);
     });
 
 }
-
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
@@ -363,13 +364,21 @@ function setupEventListeners() {
 
 startApp();
 
+let lastWidth = window.innerWidth;
+
 window.addEventListener('resize', () => {
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 200);
+    // Pārzīmējam karti tikai tad, ja reāli mainījies ekrāna platums
+    if (window.innerWidth !== lastWidth) {
+        lastWidth = window.innerWidth;
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 200);
+    }
 });
 
 window.addEventListener('orientationchange', () => {
+    // Kad nomainās orientācija, vienmēr piefiksējam jauno platumu un pārzīmējam
+    lastWidth = window.innerWidth;
     setTimeout(() => {
         map.invalidateSize();
     }, 300);
