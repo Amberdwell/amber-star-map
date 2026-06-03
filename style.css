@@ -240,37 +240,35 @@
 /* MOBILE FIX */
 
 
-@media (max-width:767px) {
+@media (max-width:767px){
 
-    body {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
+    body{
+        display:flex;
+        flex-direction:column;
+        height:100vh;
+        overflow:hidden;
     }
 
-    aside {
-        flex: 0 0 auto;
-        max-height: none;
-        overflow: visible;
-    }
-
-    #map-wrap {
-        flex: 1;
-        min-height: 0;
-    }
-
-     #mainSidebar{
+    #mainSidebar{
         position:absolute;
         top:0;
         left:0;
         width:100%;
-        z-index:2000;
+        z-index:3000;
+        background:#161920;
         transition:transform .3s ease;
     }
 
-#mainSidebar.collapsed{
-    transform:translateY(-90%);
+    #mainSidebar.collapsed{
+        transform:translateY(calc(-100% + 60px));
+    }
+
+    #map-wrap{
+        flex:1;
+        min-height:0;
+        height:100vh;
+    }
+
 }
 
     /* FILTRU PANELIS (Tavs oriģinālais) */
