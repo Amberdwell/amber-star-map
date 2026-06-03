@@ -1,4 +1,3 @@
-
 /* Augšējais zīmola virsraksts ar taviem fontiem un krāsām */
 .brand-title-box {
     display: flex;
@@ -242,16 +241,14 @@
 
 
 
-@media (max-width: 767px) {
-    .leaflet-popup {
-        z-index: 99999 !important;
-    }
+@media (max-width:767px){
 
-    .leaflet-popup-content-wrapper {
-        max-height: 70vh;
-        overflow-y: auto;
+    body{
+        display:flex;
+        flex-direction:column;
+        height:100vh;
+        overflow:hidden;
     }
-}
 
     aside{
         flex:0 0 auto;
@@ -270,25 +267,32 @@
         left:0;
         right:0;
         bottom:0;
+
         height:75vh;
         pointer-events:none;
         background:#0F1115;
         z-index:9999;
+
         border-top-left-radius:18px;
         border-top-right-radius:18px;
+
         transform:translateY(100%);
         transition:transform 0.25s ease;
+
         overflow-y:auto;
         -webkit-overflow-scrolling: touch;
+
         padding:18px;
         box-shadow:0 -20px 60px rgba(0,0,0,0.6);
     }
 
+    /* OPEN STATE */
     #filtersPanel.open{
         transform:translateY(0);
         pointer-events:auto;
     }
 
+    /* HANDLE BAR (vizuāls indikators) */
     #filtersPanel::before{
         content:"";
         display:block;
@@ -299,29 +303,9 @@
         margin:8px auto 14px auto;
     }
 
+    /* POPUP FIX */
     .leaflet-popup-content{
         width:92vw !important;
         max-width:92vw !important;
-    }
-
-    /* ✔ MOBILE CARD (TAGAD IEKŠĀ MEDIA QUERY) */
-    .mobile-card{
-        position:fixed;
-        inset:0;
-        background:rgba(15,17,21,0.98);
-        z-index:99999;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:20px;
-    }
-
-    .mobile-card .luxury-popup-card{
-        width:100%;
-        max-width:420px;
-    }
-
-    .mobile-card.hidden{
-        display:none;
     }
 }
