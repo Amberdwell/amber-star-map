@@ -254,15 +254,11 @@
         flex:0 0 auto;
         max-height:none;
         overflow:visible;
-        position:relative;
-        z-index:10;
     }
 
     #map-wrap{
         flex:1;
         min-height:0;
-        position:relative;
-        z-index:1;
     }
 
     /* BACKDROP */
@@ -290,11 +286,13 @@
         box-shadow:0 -20px 60px rgba(0,0,0,0.6);
     }
 
+    /* OPEN STATE */
     #filtersPanel.open{
         transform:translateY(0);
         pointer-events:auto;
     }
 
+    /* HANDLE BAR (vizuāls indikators) */
     #filtersPanel::before{
         content:"";
         display:block;
@@ -305,26 +303,9 @@
         margin:8px auto 14px auto;
     }
 
-    /* =========================
-       LEAFLET POPUP FIX (CRITICAL)
-       ========================= */
-
-    .leaflet-popup{
-        z-index:9999999 !important;
-    }
-
-    .leaflet-popup-content-wrapper{
-        max-height:70vh;
-        overflow-y:auto;
-    }
-
+    /* POPUP FIX */
     .leaflet-popup-content{
-        width:90vw !important;
-        max-width:90vw !important;
-    }
-
-    /* OPTIONAL: better positioning on mobile */
-    .leaflet-popup{
-        transform:translateY(-8px);
+        width:92vw !important;
+        max-width:92vw !important;
     }
 }
