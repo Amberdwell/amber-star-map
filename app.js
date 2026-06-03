@@ -14,7 +14,7 @@ const map = L.map('map', {
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO'
+    attribution: '© OpenStreetMap © CARTO © AMBERDWELL'
 }).addTo(map);
 
 const markersClusterGroup = L.markerClusterGroup({
@@ -209,7 +209,10 @@ const popupContent = `
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-    autoPan: false
+autoPan: true, // Ieslēdzam kartes automātisko pabīdīšanu
+    // Ja ir mobilais ekrāns, pieliekam lielāku atkāpi no augšas (piem. 180px), lai nepalien zem zīmola joslas
+    autoPanPaddingTopLeft: isMobileDevice ? L.point(10, 180) : L.point(20, 20),
+    autoPanPaddingBottomRight: L.point(10, 10)
 });
         markersClusterGroup.addLayer(marker);
 
