@@ -209,12 +209,13 @@ const popupContent = `
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-autoPan: true, // Ieslēdzam kartes automātisko pabīdīšanu
-    // Ja ir mobilais ekrāns, pieliekam lielāku atkāpi no augšas (piem. 180px), lai nepalien zem zīmola joslas
-    autoPanPaddingTopLeft: isMobileDevice ? L.point(10, 180) : L.point(20, 20),
+    autoPan: true, // Ieslēdzam kartes automātisko pabīdīšanu
+    // Izmantojam tavu 'isMobile' mainīgo no faila augšas. Uz telefona nobīde 190px, uz datora 20px.
+    autoPanPaddingTopLeft: isMobile ? L.point(10, 190) : L.point(20, 20),
     autoPanPaddingBottomRight: L.point(10, 10)
 });
-        markersClusterGroup.addLayer(marker);
+
+markersClusterGroup.addLayer(marker);
 
     });
 
