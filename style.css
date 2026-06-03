@@ -270,9 +270,14 @@
         padding:20px;
     }
 
-    #filtersPanel.open{
-        display:block;
-    }
+#filtersPanel.open{
+    animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp{
+    from { transform: translateY(10px); opacity:0; }
+    to { transform: translateY(0); opacity:1; }
+}
 
     #map-wrap{
         flex:1;
