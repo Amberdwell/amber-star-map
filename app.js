@@ -385,18 +385,18 @@ if (sidebarToggle && mainSidebar) {
 
     if (isMobile) {
         mainSidebar.classList.add('collapsed');
+        sidebarToggle.textContent = '▲';
     }
 
-    sidebarToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
+    sidebarToggle.addEventListener('click', () => {
 
         mainSidebar.classList.toggle('collapsed');
 
         sidebarToggle.textContent =
             mainSidebar.classList.contains('collapsed')
-                ? '▼'
-                : '▲';
-
+                ? '▲'
+                : '▼';
+ 
         setTimeout(() => {
             map.invalidateSize();
         }, 300);
