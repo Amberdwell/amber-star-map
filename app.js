@@ -207,11 +207,16 @@ const popupContent = `
         </div>
     </div>`;
             
-marker.bindPopup(popupContent, {
-    maxWidth: 280,
-    minWidth: 240,
-    autoPan: false,
-    
+marker.on('click', () => {
+    if (window.innerWidth < 768) {
+        openMobileCard(popupContent);
+    } else {
+        marker.bindPopup(popupContent, {
+            maxWidth: 280,
+            minWidth: 240,
+            autoPan: false
+        }).openPopup();
+    }
 });
         markersClusterGroup.addLayer(marker);
 
