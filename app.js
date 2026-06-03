@@ -206,13 +206,12 @@ const popupContent = `
         </div>
     </div>`;
             
+// PILNĪBĀ DROŠS IZDEVUMS BEZ ĀRĒJIEM MAINĪGAJIEM
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-    autoPan: true, // Ieslēdzam kartes automātisko pabīdīšanu
-    // Izmantojam tavu 'isMobile' mainīgo no faila augšas. Uz telefona nobīde 190px, uz datora 20px.
-    autoPanPaddingTopLeft: isMobile ? L.point(10, 190) : L.point(20, 20),
-    autoPanPaddingBottomRight: L.point(10, 10)
+    autoPan: true,
+    autoPanPadding: L.point(15, 15) // Vienkārša, stabila atkāpe no visām malām
 });
 
 markersClusterGroup.addLayer(marker);
