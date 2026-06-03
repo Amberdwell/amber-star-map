@@ -264,6 +264,22 @@ body{
     min-height:0;
 }
 
+
+#sidebarToggle{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    cursor:pointer;
+    color:#D4AF37;
+}
+
 /* =========================
    MOBILE FIX
 ========================= */
