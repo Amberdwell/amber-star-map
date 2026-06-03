@@ -385,7 +385,8 @@ window.addEventListener('resize', () => {
 const sidebarToggle = document.getElementById('sidebarToggle');
 const mainSidebar = document.getElementById('mainSidebar');
 
-function setMobileState() {
+/* 🚨 KRITISKI: uzreiz iestati sākuma state PIRMS render */
+function initSidebarState() {
     const isMobile = window.innerWidth < 768;
 
     if (isMobile) {
@@ -397,22 +398,18 @@ function setMobileState() {
     }
 }
 
-/* INIT */
-if (sidebarToggle && mainSidebar) {
+/* palaist ASAP */
+initSidebarState();
 
-    setMobileState();
+sidebarToggle.addEventListener('click', () => {
+    mainSidebar.classList.toggle('collapsed');
 
-    sidebarToggle.addEventListener('click', () => {
-        mainSidebar.classList.toggle('collapsed');
+    sidebarToggle.textContent =
+        mainSidebar.classList.contains('collapsed')
+            ? '▼'
+            : '▲';
 
-        const isCollapsed = mainSidebar.classList.contains('collapsed');
-        sidebarToggle.textContent = isCollapsed ? '▼' : '▲';
+    setTimeout(() => map.invalidateSize(), 250);
+});
 
-        setTimeout(() => {
-            map.invalidateSize();
-        }, 300);
-    });
-
-    /* ja maina orientāciju (mobile rotate utt.) */
-    window.addEventListener('resize', setMobileState);
-}
+window.addEventListener('resize', initSidebarState);
