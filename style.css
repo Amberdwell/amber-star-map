@@ -292,15 +292,14 @@ body{
         overflow:hidden;
     }
 
-    /* KARTĒ VISU LAIKU PILNS EKRĀNS */
     #map-wrap{
         position:fixed;
         inset:0;
         height:100vh;
         width:100%;
+        z-index:1;
     }
 
-    /* SIDEBAR = OVERLAY */
     #mainSidebar{
         position:fixed;
         top:0;
@@ -317,7 +316,6 @@ body{
         transform:translateY(-100%);
     }
 
-    /* POPUP tikai vizuāls fix */
     .leaflet-popup-content{
         width:260px !important;
         max-width:260px !important;
