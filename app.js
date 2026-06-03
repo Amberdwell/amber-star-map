@@ -209,7 +209,11 @@ const popupContent = `
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-    autoPan: false
+autoPan: true,
+autoPanPaddingTopLeft: isMobile
+    ? [10, 220]   // <- GALVENAIS FIX (sidebar + header kompensācija)
+    : [40, 120],
+maxHeight: isMobile ? 260 : 400
 });
         markersClusterGroup.addLayer(marker);
 
