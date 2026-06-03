@@ -242,52 +242,56 @@
 
 
 
-@media (max-width: 767px) {
+@media (max-width:767px){
 
-    body {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
+    body{
+        display:flex;
+        flex-direction:column;
+        height:100vh;
+        overflow:hidden;
     }
 
-    /* Sidebar kļūst tikai header */
-    aside {
-        flex: 0 0 auto;
-        max-height: none;
-        overflow: visible;
+    /* SIDEBAR kļūst tikai header + toggle */
+    aside{
+        flex:0 0 auto;
+        max-height:none;
+        overflow:visible;
     }
 
     /* MAP aizņem visu atlikušo vietu */
-    #map-wrap {
-        flex: 1;
-        min-height: 0;
+    #map-wrap{
+        flex:1;
+        min-height:0;
     }
 
     /* FILTERS = full screen overlay */
-    #filtersPanel {
-        display: none;
-        position: fixed;
-        inset: 0; /* IMPORTANT: aizvieto top/left/width/height */
-        background: #0F1115;
-        z-index: 9999;
+    #filtersPanel{
+        display:none;
+        position:fixed;
+        inset:0;
+        background:#0F1115;
+        z-index:9999;
 
-        overflow-y: auto;
-        padding: 20px;
+        overflow-y:auto;
+        -webkit-overflow-scrolling: touch;
+
+        padding:20px;
     }
 
-    #filtersPanel.open {
-        display: block;
+    /* OPEN STATE + ANIMATION */
+    #filtersPanel.open{
+        display:block;
         animation: slideUp 0.18s ease-out;
     }
 
-    @keyframes slideUp {
-        from { transform: translateY(12px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    @keyframes slideUp{
+        from { transform: translateY(12px); opacity:0; }
+        to { transform: translateY(0); opacity:1; }
     }
 
-    .leaflet-popup-content {
-        width: 92vw !important;
-        max-width: 92vw !important;
+    /* POPUP FIX */
+    .leaflet-popup-content{
+        width:92vw !important;
+        max-width:92vw !important;
     }
 }
