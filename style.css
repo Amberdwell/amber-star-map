@@ -288,6 +288,7 @@ body{
 
     body{
         flex-direction:column;
+        overflow:hidden;
     }
 
     #mainSidebar{
@@ -296,13 +297,19 @@ body{
         max-height:45vh;
         overflow-y:auto;
         position:relative;
+        transition:transform .3s ease;
         z-index:3000;
     }
 
-    #map-wrap{
-        height:55vh;
-        flex:unset;
+    #mainSidebar.collapsed{
+        transform:translateY(-100%);
     }
+
+    #map-wrap{
+        flex:1;
+        height:100vh;
+    }
+}
 
     /* FILTER PANEL */
     #filtersPanel {
