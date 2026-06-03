@@ -153,8 +153,10 @@ async function startApp() {
     } catch (err) { console.error('Kļūda:', err); }
 }
 
-function renderMapPoints() {
-     if (popupLock) return;
+function renderMapPoints(skipLock = false) {
+
+    if (popupLock && !skipLock) return;
+
     markersClusterGroup.clearLayers();
     
     const searchInput = document.getElementById('mapSearch');
