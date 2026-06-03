@@ -254,11 +254,15 @@
         flex:0 0 auto;
         max-height:none;
         overflow:visible;
+        position:relative;
+        z-index:10;
     }
 
     #map-wrap{
         flex:1;
         min-height:0;
+        position:relative;
+        z-index:1;
     }
 
     /* BACKDROP */
@@ -301,19 +305,26 @@
         margin:8px auto 14px auto;
     }
 
-    /* POPUP FIX */
-    .leaflet-popup-content{
-        width:92vw !important;
-        max-width:92vw !important;
-    }
+    /* =========================
+       LEAFLET POPUP FIX (CRITICAL)
+       ========================= */
 
-    /* ✅ PIEVIENOTAIS FIX */
     .leaflet-popup{
-        z-index: 999999 !important;
+        z-index:9999999 !important;
     }
 
     .leaflet-popup-content-wrapper{
-        max-height: 70vh;
-        overflow-y: auto;
+        max-height:70vh;
+        overflow-y:auto;
+    }
+
+    .leaflet-popup-content{
+        width:90vw !important;
+        max-width:90vw !important;
+    }
+
+    /* OPTIONAL: better positioning on mobile */
+    .leaflet-popup{
+        transform:translateY(-8px);
     }
 }
