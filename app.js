@@ -246,44 +246,48 @@ function setupEventListeners() {
     const filtersToggle = document.getElementById('filtersToggle');
     const filtersPanel = document.getElementById('filtersPanel');
 
-    if (catContainer) {
-catContainer.addEventListener('click', (e) => {
-    const btn = e.target.closest('.category-btn');
-    if (!btn) return;
+if (catContainer) {
+    catContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.category-btn');
+        if (!btn) return;
 
-    const selected = btn.getAttribute('data-category');
+        const selected = btn.getAttribute('data-category');
 
-    // IF same category clicked again → reset
-    if (activeCategory === selected) {
-        activeCategory = 'all';
+        if (activeCategory === selected) {
+            activeCategory = 'all';
 
-        document.querySelectorAll('.category-btn')
-            .forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.category-btn')
+                .forEach(b => b.classList.remove('active'));
 
-        document.querySelector('[data-category="all"]')?.classList.add('active');
+            document.querySelector('[data-category="all"]')
+                ?.classList.add('active');
 
-        renderMapPoints();
-        return;
-    }
+            renderMapPoints();
 
-    // normal select
-    document.querySelectorAll('.category-btn')
-        .forEach(b => b.classList.remove('active'));
-
-    btn.classList.add('active');
-    activeCategory = selected;
-
-    renderMapPoints();
-});
-
-            // MOBILE: auto-close filters
+            // MOBILE auto-close (TE IR PAREIZĀ VIETA)
             if (window.innerWidth < 768 && filtersPanel) {
                 filtersPanel.classList.remove('open');
                 if (filtersToggle) filtersToggle.textContent = 'FILTERS ▼';
             }
-        });
-    }
 
+            return;
+        }
+
+        document.querySelectorAll('.category-btn')
+            .forEach(b => b.classList.remove('active'));
+
+        btn.classList.add('active');
+        activeCategory = selected;
+
+        renderMapPoints();
+
+        // MOBILE auto-close (TE ARĪ PAREIZI)
+        if (window.innerWidth < 768 && filtersPanel) {
+            filtersPanel.classList.remove('open');
+            if (filtersToggle) filtersToggle.textContent = 'FILTERS ▼';
+        }
+    });
+}
     // 2. FILTERS TOGGLE (mobile)
     if (filtersToggle && filtersPanel) {
         filtersToggle.addEventListener('click', () => {
