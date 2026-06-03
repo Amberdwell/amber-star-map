@@ -240,7 +240,6 @@
 /* MOBILE FIX */
 
 
-
 @media (max-width:767px) {
 
     body {
@@ -252,7 +251,7 @@
 
     aside {
         flex: 0 0 auto;
-        max-height: none; /* Atgriežam tavu oriģinālo izmēru loģiku */
+        max-height: none;
         overflow: visible;
     }
 
@@ -261,12 +260,10 @@
         min-height: 0;
     }
 
-    /* TAVS FILTRU PANELIS */
+    /* FILTRU PANELIS (Tavs oriģinālais) */
     #filtersPanel {
         position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        left: 0; right: 0; bottom: 0;
         height: 75vh;
         pointer-events: none;
         background: #0F1115;
@@ -287,22 +284,20 @@
     }
 
     #filtersPanel::before {
-        content: "";
-        display: block;
-        width: 42px;
-        height: 4px;
-        background: #2A303C;
-        border-radius: 99px;
-        margin: 8px auto 14px auto;
+        content: ""; display: block; width: 42px; height: 4px; background: #2A303C; border-radius: 99px; margin: 8px auto 14px auto;
     }
 
-    /* POPUP OPTIMIZĀCIJA LAI NAV PAR LIELU */
+    /* ŠIS SAKĀRTO POPUP VIZUĀLO DAĻU TELEFONĀ */
     .popup-img-container {
-        height: 130px !important; 
+        height: 110px !important; /* Padarām bildi vēl kompaktāku uz mobilo */
+    }
+
+    .popup-content-body {
+        padding: 12px !important; /* Mazākas iekšējās atkāpes, lai viss sakļaujas */
     }
 
     .leaflet-popup-content {
-        width: min(290px, 85vw) !important;
-        max-width: 290px !important;
+        width: 250px !important; /* Sašaurinām platumu, lai vieglāk nocentrēt */
+        max-width: 250px !important;
     }
 }
