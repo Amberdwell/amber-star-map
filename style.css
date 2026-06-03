@@ -287,28 +287,41 @@ body{
 @media (max-width:767px){
 
     body{
+        display:flex;
         flex-direction:column;
+        height:100vh;
         overflow:hidden;
     }
 
+    /* SIDEBAR = overlay (nevis layout daļa) */
     #mainSidebar{
+        position:absolute;
+        top:0;
+        left:0;
         width:100%;
-        height:auto;
         max-height:45vh;
         overflow-y:auto;
-        position:relative;
-        transition:transform .3s ease;
         z-index:3000;
+        background:#161920;
+        transition:transform .3s ease;
     }
 
     #mainSidebar.collapsed{
         transform:translateY(-100%);
     }
 
+    /* MAP = PILNS BACKGROUND */
     #map-wrap{
-        flex:1;
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
         height:100vh;
+        z-index:1;
     }
+
+    /* FILTER PANEL paliek kā ir */
 }
 
     /* FILTER PANEL */
