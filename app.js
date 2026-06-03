@@ -205,7 +205,8 @@ const popupContent = `
             </div>
         </div>
     </div>`;
-            
+        
+const isMobile = window.innerWidth < 768;            
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
