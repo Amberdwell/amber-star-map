@@ -254,18 +254,39 @@ function closeFilters() {
     }
 }
 
-function setupEventListeners() {
-
 const filtersToggle = document.getElementById('filtersToggle');
-const filtersPanel = document.getElementById('filtersPanel');
+const drawer = document.getElementById('filtersPanel');
+const backdrop = document.getElementById('drawerBackdrop');
+
+function openDrawer() {
+    drawer.classList.add('open');
+    backdrop.classList.add('open');
+    filtersToggle.textContent = 'FILTERS ▲';
+}
+
+function closeDrawer() {
+    drawer.classList.remove('open');
+    backdrop.classList.remove('open');
+    filtersToggle.textContent = 'FILTERS ▼';
+}
 
 filtersToggle.addEventListener('click', () => {
-    filtersPanel.classList.toggle('open');
+    if (drawer.classList.contains('open')) {
+        closeDrawer();
+    } else {
+        openDrawer();
+    }
+});
 
-    filtersToggle.textContent =
-        filtersPanel.classList.contains('open')
-            ? 'FILTERS ▲'
-            : 'FILTERS ▼';
+backdrop.addEventListener('click', closeDrawer);
+
+/* auto-close pēc izvēles (super UX) */
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.category-btn') ||
+        e.target.closest('.score-btn') ||
+        e.target.id === 'countryFilter') {
+        closeDrawer();
+    }
 });
 
     // 1. KATEGORIJAS
