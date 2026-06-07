@@ -213,19 +213,17 @@ marker.bindPopup(popupContent, {
 });
 
 marker.on('popupopen', function () {
+
     const isMobile = window.innerWidth < 768;
     if (!isMobile) return;
 
     const latlng = marker.getLatLng();
 
-    setTimeout(() => {
-        map.setView(latlng, map.getZoom(), {
-            animate: true,
-            pan: {
-                paddingTopLeft: [0, 140]
-            }
-        });
-    }, 100);
+map.flyTo(latlng, Math.max(map.getZoom(), 6), {
+    animate: true,
+    duration: 0.6
+});
+
 });
 
 markersClusterGroup.addLayer(marker);
