@@ -335,7 +335,7 @@ body{
     }
 
     #mainSidebar.collapsed{
-        transform:translateY(calc(-100% + 220px));
+        transform:translateY(calc(-100% + 160px));
     }
 
     #sidebarToggle{
