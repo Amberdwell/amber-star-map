@@ -234,8 +234,6 @@ marker.on('click', function () {
     marker.openPopup();
 });
 
-}
-
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
