@@ -219,10 +219,17 @@ marker.on('popupopen', function () {
 
     const latlng = marker.getLatLng();
 
-map.flyTo(latlng, Math.max(map.getZoom(), 6), {
-    animate: true,
-    duration: 0.6
-});
+    // 1. pirmkārt centrē
+    map.panTo(latlng, {
+        animate: true
+    });
+
+    // 2. tad pabīda uz leju (lai popup būtu virs UI)
+    setTimeout(() => {
+        map.panBy([0, -180], {
+            animate: true
+        });
+    }, 250);
 
 });
 
