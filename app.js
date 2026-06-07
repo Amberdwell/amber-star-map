@@ -382,26 +382,29 @@ window.addEventListener('resize', () => {
 /* =========================
    SIDEBAR TOGGLE (MOBILE + DESKTOP SAFE)
 ========================= */
+
 const sidebarToggle = document.getElementById('sidebarToggle');
 const mainSidebar = document.getElementById('mainSidebar');
 
-/* 🚨 KRITISKI: uzreiz iestati sākuma state PIRMS render */
 function initSidebarState() {
-    const isMobile = window.innerWidth < 768;
 
-    if (isMobile) {
+    if(window.innerWidth < 768){
+
         mainSidebar.classList.add('collapsed');
         sidebarToggle.textContent = '▼';
+
     } else {
+
         mainSidebar.classList.remove('collapsed');
-        sidebarToggle.textContent = '▲';
+        sidebarToggle.textContent = '';
+
     }
 }
 
-/* palaist ASAP */
 initSidebarState();
 
 sidebarToggle.addEventListener('click', () => {
+
     mainSidebar.classList.toggle('collapsed');
 
     sidebarToggle.textContent =
@@ -409,7 +412,9 @@ sidebarToggle.addEventListener('click', () => {
             ? '▼'
             : '▲';
 
-    setTimeout(() => map.invalidateSize(), 250);
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
 });
 
 window.addEventListener('resize', initSidebarState);
