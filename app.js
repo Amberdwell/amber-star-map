@@ -397,42 +397,25 @@ window.addEventListener('resize', () => {
     }
 });
 
-/* =========================
-   SIDEBAR TOGGLE (MOBILE + DESKTOP SAFE)
-========================= */
+const sidebar = document.getElementById('mainSidebar');
+const toggle = document.getElementById('sidebarToggle');
 
-const sidebarToggle = document.getElementById('sidebarToggle');
-const mainSidebar = document.getElementById('mainSidebar');
-
-function initSidebarState() {
-
-    if(window.innerWidth < 768){
-
-        mainSidebar.classList.add('collapsed');
-        sidebarToggle.textContent = '▼';
-
-    } else {
-
-        mainSidebar.classList.remove('collapsed');
-        sidebarToggle.textContent = '';
-
-    }
-}
-
-initSidebarState();
-
-sidebarToggle.addEventListener('click', () => {
-
-    mainSidebar.classList.toggle('collapsed');
-
-    sidebarToggle.textContent =
-        mainSidebar.classList.contains('collapsed')
-            ? '▼'
-            : '▲';
+function setState(isOpen){
+    sidebar.classList.toggle('open', isOpen);
+    toggle.textContent = isOpen ? 'CLOSE ▲' : 'FILTERS ▼';
 
     setTimeout(() => {
-        map.invalidateSize();
+        if (window.map) map.invalidateSize();
     }, 300);
+}
+
+toggle.addEventListener('click', () => {
+    setState(!sidebar.classList.contains('open'));
 });
 
-window.addEventListener('resize', initSidebarState);
+/* OPTIONAL: mobile default closed */
+window.addEventListener('load', () => {
+    if (window.innerWidth < 768) {
+        setState(false);
+    }
+});
