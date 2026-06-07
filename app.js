@@ -219,16 +219,14 @@ marker.on('popupopen', function () {
 
     const latlng = marker.getLatLng();
 
-    // 1. pirmkārt centrē
     map.panTo(latlng, {
         animate: true
     });
 
-    // 2. tad pabīda uz leju (lai popup būtu virs UI)
+    const offset = Math.round(window.innerHeight * 0.22);
+
     setTimeout(() => {
-        map.panBy([0, -180], {
-            animate: true
-        });
+        map.panBy([0, -offset], { animate: true });
     }, 250);
 
 });
