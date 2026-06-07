@@ -14,7 +14,7 @@ const map = L.map('map', {
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© AMBERDWELL © OpenStreetMap © CARTO'
+    attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
 
 const markersClusterGroup = L.markerClusterGroup({
@@ -209,18 +209,14 @@ const popupContent = `
 marker.bindPopup(popupContent, {
     maxWidth: 280,
     minWidth: 240,
-    autoPan: true,
-    keepInView: true, // Neļauj kartītei pazust no ekrāna
-    // Ja ekrāns ir mazs, pasakām, ka no augšas vajag milzīgu atkāpi (260px), lai nobīdītu popup uz leju, prom no izvēlnes
-    autoPanPaddingTopLeft: window.innerWidth < 768 ? L.point(10, 260) : L.point(20, 20),
-    autoPanPaddingBottomRight: L.point(10, 20)
+    autoPan: false
 });
-
-markersClusterGroup.addLayer(marker);
+        markersClusterGroup.addLayer(marker);
 
     });
 
 }
+
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
@@ -254,40 +250,22 @@ function closeFilters() {
     }
 }
 
-const filtersToggle = document.getElementById('filtersToggle');
-const drawer = document.getElementById('filtersPanel');
-const backdrop = document.getElementById('drawerBackdrop');
+function setupEventListeners() {
 
-function openDrawer() {
-    drawer.classList.add('open');
-    backdrop.classList.add('open');
-    filtersToggle.textContent = 'FILTERS ▲';
-}
+    // ✅ MOBILE FILTER TOGGLE
+    const filtersToggle = document.getElementById('filtersToggle');
+    const filtersPanel = document.getElementById('filtersPanel');
 
-function closeDrawer() {
-    drawer.classList.remove('open');
-    backdrop.classList.remove('open');
-    filtersToggle.textContent = 'FILTERS ▼';
-}
+    if (filtersToggle && filtersPanel) {
+        filtersToggle.addEventListener('click', () => {
+            filtersPanel.classList.toggle('open');
 
-filtersToggle.addEventListener('click', () => {
-    if (drawer.classList.contains('open')) {
-        closeDrawer();
-    } else {
-        openDrawer();
+            filtersToggle.textContent =
+                filtersPanel.classList.contains('open')
+                    ? 'FILTERS ▲'
+                    : 'FILTERS ▼';
+        });
     }
-});
-
-backdrop.addEventListener('click', closeDrawer);
-
-/* auto-close pēc izvēles (super UX) */
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.category-btn') ||
-        e.target.closest('.score-btn') ||
-        e.target.id === 'countryFilter') {
-        closeDrawer();
-    }
-});
 
     // 1. KATEGORIJAS
     const catContainer = document.getElementById('categoryContainer');
@@ -382,40 +360,14 @@ document.addEventListener('click', (e) => {
 
 startApp();
 
-let lastWidth = window.innerWidth;
-
-/* =========================
-   RESPONSIVE MAP FIX
-========================= */
 window.addEventListener('resize', () => {
-    if (window.innerWidth !== lastWidth) {
-        lastWidth = window.innerWidth;
-
-        setTimeout(() => {
-            map.invalidateSize();
-        }, 200);
-    }
-});
-
-const sidebar = document.getElementById('mainSidebar');
-const toggle = document.getElementById('sidebarToggle');
-
-function setState(isOpen){
-    sidebar.classList.toggle('open', isOpen);
-    toggle.textContent = isOpen ? 'CLOSE ▲' : 'FILTERS ▼';
-
     setTimeout(() => {
-        if (window.map) map.invalidateSize();
-    }, 300);
-}
-
-toggle.addEventListener('click', () => {
-    setState(!sidebar.classList.contains('open'));
+        map.invalidateSize();
+    }, 200);
 });
 
-/* OPTIONAL: mobile default closed */
-window.addEventListener('load', () => {
-    if (window.innerWidth < 768) {
-        setState(false);
-    }
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
 });
