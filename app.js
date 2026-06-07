@@ -229,7 +229,8 @@ marker.on('popupopen', function () {
 });
 
 markersClusterGroup.addLayer(marker);
-
+        
+});
 
 function buildCategoriesUI() {
     const container = document.getElementById('categoryContainer');
