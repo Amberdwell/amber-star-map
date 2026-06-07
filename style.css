@@ -300,19 +300,7 @@ body{
 
 @media (max-width:767px){
 
-    /* MAP */
-    body{
-        overflow:hidden;
-        height:100vh;
-    }
-
-    #map-wrap{
-        position:fixed;
-        inset:0;
-        z-index:1;
-    }
-
-    /* SIDEBAR = vienmēr augšā kā drawer */
+    /* SIDEBAR container */
     #mainSidebar{
         position:fixed;
         top:0;
@@ -320,10 +308,9 @@ body{
         width:100%;
         z-index:3000;
         background:#161920;
-        overflow:hidden;
     }
 
-    /* FILTERS TOGGLE BAR (vienmēr redzams) */
+    /* TOP BUTTON */
     #filtersToggle{
         width:100%;
         height:56px;
@@ -333,21 +320,63 @@ body{
         font-size:12px;
         letter-spacing:.15em;
         cursor:pointer;
+        position:relative;
+        z-index:3100;
     }
 
-    /* SATURS (slēpjas / parādās) */
-    #filtersPanel{
-        max-height:0;
-        overflow:hidden;
-        transition:max-height .3s ease;
+    /* ===== DRAWER ===== */
+    .drawer{
+        position:relative;
+
+        transform: translateY(-10px);
+        opacity: 0;
+
+        pointer-events: none;
+
+        transition:
+            transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+            opacity 0.25s ease;
+
+        will-change: transform, opacity;
+
+        max-height: 75vh;
+        overflow-y: auto;
+
+        background:#161920;
     }
 
-    #filtersPanel.open{
-        max-height:75vh;
-        overflow-y:auto;
+    .drawer.open{
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
     }
 
-    /* POPUP */
+    /* BACKDROP (click outside) */
+    #drawerBackdrop{
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.35);
+
+        opacity:0;
+        pointer-events:none;
+
+        transition:opacity .25s ease;
+        z-index:2000;
+    }
+
+    #drawerBackdrop.open{
+        opacity:1;
+        pointer-events:auto;
+    }
+
+    /* MAP */
+    #map-wrap{
+        position:fixed;
+        inset:0;
+        z-index:1;
+    }
+
+    /* popup tweaks */
     .leaflet-popup-content{
         width:260px !important;
         max-width:260px !important;
