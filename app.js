@@ -212,24 +212,20 @@ marker.bindPopup(popupContent, {
     autoPan: false
 });
 
-marker.on('click', function () {
-
+marker.on('popupopen', function () {
     const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
     const latlng = marker.getLatLng();
 
-    if (isMobile) {
+    setTimeout(() => {
         map.setView(latlng, map.getZoom(), {
-            animate: true
+            animate: true,
+            pan: {
+                paddingTopLeft: [0, 140]
+            }
         });
-
-        setTimeout(() => {
-            map.panBy([0, -120]);
-        }, 200);
-    } else {
-        map.panTo(latlng);
-    }
-
-    marker.openPopup();
+    }, 100);
 });
 
 markersClusterGroup.addLayer(marker);
