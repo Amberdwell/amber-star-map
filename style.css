@@ -300,6 +300,16 @@ body{
 
 @media (max-width:767px){
 
+    #filtersPanel{
+        max-height:0;
+        overflow:hidden;
+        transition:max-height .3s ease;
+    }
+
+    #filtersPanel.open{
+        max-height:1000px;
+    }
+
     body{
         overflow:hidden;
         height:100vh;
@@ -317,15 +327,10 @@ body{
         left:0;
         width:100%;
         max-height:45vh;
-
         background:#161920;
-
         z-index:3000;
-
         overflow-y:auto;
-
         transform:translateY(0);
-
         transition:transform .3s ease;
     }
 
@@ -338,21 +343,14 @@ body{
         right:12px;
         top:50%;
         transform:translateY(-50%);
-
         width:40px;
         height:40px;
-
         z-index:9999;
-
         background:rgba(0,0,0,.4);
-
         border-radius:8px;
-
         color:#D4AF37;
-
         cursor:pointer;
     }
-}
 
     .leaflet-popup-content{
         width:260px !important;
