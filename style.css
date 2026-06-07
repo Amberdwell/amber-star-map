@@ -300,74 +300,67 @@ body{
 
 @media (max-width:767px){
 
-    /* SIDEBAR container */
     #mainSidebar{
         position:fixed;
         top:0;
         left:0;
         width:100%;
+        height:100vh;
+        background:#161920;
         z-index:3000;
-        background:#161920;
+
+        transform: translateY(calc(-100% + 120px)); /* tikai header redzams */
+        transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1);
+        will-change: transform;
     }
 
-    /* TOP BUTTON */
-    #filtersToggle{
-        width:100%;
-        height:56px;
-        border:none;
-        background:#161920;
-        color:#D4AF37;
-        font-size:12px;
-        letter-spacing:.15em;
-        cursor:pointer;
-        position:relative;
-        z-index:3100;
-    }
-
-    /* ===== DRAWER ===== */
-    .drawer{
-        position:relative;
-
-        transform: translateY(-10px);
-        opacity: 0;
-
-        pointer-events: none;
-
-        transition:
-            transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-            opacity 0.25s ease;
-
-        will-change: transform, opacity;
-
-        max-height: 75vh;
-        overflow-y: auto;
-
-        background:#161920;
-    }
-
-    .drawer.open{
+    /* OPEN STATE */
+    #mainSidebar.open{
         transform: translateY(0);
-        opacity: 1;
-        pointer-events: auto;
     }
 
-    /* BACKDROP (click outside) */
-    #drawerBackdrop{
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,0.35);
-
-        opacity:0;
-        pointer-events:none;
-
-        transition:opacity .25s ease;
-        z-index:2000;
+    /* HEADER BAR ALWAYS VISIBLE */
+    .sidebar-header{
+        height:120px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        position:relative;
+        border-bottom:1px solid #2A303C;
     }
 
-    #drawerBackdrop.open{
-        opacity:1;
-        pointer-events:auto;
+    /* FILTER BUTTON */
+    #sidebarToggle{
+        position:absolute;
+        bottom:-18px;
+        left:50%;
+        transform:translateX(-50%);
+        width:120px;
+        height:36px;
+        border-radius:999px;
+
+        background:#0F1115;
+        border:1px solid #2A303C;
+        color:#D4AF37;
+
+        font-size:11px;
+        letter-spacing:.2em;
+        cursor:pointer;
+
+        box-shadow:0 10px 25px rgba(0,0,0,.4);
     }
+
+    /* CONTENT SCROLL WHEN OPEN */
+    #mainSidebar:not(.open){
+        overflow:hidden;
+    }
+
+    #mainSidebar.open{
+        overflow-y:auto;
+    }
+
+}
 
     /* MAP */
     #map-wrap{
