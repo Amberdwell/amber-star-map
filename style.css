@@ -244,8 +244,19 @@ Style.CSS
 /* MOBILE FIX */
 
 
-
 @media (max-width:767px){
+
+    /* ===== HEADER HEIGHT CONTROL ===== */
+    aside {
+        flex: 0 0 auto;
+        height: 130px;     /* lieto height, nevis max-height */
+        overflow: hidden;  /* svarīgi */
+    }
+
+    /* paslēp logo/text tikai mobile */
+    aside .p-6 {
+        display: none;
+    }
 
     body{
         display:flex;
@@ -254,18 +265,12 @@ Style.CSS
         overflow:hidden;
     }
 
-    aside{
-        flex:0 0 auto;
-        max-height:none;
-        overflow:visible;
-    }
-
     #map-wrap{
         flex:1;
         min-height:0;
     }
 
-    /* BACKDROP */
+    /* ===== FILTER PANEL (OK, šis tev ir pareizi) ===== */
     #filtersPanel{
         position:fixed;
         left:0;
@@ -289,7 +294,7 @@ Style.CSS
         padding:18px;
         box-shadow:0 -20px 60px rgba(0,0,0,0.6);
     }
-
+}
     /* OPEN STATE */
     #filtersPanel.open{
         transform:translateY(0);
