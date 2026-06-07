@@ -273,8 +273,6 @@ body{
     overflow-y:auto;
     background:#161920;
     border-right:1px solid #2A303C;
-    flex-shrink:0;
-    position:relative;
 }
 
 #map-wrap{
