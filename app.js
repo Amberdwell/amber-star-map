@@ -256,20 +256,17 @@ function closeFilters() {
 
 function setupEventListeners() {
 
-    // ✅ MOBILE FILTER TOGGLE
-    const filtersToggle = document.getElementById('filtersToggle');
-    const filtersPanel = document.getElementById('filtersPanel');
+const filtersToggle = document.getElementById('filtersToggle');
+const filtersPanel = document.getElementById('filtersPanel');
 
-    if (filtersToggle && filtersPanel) {
-        filtersToggle.addEventListener('click', () => {
-            filtersPanel.classList.toggle('open');
+filtersToggle.addEventListener('click', () => {
+    filtersPanel.classList.toggle('open');
 
-            filtersToggle.textContent =
-                filtersPanel.classList.contains('open')
-                    ? 'FILTERS ▲'
-                    : 'FILTERS ▼';
-        });
-    }
+    filtersToggle.textContent =
+        filtersPanel.classList.contains('open')
+            ? 'FILTERS ▲'
+            : 'FILTERS ▼';
+});
 
     // 1. KATEGORIJAS
     const catContainer = document.getElementById('categoryContainer');
