@@ -218,7 +218,6 @@ marker.on('click', function () {
     const latlng = marker.getLatLng();
 
     if (isMobile) {
-
         map.setView(latlng, map.getZoom(), {
             animate: true
         });
@@ -226,13 +225,14 @@ marker.on('click', function () {
         setTimeout(() => {
             map.panBy([0, -120]);
         }, 200);
-
     } else {
         map.panTo(latlng);
     }
 
     marker.openPopup();
 });
+
+markersClusterGroup.addLayer(marker);
 
 
 function buildCategoriesUI() {
