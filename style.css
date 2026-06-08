@@ -326,5 +326,17 @@ Style.CSS
     padding: 2px 6px;
     border-radius: 4px;
 }
-.status-pending { color: #facc15; }
-.status-inactive { color: #6b7280; }
+
+.status-pending {
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.status-inactive {
+    color: #6b7280;
+    background: rgba(107, 114, 128, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
