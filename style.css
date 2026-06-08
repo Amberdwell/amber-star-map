@@ -319,6 +319,34 @@ Style.CSS
     }
 }
 
+/* STATUS BASE (drošības fallback) */
+span[class^="status-"] {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* ACTIVE */
+.status-active {
+    background: #facc15 !important;   /* dzeltenais */
+    color: #0F1115 !important;
+}
+
+/* PENDING */
+.status-pending {
+    background: #6b7280 !important;   /* pelēks */
+    color: #ffffff !important;
+}
+
+/* INACTIVE */
+.status-inactive {
+    background: #2A303C !important;
+    color: #ffffff !important;
+}
+
+/* ===== STATUS FIX (Leaflet popup) ===== */
+
 .leaflet-popup-content .status-active {
     background: #22c55e !important;
     color: #0F1115 !important;
@@ -331,9 +359,17 @@ Style.CSS
 .leaflet-popup-content .status-pending {
     background: #facc15 !important;
     color: #0F1115 !important;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
 }
 
 .leaflet-popup-content .status-inactive {
     background: #6b7280 !important;
     color: #ffffff !important;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
 }
