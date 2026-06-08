@@ -97,8 +97,10 @@ return {
 
     // 🆕 NEW FIELD: STATUS
     status:
-        (row.Status || 'Active').toString().trim(),
-
+    (row.Status || 'ACTIVE')
+        .toString()
+        .trim()
+        .toUpperCase(),
     // 🆕 NEW FIELD: SELECTION YEAR
     selectionYear:
         row['Selection year'] ||
