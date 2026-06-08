@@ -96,11 +96,10 @@ return {
         row.Accreditation_No || 'AS-PENDING',
 
     // 🆕 NEW FIELD: STATUS
-    status:
-    (row.Status || 'ACTIVE')
-        .toString()
-        .trim()
-        .toUpperCase(),
+status: (row.Status || '')
+    .toString()
+    .trim()
+    .toUpperCase(),
     // 🆕 NEW FIELD: SELECTION YEAR
     selectionYear:
         row['Selection year'] ||
@@ -164,7 +163,9 @@ const filtered = hotelData.filter(h => {
 const status = (h.status || '').toString().trim().toUpperCase();
 
 const matchesStatus =
-    ['ACTIVE', 'PENDING', 'INACTIVE'].includes(status);
+    status === 'ACTIVE' ||
+    status === 'PENDING' ||
+    status === 'INACTIVE';
 
     const matchesCategory =
         (activeCategory === 'all' || h.category === activeCategory);
