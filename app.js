@@ -31,6 +31,28 @@ const markersClusterGroup = L.markerClusterGroup({
 });
 map.addLayer(markersClusterGroup);
 
+// ==========================================
+// 🔥 ŠEIT IR JĀIELIEK JAUNAIS KODS:
+// ==========================================
+
+// 1. Salabo tukšo karti iFrame logā (Hostingerā) pēc ielādes
+setTimeout(() => {
+    map.invalidateSize();
+}, 600);
+
+// 2. Salabo kartes raustīšanos un pelēkās malas, kad mainās telefona ekrāns
+window.addEventListener('resize', () => {
+    setTimeout(() => { map.invalidateSize(); }, 200);
+});
+
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => { map.invalidateSize(); }, 300);
+});
+
+// ==========================================
+// KODS TURPINĀS KĀ TEV BIJA:
+// ==========================================
+
 let hotelData = [];
 let activeCategory = 'all';
 let activeCountry = 'all';
@@ -38,14 +60,12 @@ let minScoreFilter = 0;
 let searchQuery = '';
 
 function parseTabularCSV(text) {
-
     const parsed = Papa.parse(text, {
         header: true,
         skipEmptyLines: true
     });
 
     return parsed.data.map(row => {
-
         const lat = parseFloat(
             (row.Latitude || row.latitude || '0')
             .toString()
@@ -57,6 +77,7 @@ function parseTabularCSV(text) {
             .toString()
             .replace(',', '.')
         );
+        // ... tālāk tavs esošais kods
 
 return {
 
