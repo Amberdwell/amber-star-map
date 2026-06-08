@@ -201,7 +201,7 @@ const popupContent = `
             <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px; color: #ffffff;">${loc.name}</h2>
             <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px; color: #E8E3D9;">${loc.description}</p>
 
-            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;">
     
 <span class="status-${(loc.status || 'ACTIVE')
     .toString()
