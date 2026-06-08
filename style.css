@@ -319,8 +319,6 @@ Style.CSS
     }
 }
 
-/* ===== STATUS BADGES (FORCE OVERRIDE) ===== */
-
 .leaflet-popup-content span.status-active,
 .leaflet-popup-content span.status-pending,
 .leaflet-popup-content span.status-inactive {
@@ -335,32 +333,30 @@ Style.CSS
     font-size: 10px !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-
     line-height: 1 !important;
+
     white-space: nowrap !important;
+
+    /* 🔥 ŠIS IR KRITISKS */
+    height: fit-content !important;
+    width: fit-content !important;
+    flex: 0 0 auto !important;
 }
 
-/* ACTIVE = YELLOW */
+/* ACTIVE */
 .leaflet-popup-content span.status-active {
     background: #facc15 !important;
     color: #0F1115 !important;
 }
 
-/* PENDING = GREY */
+/* PENDING */
 .leaflet-popup-content span.status-pending {
     background: #6b7280 !important;
     color: #ffffff !important;
 }
 
-/* INACTIVE = RED */
+/* INACTIVE */
 .leaflet-popup-content span.status-inactive {
     background: #ef4444 !important;
     color: #ffffff !important;
-}
-
-.status-active {
-    background: red !important;
-    color: white !important;
-    padding: 20px !important;
-    border-radius: 50px !important;
 }
