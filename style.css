@@ -319,9 +319,7 @@ Style.CSS
     }
 }
 
-.leaflet-popup-content span.status-active,
-.leaflet-popup-content span.status-pending,
-.leaflet-popup-content span.status-inactive {
+span[class^="status-"] {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -331,32 +329,24 @@ Style.CSS
 
     font-weight: 700 !important;
     font-size: 10px !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
     line-height: 1 !important;
-
     white-space: nowrap !important;
-
-    /* 🔥 ŠIS IR KRITISKS */
-    height: fit-content !important;
-    width: fit-content !important;
-    flex: 0 0 auto !important;
 }
 
 /* ACTIVE */
-.leaflet-popup-content span.status-active {
+span.status-active {
     background: #facc15 !important;
     color: #0F1115 !important;
 }
 
 /* PENDING */
-.leaflet-popup-content span.status-pending {
+span.status-pending {
     background: #6b7280 !important;
     color: #ffffff !important;
 }
 
 /* INACTIVE */
-.leaflet-popup-content span.status-inactive {
+span.status-inactive {
     background: #ef4444 !important;
     color: #ffffff !important;
 }
