@@ -198,6 +198,18 @@ const popupContent = `
         <div class="popup-content-body" style="padding: 12px;">
             <h2 class="popup-main-title" style="margin: 0 0 8px 0; font-size: 16px; color: #ffffff;">${loc.name}</h2>
             <p class="popup-description" style="margin: 0 0 10px 0; font-size: 13px; color: #E8E3D9;">${loc.description}</p>
+
+            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:10px;">
+    
+    <span class="status-${loc.status?.toLowerCase() || 'active'}">
+        ${loc.status || 'ACTIVE'}
+    </span>
+
+    <span style="color:#D4AF37;">
+        ${loc.selectionYear || '2026'}
+    </span>
+
+</div>
             
             <div class="popup-details-grid" style="display: grid; gap: 5px; margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; color: #E8E3D9;">
