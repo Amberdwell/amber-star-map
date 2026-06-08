@@ -319,36 +319,32 @@ Style.CSS
     }
 }
 
+/* ACTIVE = primary / highlighted */
 .status-active {
     color: #0F1115 !important;
-    background: #22c55e !important;
+    background: #facc15 !important; /* dzeltens */
     padding: 2px 7px;
     border-radius: 4px;
-    font-weight: 600;
+    font-weight: 700;
     display: inline-block;
 }
 
+/* PENDING = in review */
 .status-pending {
-    color: #0F1115 !important;
-    background: #facc15 !important;
+    color: #ffffff !important;
+    background: rgba(107, 114, 128, 0.6) !important;
     padding: 2px 7px;
     border-radius: 4px;
     font-weight: 600;
     display: inline-block;
 }
 
+/* INACTIVE = disabled */
 .status-inactive {
-    color: #ffffff !important;
-    background: #6b7280 !important;
+    color: #9ca3af !important;
+    background: rgba(42, 48, 60, 0.9) !important;
     padding: 2px 7px;
     border-radius: 4px;
-}
-
-span[class*="status-active"] {
-    background: #22c55e !important;
-    color: #0F1115 !important;
-    font-weight: 700 !important;
-    padding: 2px 7px !important;
-    border-radius: 4px !important;
-    display: inline-block !important;
+    font-weight: 500;
+    display: inline-block;
 }
