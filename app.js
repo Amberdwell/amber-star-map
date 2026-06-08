@@ -201,13 +201,13 @@ const popupContent = `
 
             <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:10px;">
     
-    <span class="status-${loc.status?.toLowerCase() || 'Active'}">
-        ${loc.status || 'ACTIVE'}
-    </span>
+<span class="status-${(loc.status || 'ACTIVE').toLowerCase()}">
+    ${loc.status || 'ACTIVE'}
+</span>
 
-    <span style="color:#D4AF37;">
-        ${loc.selectionYear || '2026'}
-    </span>
+<span style="color:#D4AF37;">
+    ${loc.selectionYear || '2026'}
+</span>
 
 </div>
             
