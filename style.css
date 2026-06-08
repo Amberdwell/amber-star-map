@@ -342,3 +342,9 @@ Style.CSS
     padding: 2px 6px;
     border-radius: 4px;
 }
+
+.status-active {
+    color: red !important;
+    background: yellow !important;
+    display: inline-block;
+}
