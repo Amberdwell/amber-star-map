@@ -319,23 +319,41 @@ Style.CSS
     }
 }
 
-.status-active,
-.status-pending,
-.status-inactive {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 5px 10px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    line-height: 1;
-    white-space: nowrap;
+/* ===== STATUS BADGES (FORCE OVERRIDE) ===== */
+
+.leaflet-popup-content span.status-active,
+.leaflet-popup-content span.status-pending,
+.leaflet-popup-content span.status-inactive {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 4px 10px !important;
+    border-radius: 999px !important;
+
+    font-weight: 700 !important;
+    font-size: 10px !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+
+    line-height: 1 !important;
+    white-space: nowrap !important;
 }
 
-.status-active { background:#facc15; color:#0F1115; }
-.status-pending { background:#6b7280; color:#fff; }
-.status-inactive { background:#ef4444; color:#fff; }
+/* ACTIVE = YELLOW */
+.leaflet-popup-content span.status-active {
+    background: #facc15 !important;
+    color: #0F1115 !important;
+}
+
+/* PENDING = GREY */
+.leaflet-popup-content span.status-pending {
+    background: #6b7280 !important;
+    color: #ffffff !important;
+}
+
+/* INACTIVE = RED */
+.leaflet-popup-content span.status-inactive {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+}
