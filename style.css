@@ -325,28 +325,14 @@ Style.CSS
 .status-inactive {
     display: inline-flex;
     align-items: center;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
     font-size: 10px;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
-/* ACTIVE = yellow */
-.status-active {
-    background: #facc15;
-    color: #0F1115;
-}
-
-/* PENDING = grey */
-.status-pending {
-    background: #6b7280;
-    color: #ffffff;
-}
-
-/* INACTIVE = red */
-.status-inactive {
-    background: #ef4444;
-    color: #ffffff;
-}
+.status-active { background:#facc15; color:#0F1115; }
+.status-pending { background:#6b7280; color:#fff; }
+.status-inactive { background:#ef4444; color:#fff; }
