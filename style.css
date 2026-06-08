@@ -343,3 +343,12 @@ Style.CSS
     padding: 2px 7px;
     border-radius: 4px;
 }
+
+span[class*="status-active"] {
+    background: #22c55e !important;
+    color: #0F1115 !important;
+    font-weight: 700 !important;
+    padding: 2px 7px !important;
+    border-radius: 4px !important;
+    display: inline-block !important;
+}
