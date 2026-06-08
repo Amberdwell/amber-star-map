@@ -58,54 +58,60 @@ function parseTabularCSV(text) {
             .replace(',', '.')
         );
 
-        return {
+return {
 
-            name:
-                row.Title ||
-                row.Property ||
-                row.Name ||
-                'Unnamed Property',
+    name:
+        row.Title ||
+        row.Property ||
+        row.Name ||
+        'Unnamed Property',
 
-            description:
-                row.Description ||
-                'Amber Star approved luxury property.',
+    description:
+        row.Description ||
+        'Amber Star approved luxury property.',
 
-            score:
-                parseInt(
-                    (row.AuditScore || '0')
-                    .toString()
-                    .split('/')[0]
-                ) || 0,
+    score:
+        parseInt(
+            (row.AuditScore || '0')
+                .toString()
+                .split('/')[0]
+        ) || 0,
 
-            guestRating:
-                row.GuestRating || 'N/A',
+    guestRating:
+        row.GuestRating || 'N/A',
 
-            country:
-                row.Country || 'LATVIA',
+    country:
+        row.Country || 'LATVIA',
 
-            city:
-                row.City || '',
+    city:
+        row.City || '',
 
-            category:
-                (
-                    row.Category ||
-                    'HOTEL'
-                ).toUpperCase(),
+    category:
+        (row.Category || 'HOTEL').toUpperCase(),
 
-            website:
-                row.Website || '#',
+    website:
+        row.Website || '#',
 
-            id_code:
-                row.Accreditation_No ||
-                'AS-PENDING',
+    id_code:
+        row.Accreditation_No || 'AS-PENDING',
 
-            lat,
-            lng,
+    // 🆕 NEW FIELD: STATUS
+    status:
+        (row.Status || 'Active').toString().trim(),
 
-            image:
-                row.Image ||
-                'https://images.unsplash.com/photo-1566073771259-6a8506099945'
-        };
+    // 🆕 NEW FIELD: SELECTION YEAR
+    selectionYear:
+        row['Selection year'] ||
+        row.SelectionYear ||
+        '2026',
+
+    lat,
+    lng,
+
+    image:
+        row.Image ||
+        'https://images.unsplash.com/photo-1566073771259-6a8506099945'
+};
 
     }).filter(h =>
         !isNaN(h.lat) &&
@@ -151,14 +157,26 @@ function renderMapPoints() {
     const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
     const countryVal = countryFilter ? countryFilter.value : 'all';
 
-    const filtered = hotelData.filter(h => {
-        const matchesCategory = (activeCategory === 'all' || h.category === activeCategory);
-        const matchesScore = (h.score >= minScoreFilter);
-        const matchesCountry =(countryVal === 'all' || h.country.toLowerCase() === countryVal.toLowerCase());
-        const matchesSearch = (h.name.toLowerCase().includes(searchVal) || h.city.toLowerCase().includes(searchVal));
-        
-        return matchesCategory && matchesScore && matchesCountry && matchesSearch;
-    });
+const filtered = hotelData.filter(h => {
+
+    const matchesStatus =
+        h.status === 'Active' || h.status === 'Pending';
+
+    const matchesCategory =
+        (activeCategory === 'all' || h.category === activeCategory);
+
+    const matchesScore =
+        (h.score >= minScoreFilter);
+
+    const matchesCountry =
+        (countryVal === 'all' || h.country.toLowerCase() === countryVal.toLowerCase());
+
+    const matchesSearch =
+        (h.name.toLowerCase().includes(searchVal) ||
+         h.city.toLowerCase().includes(searchVal));
+
+    return matchesStatus && matchesCategory && matchesScore && matchesCountry && matchesSearch;
+});
 
     document.getElementById('totalPropertiesText').textContent = `${filtered.length} Accredited Properties`;
 
