@@ -319,9 +319,7 @@ Style.CSS
     }
 }
 
-/* =========================
-   STATUS BASE
-========================= */
+/* ===== STATUS BASE ===== */
 span[class^="status-"] {
     display: inline-block;
     padding: 2px 7px;
@@ -329,20 +327,20 @@ span[class^="status-"] {
     font-weight: 600;
 }
 
-/* ACTIVE = green */
+/* ACTIVE = YELLOW */
 .status-active {
-    background: #22c55e !important;
-    color: #0F1115 !important;
-}
-
-/* PENDING = yellow */
-.status-pending {
     background: #facc15 !important;
     color: #0F1115 !important;
 }
 
-/* INACTIVE = gray */
-.status-inactive {
+/* PENDING = GREY */
+.status-pending {
     background: #6b7280 !important;
+    color: #ffffff !important;
+}
+
+/* INACTIVE = RED */
+.status-inactive {
+    background: #ef4444 !important;
     color: #ffffff !important;
 }
