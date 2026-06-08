@@ -161,8 +161,10 @@ function renderMapPoints() {
 
 const filtered = hotelData.filter(h => {
 
+const status = (h.status || '').toString().trim().toUpperCase();
+
 const matchesStatus =
-    ['ACTIVE', 'PENDING'].includes(h.status);
+    ['ACTIVE', 'PENDING', 'INACTIVE'].includes(status);
 
     const matchesCategory =
         (activeCategory === 'all' || h.category === activeCategory);
