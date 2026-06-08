@@ -319,32 +319,27 @@ Style.CSS
     }
 }
 
-/* ACTIVE = approved / stable */
 .status-active {
-    color: #22c55e !important;
-    background: rgba(34, 197, 94, 0.12) !important;
-    padding: 2px 6px;
+    color: #0F1115 !important;
+    background: #22c55e !important;
+    padding: 2px 7px;
     border-radius: 4px;
-}
-
-/* PENDING = attention */
-.status-pending {
-    color: #facc15;
-    background: rgba(250, 204, 21, 0.12);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-/* INACTIVE = disabled */
-.status-inactive {
-    color: #6b7280;
-    background: rgba(107, 114, 128, 0.10);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-.status-active {
-    color: red !important;
-    background: yellow !important;
+    font-weight: 600;
     display: inline-block;
+}
+
+.status-pending {
+    color: #0F1115 !important;
+    background: #facc15 !important;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-inactive {
+    color: #ffffff !important;
+    background: #6b7280 !important;
+    padding: 2px 7px;
+    border-radius: 4px;
 }
