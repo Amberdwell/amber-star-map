@@ -201,7 +201,7 @@ const popupContent = `
 
             <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:10px;">
     
-    <span class="status-${loc.status?.toLowerCase() || 'active'}">
+    <span class="status-${loc.status?.toLowerCase() || 'Active'}">
         ${loc.status || 'ACTIVE'}
     </span>
 
