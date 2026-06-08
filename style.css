@@ -318,3 +318,8 @@ Style.CSS
         max-width:92vw !important;
     }
 }
+
+/* STATUS COLORS */
+.status-active { color: #22c55e; }
+.status-pending { color: #facc15; }
+.status-inactive { color: #6b7280; }
