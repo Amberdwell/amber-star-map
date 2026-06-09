@@ -275,7 +275,8 @@ Style.CSS
         right:0;
         bottom:0;
 
-        height:65vh;
+        height:60vh;
+        max-height: 60vh;
         pointer-events:none;
         background:#0F1115;
         z-index:9999;
