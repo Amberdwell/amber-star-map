@@ -14,9 +14,9 @@ const map = L.map('map', {
 // Zoom controls (apakšā pa labi)
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Fullscreen (arī apakšā pa labi, virs zoom)
-if (L.Control && L.Control.Fullscreen) {
-    map.addControl(new L.Control.Fullscreen({
+// Fullscreen (apakšā pa labi virs zoom)
+if (L.Control && L.Control.FullScreen) {
+    map.addControl(new L.Control.FullScreen({
         position: 'bottomright'
     }));
 }
