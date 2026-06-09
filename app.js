@@ -8,7 +8,8 @@ const map = L.map('map', {
     zoom: isMobile ? 4.2 : 5.5,
     zoomControl: false,
     minZoom: 2,
-    maxZoom: 21
+    maxZoom: 21,
+    fullscreenControl: true
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
