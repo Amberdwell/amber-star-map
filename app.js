@@ -14,9 +14,13 @@ const map = L.map('map', {
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO'
+    attribution: '© OpenStreetMap ©Amberdwell © CARTO'
 }).addTo(map);
 
+// ⛶ FULLSCREEN CONTROL (PIEVIENOTS TE)
+map.addControl(new L.Control.Fullscreen({
+    position: 'topleft'
+}));
 const markersClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
     maxClusterRadius: 35,
