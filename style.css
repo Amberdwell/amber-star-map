@@ -1,7 +1,5 @@
 Style.CSS
 
-
-
 /* Augšējais zīmola virsraksts ar taviem fontiem un krāsām */
 .brand-title-box {
     display: flex;
@@ -277,7 +275,7 @@ Style.CSS
         right:0;
         bottom:0;
 
-        height:75vh;
+        height:65vh;
         pointer-events:none;
         background:#0F1115;
         z-index:9999;
