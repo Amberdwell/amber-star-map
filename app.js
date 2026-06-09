@@ -26,7 +26,7 @@ const FullscreenButton = L.Control.extend({
 
     onAdd: function () {
         const btn = L.DomUtil.create('button');
-        
+
         btn.innerHTML = '⛶';
         btn.title = 'Full screen';
 
@@ -42,20 +42,31 @@ const FullscreenButton = L.Control.extend({
         btn.style.alignItems = 'center';
         btn.style.justifyContent = 'center';
 
-        let isFullscreen = false;
-
         btn.onclick = () => {
-            const mapEl = document.getElementById('map');
 
-            if (!isFullscreen) {
-                mapEl.requestFullscreen?.();
-                isFullscreen = true;
-            } else {
-                document.exitFullscreen?.();
-                isFullscreen = false;
+            const isMobile = window.innerWidth < 768;
+
+            // MOBILE → atver karti jaunā cilnē
+            if (isMobile) {
+                window.open(
+                    'https://selection.amberdwell.com',
+                    '_blank'
+                );
+                return;
             }
 
-            setTimeout(() => map.invalidateSize(), 300);
+            // DESKTOP → fullscreen
+            const mapEl = document.getElementById('map');
+
+            if (!document.fullscreenElement) {
+                mapEl.requestFullscreen?.();
+            } else {
+                document.exitFullscreen?.();
+            }
+
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 300);
         };
 
         return btn;
