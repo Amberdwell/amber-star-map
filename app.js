@@ -19,12 +19,51 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © Amberdwell © CARTO'
 }).addTo(map);
 
-// ⛶ FULLSCREEN (TIKAI VIENS, BEZ DUPLIKĀTIEM)
-if (L.Control && L.Control.FullScreen) {
-    map.addControl(new L.Control.FullScreen({
+const FullscreenButton = L.Control.extend({
+    options: {
         position: 'bottomright'
-    }));
-}
+    },
+
+    onAdd: function () {
+        const btn = L.DomUtil.create('button');
+        
+        btn.innerHTML = '⛶';
+        btn.title = 'Full screen';
+
+        btn.style.width = '34px';
+        btn.style.height = '34px';
+        btn.style.background = '#2A303C';
+        btn.style.color = '#D4AF37';
+        btn.style.border = '1px solid #D4AF37';
+        btn.style.borderRadius = '4px';
+        btn.style.cursor = 'pointer';
+        btn.style.fontSize = '16px';
+        btn.style.display = 'flex';
+        btn.style.alignItems = 'center';
+        btn.style.justifyContent = 'center';
+
+        let isFullscreen = false;
+
+        btn.onclick = () => {
+            const mapEl = document.getElementById('map');
+
+            if (!isFullscreen) {
+                mapEl.requestFullscreen?.();
+                isFullscreen = true;
+            } else {
+                document.exitFullscreen?.();
+                isFullscreen = false;
+            }
+
+            setTimeout(() => map.invalidateSize(), 300);
+        };
+
+        return btn;
+    }
+});
+
+map.addControl(new FullscreenButton());
+
 
 // MARKER CLUSTER
 const markersClusterGroup = L.markerClusterGroup({
