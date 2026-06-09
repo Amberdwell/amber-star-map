@@ -268,15 +268,18 @@ Style.CSS
         min-height:0;
     }
 
-    /* ===== FILTER PANEL (OK, šis tev ir pareizi) ===== */
+    /* ===== FILTER PANEL  ===== */
     #filtersPanel{
         position:fixed;
         left:0;
         right:0;
         bottom:0;
 
-        height:60dvh;
-        max-height: 60dvh;
+    height: 60vh;
+    height: 60dvh;
+    max-height: 60vh;
+    max-height: 60dvh;
+}
         pointer-events:none;
         background:#0F1115;
         z-index:9999;
