@@ -8,8 +8,7 @@ const map = L.map('map', {
     zoom: isMobile ? 4.2 : 5.5,
     zoomControl: false,
     minZoom: 2,
-    maxZoom: 21,
-    fullscreenControl: true
+    maxZoom: 21
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -17,6 +16,11 @@ L.control.zoom({ position: 'bottomright' }).addTo(map);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © Amberdwell © CARTO'
 }).addTo(map);
+
+// ⛶ FULLSCREEN (pareizā vieta)
+map.addControl(new L.Control.Fullscreen({
+    position: 'topleft'
+}));
 
 // 🧠 SAFETY CHECK (KRITISKS FIX)
 if (L.Control && L.Control.Fullscreen) {
