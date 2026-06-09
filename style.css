@@ -259,7 +259,7 @@ Style.CSS
     body{
         display:flex;
         flex-direction:column;
-        height:100vh;
+        height:100dvh;
         overflow:hidden;
     }
 
@@ -275,8 +275,8 @@ Style.CSS
         right:0;
         bottom:0;
 
-        height:60vh;
-        max-height: 60vh;
+        height:60dvh;
+        max-height: 60dvh;
         pointer-events:none;
         background:#0F1115;
         z-index:9999;
