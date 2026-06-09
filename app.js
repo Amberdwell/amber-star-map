@@ -8,9 +8,13 @@ const map = L.map('map', {
     zoom: isMobile ? 4.2 : 5.5,
     zoomControl: false,
     minZoom: 2,
-    maxZoom: 21
+    maxZoom: 21,
+    fullscreenControl: {
+        position: 'topright',
+        title: 'View Fullscreen',
+        titleCancel: 'Exit Fullscreen'
+    }
 });
-
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
