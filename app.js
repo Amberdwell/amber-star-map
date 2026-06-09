@@ -11,7 +11,15 @@ const map = L.map('map', {
     maxZoom: 21
 });
 
-L.control.zoom({ position: 'bottomright' }).addTo(map);
+// Zoom control (topright)
+L.control.zoom({ position: 'topright' }).addTo(map);
+
+// Fullscreen control (topright)
+if (L.Control && L.Control.Fullscreen) {
+    map.addControl(new L.Control.Fullscreen({
+        position: 'topright'
+    }));
+}
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © Amberdwell © CARTO'
