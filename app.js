@@ -263,7 +263,7 @@ const matchesStatus =
     return matchesStatus && matchesCategory && matchesScore && matchesCountry && matchesSearch;
 });
 
-    document.getElementById('totalPropertiesText').textContent = `${filtered.length} Accredited Properties`;
+    document.getElementById('totalPropertiesText').textContent = `${filtered.length} Accredited/Qualified Properties`;
 
     filtered.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng], { icon: L.divIcon({ html: `<div class="premium-dot-marker"></div>`, className: 'custom-dot-wrapper', iconSize: [16, 16] }) });
