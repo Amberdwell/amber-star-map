@@ -334,8 +334,8 @@ span[class^="status-"] {
     white-space: nowrap !important;
 }
 
-/* ACTIVE */
-span.status-active {
+/* ACCREDITED */
+span.status-accredited {
     background: #facc15 !important;
     color: #0F1115 !important;
 }
