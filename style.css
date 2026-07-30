@@ -340,8 +340,8 @@ span.status-active {
     color: #0F1115 !important;
 }
 
-/* PENDING */
-span.status-pending {
+/* QUALIFIED */
+span.status-qualified {
     background: #6b7280 !important;
     color: #ffffff !important;
 }
