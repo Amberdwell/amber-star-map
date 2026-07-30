@@ -244,7 +244,7 @@ const filtered = hotelData.filter(h => {
 const status = (h.status || '').toString().trim().toUpperCase();
 
 const matchesStatus =
-    status === 'ACTIVE' ||
+    status === 'ACCREDITED' ||
     status === 'QUALIFIED';
 
     const matchesCategory =
@@ -286,11 +286,11 @@ const popupContent = `
 
             <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;">
     
-<span class="status-${(loc.status || 'ACTIVE')
+<span class="status-${(loc.status || 'ACCREDITED')
     .toString()
     .trim()
     .toLowerCase()}">
-    ${(loc.status || 'ACTIVE').toString().trim()}
+    ${(loc.status || 'ACCREDITED').toString().trim()}
 </span>
 
 <span style="color:#D4AF37;">
