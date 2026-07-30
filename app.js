@@ -245,7 +245,7 @@ const status = (h.status || '').toString().trim().toUpperCase();
 
 const matchesStatus =
     status === 'ACTIVE' ||
-    status === 'PENDING';
+    status === 'QUALIFIED';
 
     const matchesCategory =
         (activeCategory === 'all' || h.category === activeCategory);
