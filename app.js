@@ -4,8 +4,8 @@ const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSzkCeYF5iB99O
 const isMobile = window.innerWidth < 768;
 
 const map = L.map('map', {
-    center: [56.5, 18.00],
-    zoom: isMobile ? 4.2 : 5.5,
+    center: [52.5, 17.5],
+    zoom: isMobile ? 4.1 : 4.8,
     zoomControl: false,
     minZoom: 2,
     maxZoom: 21
